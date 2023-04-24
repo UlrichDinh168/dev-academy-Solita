@@ -35,4 +35,5 @@ const journeySchema = mongoose.Schema({
   }
 })
 
-export default mongoose.model("station", journeySchema);
+const journey = mongoose.model("journey", journeySchema);
+export default journey

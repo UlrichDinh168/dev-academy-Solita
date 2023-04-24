@@ -55,4 +55,5 @@ const stationSchema = mongoose.Schema({
   }
 });
 
-export default mongoose.model("station", stationSchema);
+const station = mongoose.model("station", stationSchema);
+export default station
