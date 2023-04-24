@@ -3,18 +3,9 @@ import logo from './logo.svg';
 import styles from './App.module.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Welcome from './components/Welcome/Welcome';
-import axios from 'axios';
 
-const API_URL = 'http:localhost:3001'
 function App() {
   const [count, setCount] = useState(0);
-
-  axios.post(`${API_URL}/api/hello`, {
-    firstName: 'Fred',
-    lastName: 'Flintstone'
-  }).then(function (response) {
-    console.log(response, 'response');
-  })
 
   return (
     <Router>
