@@ -76,6 +76,7 @@ database.on('connected', () => {
         totalRowCount += csvData.length;
         totalDiscardCount += remove;
         filesProcessed++;
+
         console.log(`Finished processing ${color.green(rowCount)} rows from ${color.cyan(file)} with ${color.redBright(remove)} invalid rows.\n`);
 
         if (filesProcessed === journeyFiles.length) {

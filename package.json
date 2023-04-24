@@ -11,7 +11,8 @@
     "build": "npm run server:build && npm run client:build",
     "serve": "vite preview",
     "start": "node dist/server.js",
-    "import": "node src/lib/importStationData && node src/lib/importJourneyData"
+    "import": "node src/lib/importStationData.js && node src/lib/importJourneyData.js",
+    "deduplicate": "node src/lib/deduplicate.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",
