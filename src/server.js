@@ -3,11 +3,26 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './api/routes/router.js'
 import { fileURLToPath } from 'url';
+import { color } from 'console-log-colors';
+dotenv.config();
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, DATABASE_URL } = process.env;
+
+// Setup database connection
+mongoose.connect(DATABASE_URL);
+const database = mongoose.connection
+database.on('error', (error) => {
+  console.log(error)
+});
+database.on('connected', () => {
+  console.log(color.yellowBright("\n Database connected success!"));
+});
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
