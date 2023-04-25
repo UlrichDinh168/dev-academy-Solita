@@ -3,6 +3,8 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import ClearIcon from "@mui/icons-material/Clear";
+import { IconButton } from "@mui/material";
+import InputAdornment from '@mui/material/InputAdornment';
 
 const Input = ({
   label,
@@ -13,14 +15,15 @@ const Input = ({
   focus,
   id,
   onFocus,
+  type,
   value,
   onBlur,
-  handleClickInputIcon,
+  handleClickInputIcon, handleClearClick
 }) => {
   return (
     <div className='input__wrapper' >
       <TextField
-        type='text'
+        type={type}
         label={label}
         value={value}
         name={name}
@@ -29,15 +32,30 @@ const Input = ({
         size='small'
         inputRef={reference}
         id={id}
-        sx={{ m: 1, width: "39.5ch" }}
+        sx={{ m: 2, "&.Mui-focused .MuiIconButton-root": { color: 'primary.main' } }}
+
         onFocus={onFocus}
         onBlur={onBlur}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClearClick}
+                // onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {value ? <ClearIcon /> : null}
+              </IconButton>
+            </InputAdornment>
+          )
+        }}
       />
-      {!focus && (
+      {/* {!focus && (
         <div className='input__wrapper--clear' onClick={handleClickInputIcon}>
           <ClearIcon />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
