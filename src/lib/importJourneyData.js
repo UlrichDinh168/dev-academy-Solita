@@ -35,8 +35,15 @@ const journeyFiles = fs.readdirSync(directoryPath).filter(file => file.endsWith(
 
 let filesProcessed = 0;
 let totalRowCount = 0;
-let totalDiscardCount = 0;
+let totalRemoveCount = 0;
 
+/**
+ * The file reads CSV files from a directory, 
+ * validates the data in each file, and adds valid rows to the database. 
+ * 
+ * It also logs information about the import process to the console, 
+ * including the number of rows imported and the number of invalid rows discarded. 
+ */
 database.on('connected', () => {
   console.log(color.yellowBright("\nJourney database connected success!"));
   console.log(color.green("\nAdding to database ... \n"));
@@ -54,15 +61,17 @@ database.on('connected', () => {
       .parse({ headers: true, ignoreEmpty: true })
       .validate(journeyRow => parseInt(journeyRow['Covered distance (m)']) >= 10 && parseInt(journeyRow['Duration (sec)']) >= 10)
       .on("data", async (row) => {
+        // Add the row to the current chunk of data
         ++counter
         csvData.push({
           ...row
         });
         if (counter >= 1000) {
+          // Pause the CSV stream and insert the current chunk of data into MongoDB
           csvStream.pause();
           await journey.insertMany(csvData)
           totalRowCount += csvData.length;
-          csvData = [];
+          csvData = []; // set to empty to start another batch
           counter = 0;
           csvStream.resume();
         }
@@ -74,13 +83,13 @@ database.on('connected', () => {
       .on("end", async (rowCount) => {
         await journey.insertMany(csvData);
         totalRowCount += csvData.length;
-        totalDiscardCount += remove;
+        totalRemoveCount += remove;
         filesProcessed++;
 
         console.log(`Finished processing ${color.green(rowCount)} rows from ${color.cyan(file)} with ${color.redBright(remove)} invalid rows.\n`);
 
         if (filesProcessed === journeyFiles.length) {
-          console.log(`Totally added ${color.green(totalRowCount)} documents to mongo and removed ${color.redBright(totalDiscardCount)} invalid rows.\n`);
+          console.log(`Totally added ${color.green(totalRowCount)} documents to mongo and removed ${color.redBright(totalRemoveCount)} invalid rows.\n`);
           database.once('close', () => {
             console.log(color.magenta("Database connection closed successfully.\n"));
           });
@@ -88,8 +97,6 @@ database.on('connected', () => {
           database.close();
           server.close(() => console.log(color.magenta("\nServer closed successfully.\n")));
         }
-        // database.close()
-        // server.close()
       });
 
     stream.pipe(csvStream);

@@ -36,6 +36,13 @@ const files = fs.readdirSync(directoryPath).filter(file => file.includes('dedupl
 
 let totalRowCount = 0;
 
+/**
+ * Extendable version for importing station csv files to Mongo.
+ * Applicable for future station files.
+ * 
+ * The file reads CSV files from a directory,
+ * limits the batch size of the insertMany() operation to 1000 to avoid memory overflow.
+ */
 database.on('connected', () => {
   console.log(color.yellowBright("\nStation database connected success!"));
   console.log(color.green("\nAdding to database ... \n"));
@@ -49,13 +56,13 @@ database.on('connected', () => {
     let count = 0
 
     let csvStream = fastcsv
-      // headers: true removes the first line of csv and ignoreEmpty ignores empty lines
       .parse({ headers: true, ignoreEmpty: true })
       .on("data", async (row) => {
         ++count
         csvData.push({
           ...row
         });
+        // Limit to 1k lines to avoid memory overflow
         if (count >= 1000) {
           csvStream.pause();
           await station.insertMany(csvData)
@@ -72,12 +79,15 @@ database.on('connected', () => {
       .on("end", async (rowCount) => {
         await station.insertMany(csvData);
         totalRowCount += csvData.length;
+
         console.log(`Finished processing  ${color.green(rowCount)} rows from ${color.cyan(file)} \n`);
-        // Close mongo connection and express
+
         database.once('close', () => {
           console.log(color.magenta("Database connection closed successfully.\n"));
         });
+
         console.timeEnd('Importing data to MongoDB took');
+
         database.close();
         server.close(() => console.log(color.magenta("\nServer closed successfully.\n")));
       });
