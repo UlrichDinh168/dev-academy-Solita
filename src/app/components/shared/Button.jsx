@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 
-export default function BasicButton({ text, onChange }) {
+export default function BasicButton({ text, disabled }) {
   return (
-    <Button variant="text" onChange={onChange}>{text}</Button>
+    <Button disabled={disabled} variant="text" type='submit'>{text}</Button>
   );
 }

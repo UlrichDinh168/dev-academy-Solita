@@ -11,14 +11,14 @@ const Input = ({
   onChange,
   placeholder,
   name,
-  reference,
+  inputRef,
   focus,
   id,
   onFocus,
   type,
   value,
   onBlur,
-  handleClickInputIcon, handleClearClick
+  handleClearClick
 }) => {
   return (
     <div className='input__wrapper' >
@@ -30,7 +30,7 @@ const Input = ({
         placeholder={placeholder}
         onChange={onChange}
         size='small'
-        inputRef={reference}
+        inputRef={inputRef}
         id={id}
         sx={{ m: 2, "&.Mui-focused .MuiIconButton-root": { color: 'primary.main' } }}
 
@@ -51,11 +51,6 @@ const Input = ({
           )
         }}
       />
-      {/* {!focus && (
-        <div className='input__wrapper--clear' onClick={handleClickInputIcon}>
-          <ClearIcon />
-        </div>
-      )} */}
     </div>
   );
 };
