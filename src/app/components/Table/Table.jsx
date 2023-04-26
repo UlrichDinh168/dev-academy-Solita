@@ -44,7 +44,6 @@ const headCells = [
 ]
 
 export default function EnhancedTable({ rows }) {
-  console.log(rows, 'rows');
   const [order, setOrder] = React.useState(DEFAULT_ORDER);
   const [orderBy, setOrderBy] = React.useState(DEFAULT_ORDER_BY);
   const [page, setPage] = React.useState(0);

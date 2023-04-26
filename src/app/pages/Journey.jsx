@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SearchArea from '../components/SearchArea';
+import SearchArea from '../components/SearchArea/SearchArea';
 import { instance } from '../constant'
 
 const Journey = () => {

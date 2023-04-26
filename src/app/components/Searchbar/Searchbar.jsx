@@ -3,7 +3,7 @@ import { instance } from '../../constant'
 
 import Input from "../shared/Input";
 import Button from "../shared/Button";
-import SearchResults from "../searchResult";
+import SearchResults from "../SearchResult/SearchResult";
 
 const Searchbar = ({ isOrigin, onSetFormValues }) => {
 
