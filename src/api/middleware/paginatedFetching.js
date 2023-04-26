@@ -4,7 +4,7 @@ const paginatedFetching = (model) => {
     const limit = 50
     let fields = {};
     const results = {};
-
+    console.log(data, 'data');
     let depName = data['Departure station name'];
     let retName = data['Return station name']
 
@@ -17,7 +17,7 @@ const paginatedFetching = (model) => {
     }
     try {
       const docs = await model.find(fields).countDocuments().exec();
-      results.last = Math.ceil((docs / limit));
+      results.lastPage = Math.ceil((docs / limit));
     } catch (err) {
       console.log(err);
     }
@@ -33,13 +33,18 @@ const paginatedFetching = (model) => {
       };
     }
     if (endIndex < await model.countDocuments().exec()) {
-      results.next = {
+      results.nextPage = {
         page: page + 1,
         limit
       };
     }
 
     try {
+      const { max: distantMax, min: distantMin } = await findMaxMinValue(model, 'Covered distance (m)')
+      const { max: durationMax, min: durationMin } = await findMaxMinValue(model, 'Duration (sec)')
+      results.distantMaxMinValue = { distantMax, distantMin }
+      results.durationMaxMinValue = { durationMax, durationMin }
+
       results.results = await model.find(fields).limit(limit).skip(startIndex).exec();
       return res.status(201).json({
         message: "Data fetched succesfully",
