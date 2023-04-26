@@ -53,8 +53,8 @@ const Nav = () => {
       <div className="nav-left">
         {HeaderList.map(item => (
           <NavLink
-            id={item.id}
-            exact
+            key={item.id}
+            // exact
             to={`${item.path}`}
             style={({ isActive }) => ({
               color: isActive ? '#fff' : '#545e6f',
