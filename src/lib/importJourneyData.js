@@ -31,7 +31,7 @@ database.on('error', (error) => {
   console.log(error)
 })
 
-const journeyFiles = fs.readdirSync(directoryPath).filter(file => file.endsWith('.csv') && file.includes('2021'));
+const journeyFiles = fs.readdirSync(directoryPath).filter(file => file.includes('2021') && file.includes('deduplicated'));
 
 let filesProcessed = 0;
 let totalRowCount = 0;

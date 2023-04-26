@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const directoryPath = path.join(__dirname, './csv/');
-const files = fs.readdirSync(directoryPath).filter(file => file.endsWith('.csv') && file.includes('2021'));
+const files = fs.readdirSync(directoryPath).filter(file => file.includes('2021') && !file.includes('deduplicated'));
 
 const deduplicateCSVFiles = async (filePaths) => {
 
