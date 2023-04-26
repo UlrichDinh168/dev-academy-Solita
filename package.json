@@ -12,7 +12,7 @@
     "serve": "vite preview",
     "start": "node dist/server.js",
     "import": "node src/lib/importStationData.js && node src/lib/importJourneyData.js",
-    "deduplicate": "node src/lib/deduplicate.js"
+    "dedup": "node src/lib/deduplicate.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",
