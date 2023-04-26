@@ -1,12 +1,13 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import Searchbar from '../Searchbar/Searchbar'
+import Searchbar from '../Searchbar'
 import Button from '../shared/Button'
+import Table from '../Table'
 import { instance } from '../../constant'
 import { Box } from "@mui/material";
 
 const SearchArea = ({ handleChange }) => {
   const [formSubmit, setFormSubmit] = useState({})
-  const [journey, setJourney] = useState([])
+  const [journeys, setJourneys] = useState([])
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
 
@@ -28,12 +29,11 @@ const SearchArea = ({ handleChange }) => {
       data: { ...formSubmit, page }
     })
 
-    console.log(resp, 'resp');
-    setJourney(resp)
+    setJourneys(resp?.data.data.paginatedResults.results)
     setLoading(false);
   }
   const isDisabled = !formSubmit["Departure station name"] && !formSubmit["Return station name"]
-  console.log(isDisabled, 'isDisabled');
+  console.log(journeys, 'journeys');
   return (
     <div>
       <p>Helsinki Bike Planner</p>
@@ -43,6 +43,8 @@ const SearchArea = ({ handleChange }) => {
         <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} />
         <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} />
         <Button text='Search' disabled={isDisabled} />
+
+        {journeys.length !== 0 ? <Table rows={journeys} /> : null}
       </Box>
 
     </div>
