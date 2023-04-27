@@ -7,35 +7,34 @@
   align-items: center;
   background-color: #333;
   color: #fff;
-  padding: 10px;
-  
-  .nav-left {
+  // padding: 10px;
+  padding: 15px;
+  justify-content: center;
+
+  .nav-menu {
     display: flex;
     align-items: center;
-    
-    .nav-menu {
-      display: flex;
-      list-style: none;
-      
-      &__item {
-        margin-right: 20px;
-        
-        &.is-active {
-          background-color: #555;
-        }
+    display: flex;
+    list-style: none;
+
+    &__item {
+      // margin-right: 20px;
+      padding: 15px;
+      &.is-active {
+        background-color: #555;
       }
-      
-      &__link {
-        color: #fff;
-        text-decoration: none;
-        
-        &:hover {
-          text-decoration: underline;
-        }
+    }
+
+    &__link {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
-  
+
   .nav-right {
     .nav-toggle {
       background-color: transparent;
@@ -44,15 +43,15 @@
       font-size: 1.5rem;
       cursor: pointer;
       padding: 5px;
-      
+
       &.is-active {
         transform: rotate(45deg);
       }
     }
   }
-  
+
   @media (max-width: 768px) {
-    .nav-left {
+    .nav-menu {
       .nav-menu {
         display: none;
         position: absolute;
@@ -63,34 +62,34 @@
         padding: 10px;
         transition: all 0.3s ease-in-out;
         transform: translateY(-100%);
-        
+
         &.is-open {
           display: flex;
           flex-direction: column;
           transform: translateY(0);
         }
-        
+
         &__item {
-        display: none;
+          display: none;
           margin-right: 0;
           margin-bottom: 10px;
-          
+
           &.is-active {
             background-color: #555;
           }
         }
-        
+
         &__link {
           color: #fff;
           text-decoration: none;
-          
+
           &:hover {
             text-decoration: underline;
           }
         }
       }
     }
-    
+
     .nav-right {
       .nav-toggle {
         &.is-active {
