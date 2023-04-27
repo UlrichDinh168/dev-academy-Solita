@@ -2,7 +2,6 @@ import React, { useCallback, useState, useRef, useEffect } from "react";
 import { instance } from '../../constant'
 
 import Input from "../shared/Input";
-import Button from "../shared/Button";
 import SearchResults from "../SearchResult/SearchResult";
 
 const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
@@ -47,7 +46,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
     if (formSubmit[name] === undefined) setInput('')
   };
 
-  const handleReset = (params) => {
+  const handleReset = () => {
     setInput('')
     inputRef.current.value = ''
     setSearchResults([])

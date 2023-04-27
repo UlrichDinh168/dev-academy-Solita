@@ -42,7 +42,6 @@ const Input = ({
               <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClearClick}
-                // onMouseDown={handleMouseDownPassword}
                 edge="end"
               >
                 {value ? <ClearIcon /> : null}
