@@ -32,8 +32,8 @@ const Input = ({
         size='small'
         inputRef={inputRef}
         id={id}
-        sx={{ m: 2, "&.Mui-focused .MuiIconButton-root": { color: 'primary.main' } }}
-
+        sx={{ marginBottom: 0.5, marginRight: 2 }}
+        autoComplete="off"
         onFocus={onFocus}
         onBlur={onBlur}
         InputProps={{

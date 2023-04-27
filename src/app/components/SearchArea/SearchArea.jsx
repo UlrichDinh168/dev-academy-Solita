@@ -98,8 +98,8 @@ const SearchArea = () => {
 
       <h2>Helsinki Bike Planner</h2>
       <div className="search-area">
-        <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} />
-        <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} />
+        <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} />
+        <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} />
         <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
         {/* </button> */}
 

@@ -40,11 +40,6 @@ const paginatedFetching = (model) => {
     }
 
     try {
-      const { max: distantMax, min: distantMin } = await findMaxMinValue(model, 'Covered distance (m)')
-      const { max: durationMax, min: durationMin } = await findMaxMinValue(model, 'Duration (sec)')
-      results.distantMaxMinValue = { distantMax, distantMin }
-      results.durationMaxMinValue = { durationMax, durationMin }
-
       results.results = await model.find(fields).limit(limit).skip(startIndex).exec();
       return res.status(201).json({
         message: "Data fetched succesfully",

@@ -5,7 +5,7 @@ import Input from "../shared/Input";
 import Button from "../shared/Button";
 import SearchResults from "../SearchResult/SearchResult";
 
-const Searchbar = ({ isOrigin, onSetFormValues }) => {
+const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
 
   const originRef = useRef(null)
   const destRef = useRef(null)
@@ -41,8 +41,10 @@ const Searchbar = ({ isOrigin, onSetFormValues }) => {
     setFocus(true)
   }
 
-  const handleBlur = () => {
+  const handleBlur = (e) => {
+    const { name, value } = e.target
     setFocus(false);
+    if (formSubmit[name] === undefined) setInput('')
   };
 
   const handleReset = (params) => {
