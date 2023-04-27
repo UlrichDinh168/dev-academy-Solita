@@ -50,20 +50,23 @@ const Nav = () => {
 
   return (
     <nav className="nav">
-      <div className="nav-left">
-        {HeaderList.map(item => (
-          <NavLink
-            key={item.id}
-            // exact
-            to={`${item.path}`}
-            style={({ isActive }) => ({
-              color: isActive ? '#fff' : '#545e6f',
-              background: isActive ? '#555' : '#333',
-            })}
-            className={`nav-menu__item ${location === item.path ? 'is-active' : ''}`} >
-            {item.name}
-          </NavLink>
-        ))}
+      <div className="nav-menu">
+        <div className="nav-menu__container">
+          {HeaderList.map(item => (
+            <NavLink
+              key={item.id}
+              // exact
+              to={`${item.path}`}
+              style={({ isActive }) => ({
+                color: isActive ? '#fff' : '#545e6f',
+                background: isActive ? '#555' : '#333',
+              })}
+              className={`nav-menu__item ${location === item.path ? 'is-active' : ''}`} >
+              {item.name}
+            </NavLink>
+          ))}
+        </div>
+
       </div>
       {isMobile && (
         <div className="nav-right">

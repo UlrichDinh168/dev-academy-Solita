@@ -3,10 +3,11 @@ import Searchbar from '../Searchbar/Searchbar'
 import Button from '../shared/Button'
 import Table from '../JourneyTable/Table'
 import Slider from '../Slider/Slider'
-import findLargestAndSmallest from '../Slider/utils'
+import { findLargestAndSmallest } from '../../components/util'
 import { instance } from '../../constant'
 import { Box } from "@mui/material";
-
+import { transformResultsArray } from "../util";
+transformResultsArray
 const SearchArea = () => {
   const [formSubmit, setFormSubmit] = useState({})
   const [journeys, setJourneys] = useState([])
@@ -23,12 +24,12 @@ const SearchArea = () => {
     if (journeys.length !== 0) {
       const { largest: distantMax, smallest: distantMin } = findLargestAndSmallest(journeys?.results, 'Covered distance (m)')
       const { largest: durationMax, smallest: durationMin } = findLargestAndSmallest(journeys?.results, 'Duration (sec)')
-      console.log(distantMin, distantMax, durationMin, durationMax, 'min-max');
 
       setSliderMinMaxValues({ distantMin, distantMax, durationMin, durationMax })
     }
-
   }, [journeys])
+
+
 
   useEffect(() => {
     setSliderCurrentValue({
@@ -38,48 +39,41 @@ const SearchArea = () => {
   }, [sliderMinMaxValues])
 
   useEffect(() => {
-    console.log(sliderCurrentValue, 'sliderCurrentValue---');
     const newResult = journeys?.results?.filter(item => item['Covered distance (m)'] <= sliderCurrentValue['Covered distance (m)'] || item['Duration (sec)'] <= sliderCurrentValue['Duration (sec)'])
 
-    console.log(newResult, 'neww');
-    // setList(prev => ({ ...prev, results: newResult }))
     setFilteredTable(newResult || journeys?.results)
   }, [sliderCurrentValue,])
 
-  console.log(sliderCurrentValue, 'currentVal');
 
   const onSetFormValues = useCallback(
     (result, name) => {
       setFormSubmit(prevState => ({ ...prevState, [name]: result?.Nimi }))
       setPage(1)
-
     },
     [formSubmit],
   )
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit');
     setLoading(true)
     const resp = await instance.post('/api/journey', {
       data: { ...formSubmit, page }
     })
 
-    setJourneys(resp?.data.data.paginatedResults)
+
+    const convertedResp = transformResultsArray(resp?.data.data.paginatedResults.results)
+
+    setJourneys({ ...resp?.data.data.paginatedResults, results: convertedResp })
     setLoading(false);
   }
+  console.log(journeys, 'journeys');
 
   const onFetchNextBatch = async (params) => {
-    console.log('here');
     setPage(prev => prev + 1)
-
     setLoading(true)
-    console.log(page, 'page');
     const resp = await instance.post('/api/journey', {
       data: { ...formSubmit, page: page + 1 }
     })
-
-    console.log(resp, 'resp');
 
     const newResults = [...journeys.results, ...resp?.data.data.paginatedResults.results]
     console.log(newResults, 'newResults');
@@ -87,45 +81,70 @@ const SearchArea = () => {
     setLoading(false);
   }
 
-  const handleSliderChange = (value, name) => {
-    // setForm(prev => ({ ...prev, [name]: value }))
-    console.log(name, value, 'value');
-    setSliderCurrentValue(prev => ({ ...prev, [name]: value }))
-  }
+  const handleSliderChange = useCallback(
+    (value, name) => {
+      setSliderCurrentValue(prev => ({ ...prev, [name]: value }))
+    },
+    [sliderCurrentValue]
+  )
+
 
   const isDisabled = !formSubmit["Departure station name"] && !formSubmit["Return station name"]
-  console.log(journeys, 'journeys');
+
+
 
   return (
-    <div>
-      <p>Helsinki Bike Planner</p>
-      {/* <Box component="form" onSubmit={onSubmit}> */}
+    <div className="search-area__wrapper">
 
-      <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} />
-      <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} />
-      <Slider
-        name='Duration (sec)'
-        onFilter={handleSliderChange}
-        min={sliderMinMaxValues?.durationMin}
-        max={sliderMinMaxValues?.durationMax}
-        value={sliderCurrentValue['Duration (sec)']}
-        label={'Duration'}
-      />
-      <Slider
-        name='Covered distance (m)'
-        onFilter={handleSliderChange}
-        min={sliderMinMaxValues?.distantMin}
-        value={sliderCurrentValue['Covered distance (m)']}
+      <h2>Helsinki Bike Planner</h2>
+      <div className="search-area">
+        <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} />
+        <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} />
+        <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
+        {/* </button> */}
 
-        max={sliderMinMaxValues?.distantMax}
-        label={'Distance'}
-      />
-      <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
-      <Button text='More' onClick={onFetchNextBatch} />
-      {journeys.length !== 0 ? <Table rows={filteredTable} /> : null}
-      {/* </Box> */}
+      </div>
+
+      {journeys.length !== 0 ?
+        <div className="search-area__content">
+          <div className="search-area__content-up">
+            <div className="slider">
+              <h5>Change both to start filtering</h5>
+              <Slider
+                name='Duration (sec)'
+                onFilter={handleSliderChange}
+                min={sliderMinMaxValues?.durationMin}
+                max={sliderMinMaxValues?.durationMax}
+                value={sliderCurrentValue['Duration (sec)']}
+                label={'Duration'}
+              />
+              <Slider
+                name='Covered distance (m)'
+                onFilter={handleSliderChange}
+                min={sliderMinMaxValues?.distantMin}
+                value={sliderCurrentValue['Covered distance (m)']}
+                max={sliderMinMaxValues?.distantMax}
+                label={'Distance'}
+              />
+            </div>
+            <Table rows={filteredTable} />
+
+          </div>
+          <div className="search-area__end">
+
+            <Button onClick={onFetchNextBatch} text='Load More' />
+            {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
+
+          </div>
+
+        </div>
+
+        : null}
+
 
     </div>
+
+
   )
 }
 

@@ -3,6 +3,6 @@ import Button from '@mui/material/Button';
 
 export default function BasicButton({ text, disabled, onClick }) {
   return (
-    <Button onClick={onClick} disabled={disabled} variant="text" type='submit' >{text}</Button>
+    <Button sx={{ background: 'lightgrey', height: '2.4rem', maxHeight: '3rem', maxWidth: '10rem', color: 'black' }} onClick={onClick} disabled={disabled} variant="text" type='submit' >{text}</Button>
   );
 }
