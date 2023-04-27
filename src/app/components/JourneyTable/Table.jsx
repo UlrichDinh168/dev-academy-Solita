@@ -1,58 +1,40 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import TableRow from '@mui/material/TableRow';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+import Modal from '../shared/Modal'
+
 
 import TableHeader from './TableHeader';
+import JourneyTableRow from './JourneyTableRow';
+import StationTableRow from './StationTableRow';
+
 import { getComparator, stableSort } from '../util'
+import { instance } from '../../constant';
 
 const DEFAULT_ORDER = 'asc';
 const DEFAULT_ORDER_BY = 'Duration (m)';
 const DEFAULT_ROWS_PER_PAGE = 5;
-const headCells = [
-  {
-    id: 'Departure station name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Departure',
-  },
-  {
-    id: 'Return station name',
-    numeric: true,
-    disablePadding: false,
-    label: 'Destination',
-  },
-  {
-    id: 'Covered distance (m)',
-    numeric: true,
-    disablePadding: false,
-    label: 'Distance (km)',
-  },
-  {
-    id: 'Duration (sec)',
-    numeric: true,
-    disablePadding: false,
-    label: 'Duration (min)',
-  },
-]
 
-export default function EnhancedTable({ rows }) {
+
+export default function EnhancedTable({ rows, headCells, type }) {
   const [order, setOrder] = React.useState(DEFAULT_ORDER);
   const [orderBy, setOrderBy] = React.useState(DEFAULT_ORDER_BY);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [visibleRows, setVisibleRows] = React.useState(null);
   const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
-  const [paddingHeight, setPaddingHeight] = React.useState(0);
+  const [details, setDetails] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const [open, setOpen] = React.useState(false);
+
 
   React.useEffect(() => {
+    // const datasetArray = type ==='journey'? rows
     let rowsOnMount = stableSort(
       rows,
       getComparator(DEFAULT_ORDER, DEFAULT_ORDER_BY),
@@ -92,18 +74,9 @@ export default function EnhancedTable({ rows }) {
         newPage * rowsPerPage,
         newPage * rowsPerPage + rowsPerPage,
       );
-
       setVisibleRows(updatedRows);
-
-      // Avoid a layout jump when reaching the last page with empty rows.
-      const numEmptyRows =
-        newPage > 0 ? Math.max(0, (1 + newPage) * rowsPerPage - rows.length) : 0;
-
-      const newPaddingHeight = (dense ? 33 : 53) * numEmptyRows;
-      setPaddingHeight(newPaddingHeight);
-      // nextJourneys(1)
     },
-    [order, orderBy, dense, rowsPerPage, rows,],
+    [order, orderBy, rowsPerPage, rows,],
   );
 
   const handleChangeRowsPerPage = React.useCallback(
@@ -121,17 +94,60 @@ export default function EnhancedTable({ rows }) {
 
       setVisibleRows(updatedRows);
 
-      // There is no layout jump to handle on the first page.
-      setPaddingHeight(0);
     },
     [order, orderBy, rows],
   );
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
 
 
+  const handleClick = async (rowName) => {
+    setOpen(true)
+    setLoading(true);
+    try {
+      const response = await instance.post(`api/station-details`, {
+        data: rowName.ID
+      })
+      console.log(response?.data, 'response');
+      setDetails(response?.data)
+    }
+    catch (err) {
+      console.log(err)
+    }
+    setLoading(false);
+  }
+
+  const renderContent = () => {
+    if (type === 'journey') {
+      return visibleRows
+        ? visibleRows.map((row, index) => {
+          const labelId = `enhanced-table-checkbox-${index}`;
+          return (
+            <JourneyTableRow
+              key={index}
+              row={row}
+              type={type}
+              labelId={labelId} />
+          )
+        })
+        : null
+    } else {
+      return visibleRows
+        ? visibleRows.map((row, index) => {
+          const labelId = `enhanced-table-checkbox-${index}`;
+          return (
+            <StationTableRow
+              key={index}
+              row={row}
+              type={type}
+              labelId={labelId}
+              handleClick={handleClick}
+            />
+          )
+        })
+        : null
+    }
+
+  }
   return (
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
@@ -139,11 +155,10 @@ export default function EnhancedTable({ rows }) {
       <Paper sx={{ width: '100%', mb: 2, overflow: 'hidden' }}>
         <TableContainer
 
-          sx={{ maxHeight: 300 }}
+          sx={{ maxHeight: 400 }}
         >
           <Table
             aria-label="sticky table"
-            size={dense ? 'small' : 'medium'}
             sx={{ maxHeight: 400, overflow: 'hidden', minWidth: 600 }}
 
           >
@@ -156,43 +171,8 @@ export default function EnhancedTable({ rows }) {
               rowCount={rows?.length}
             />
             <TableBody>
-              {visibleRows
-                ? visibleRows.map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow
-                      hover
-                      tabIndex={-1}
-                      key={index}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="normal"
-                      >
-                        {row['Departure station name']}
-                      </TableCell>
-                      <TableCell align="right">{row['Return station name']}</TableCell>
-                      <TableCell
-                        align="right">{row['Covered distance (m)']}
-                      </TableCell>
-                      <TableCell
-                        align="right">{row['Duration (sec)']}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-                : null}
-              {paddingHeight > 0 && (
-                <TableRow
-                  style={{
-                    height: paddingHeight,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+              {renderContent()}
+
             </TableBody>
           </Table>
         </TableContainer>
@@ -206,6 +186,8 @@ export default function EnhancedTable({ rows }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <Modal open={open} handleClose={() => setOpen(false)} />
     </Box>
   );
 }
+

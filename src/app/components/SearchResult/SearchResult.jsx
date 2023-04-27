@@ -1,7 +1,6 @@
 import React from "react";
 
 const SearchResults = ({
-  isOrigin,
   searchValue,
   inputId,
   searchResults,

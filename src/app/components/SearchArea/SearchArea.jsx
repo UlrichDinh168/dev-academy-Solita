@@ -1,13 +1,37 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import Searchbar from '../Searchbar/Searchbar'
 import Button from '../shared/Button'
 import Table from '../JourneyTable/Table'
 import Slider from '../Slider/Slider'
 import { findLargestAndSmallest } from '../../components/util'
 import { instance } from '../../constant'
-import { Box } from "@mui/material";
 import { transformResultsArray } from "../util";
-transformResultsArray
+const headCells = [
+  {
+    id: 'Departure station name',
+    numeric: false,
+    disablePadding: false,
+    label: 'Departure',
+  },
+  {
+    id: 'Return station name',
+    numeric: true,
+    disablePadding: false,
+    label: 'Destination',
+  },
+  {
+    id: 'Covered distance (m)',
+    numeric: true,
+    disablePadding: false,
+    label: 'Distance (km)',
+  },
+  {
+    id: 'Duration (sec)',
+    numeric: true,
+    disablePadding: false,
+    label: 'Duration (min)',
+  },
+]
 const SearchArea = () => {
   const [formSubmit, setFormSubmit] = useState({})
   const [journeys, setJourneys] = useState([])
@@ -20,15 +44,13 @@ const SearchArea = () => {
   const [sliderCurrentValue, setSliderCurrentValue] = useState({})
 
   useEffect(() => {
-
     if (journeys.length !== 0) {
-      const { largest: distantMax, smallest: distantMin } = findLargestAndSmallest(journeys?.results, 'Covered distance (m)')
-      const { largest: durationMax, smallest: durationMin } = findLargestAndSmallest(journeys?.results, 'Duration (sec)')
+      const { largest: distantMax, smallest: distantMin } = findLargestAndSmallest(journeys?.journeys, 'Covered distance (m)')
+      const { largest: durationMax, smallest: durationMin } = findLargestAndSmallest(journeys?.journeys, 'Duration (sec)')
 
       setSliderMinMaxValues({ distantMin, distantMax, durationMin, durationMax })
     }
   }, [journeys])
-
 
 
   useEffect(() => {
@@ -38,10 +60,11 @@ const SearchArea = () => {
     })
   }, [sliderMinMaxValues])
 
-  useEffect(() => {
-    const newResult = journeys?.results?.filter(item => item['Covered distance (m)'] <= sliderCurrentValue['Covered distance (m)'] || item['Duration (sec)'] <= sliderCurrentValue['Duration (sec)'])
 
-    setFilteredTable(newResult || journeys?.results)
+  useEffect(() => {
+    const newResult = journeys?.journeys?.filter(item => item['Covered distance (m)'] <= sliderCurrentValue['Covered distance (m)'] || item['Duration (sec)'] <= sliderCurrentValue['Duration (sec)'])
+
+    setFilteredTable(newResult || journeys?.journeys)
   }, [sliderCurrentValue,])
 
 
@@ -59,14 +82,13 @@ const SearchArea = () => {
     const resp = await instance.post('/api/journey', {
       data: { ...formSubmit, page }
     })
+    console.log(resp, 'resp');
+    const convertedResp = transformResultsArray(resp?.data.data.journeys)
 
-
-    const convertedResp = transformResultsArray(resp?.data.data.paginatedResults.results)
-
-    setJourneys({ ...resp?.data.data.paginatedResults, results: convertedResp })
+    setJourneys({ ...resp?.data.data, journeys: convertedResp })
     setLoading(false);
   }
-  console.log(journeys, 'journeys');
+
 
   const onFetchNextBatch = async (params) => {
     setPage(prev => prev + 1)
@@ -75,11 +97,12 @@ const SearchArea = () => {
       data: { ...formSubmit, page: page + 1 }
     })
 
-    const newResults = [...journeys.results, ...resp?.data.data.paginatedResults.results]
+    const newResults = [...journeys.journeys, ...resp?.data.data.journeys]
     console.log(newResults, 'newResults');
-    setJourneys(prev => ({ ...prev, results: newResults }))
+    setJourneys(prev => ({ ...prev, journeys: newResults }))
     setLoading(false);
   }
+
 
   const handleSliderChange = useCallback(
     (value, name) => {
@@ -88,10 +111,7 @@ const SearchArea = () => {
     [sliderCurrentValue]
   )
 
-
   const isDisabled = !formSubmit["Departure station name"] && !formSubmit["Return station name"]
-
-
 
   return (
     <div className="search-area__wrapper">
@@ -101,8 +121,6 @@ const SearchArea = () => {
         <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} />
         <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} />
         <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
-        {/* </button> */}
-
       </div>
 
       {journeys.length !== 0 ?
@@ -127,24 +145,17 @@ const SearchArea = () => {
                 label={'Distance'}
               />
             </div>
-            <Table rows={filteredTable} />
-
+            <Table rows={filteredTable} headCells={headCells} type='journey' />
           </div>
           <div className="search-area__end">
 
-            <Button onClick={onFetchNextBatch} text='Load More' />
+            <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage} />
             {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
 
           </div>
-
         </div>
-
         : null}
-
-
     </div>
-
-
   )
 }
 
