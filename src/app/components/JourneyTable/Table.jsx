@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 import TableHeader from './TableHeader';
-import { getComparator, stableSort } from './util'
+import { getComparator, stableSort } from '../util'
 
 const DEFAULT_ORDER = 'asc';
 const DEFAULT_ORDER_BY = 'Duration (m)';
@@ -39,7 +39,7 @@ const headCells = [
     id: 'Duration (sec)',
     numeric: true,
     disablePadding: false,
-    label: 'Duration (m)',
+    label: 'Duration (min)',
   },
 ]
 
@@ -108,7 +108,7 @@ export default function EnhancedTable({ rows }) {
 
   const handleChangeRowsPerPage = React.useCallback(
     (event) => {
-      const updatedRowsPerPage = parseInt(event.target.value, 10);
+      const updatedRowsPerPage = Number(event.target.value, 10);
       setRowsPerPage(updatedRowsPerPage);
 
       setPage(0);
@@ -133,15 +133,22 @@ export default function EnhancedTable({ rows }) {
 
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
+    <Box
+      sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
+      className='journey-table-container'>
+      <Paper sx={{ width: '100%', mb: 2, overflow: 'hidden' }}>
+        <TableContainer
+
+          sx={{ maxHeight: 300 }}
+        >
           <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
+            aria-label="sticky table"
             size={dense ? 'small' : 'medium'}
+            sx={{ maxHeight: 400, overflow: 'hidden', minWidth: 600 }}
+
           >
             <TableHeader
+
               order={order}
               orderBy={orderBy}
               headCells={headCells}
@@ -157,9 +164,7 @@ export default function EnhancedTable({ rows }) {
                       hover
                       tabIndex={-1}
                       key={index}
-                    // sx={{ cursor: 'pointer' }}
                     >
-
                       <TableCell
                         component="th"
                         id={labelId}
@@ -169,8 +174,12 @@ export default function EnhancedTable({ rows }) {
                         {row['Departure station name']}
                       </TableCell>
                       <TableCell align="right">{row['Return station name']}</TableCell>
-                      <TableCell align="right">{row['Covered distance (m)']}</TableCell>
-                      <TableCell align="right">{row['Duration (sec)']}</TableCell>
+                      <TableCell
+                        align="right">{row['Covered distance (m)']}
+                      </TableCell>
+                      <TableCell
+                        align="right">{row['Duration (sec)']}
+                      </TableCell>
                     </TableRow>
                   );
                 })
@@ -197,10 +206,6 @@ export default function EnhancedTable({ rows }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }
