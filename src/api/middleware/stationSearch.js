@@ -3,7 +3,7 @@ import station from '../../lib/models/station.model.js'
 export default async function journeySearch(req, res) {
   try {
     let value = req?.body.data
-
+    console.log(value, 'val');
     if (value?.length > 2) {
       const upperCase = value?.replace(/^\w/, (c) => c.toUpperCase());
       const regexp = new RegExp(`^${upperCase}`)

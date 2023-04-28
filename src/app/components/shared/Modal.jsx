@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import Map from './Map';
 
 const style = {
   position: 'absolute',
@@ -19,7 +20,6 @@ const style = {
 };
 
 export default function BasicModal({ open, data, handleClose, loading }) {
-  console.log(data, 'data');
   const [viewIndex, setViewIndex] = React.useState(0);
   const handlePreviousClick = () => {
     setViewIndex((prevIndex) => prevIndex === 0 ? views.length - 1 : prevIndex - 1);
@@ -49,10 +49,10 @@ export default function BasicModal({ open, data, handleClose, loading }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Text in a modal
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {views[viewIndex]}
+          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}> */}
+          {views[viewIndex]}
 
-          </Typography>
+          {/* </Typography> */}
         </Box>
       </Modal>
     </div>
@@ -60,28 +60,34 @@ export default function BasicModal({ open, data, handleClose, loading }) {
 }
 
 function View1({ data }) {
+  console.log(data, 'data');
+  const { numStationsAtDest, numStationsAtStart, averageDistanceAtDest, averageDistanceAtStart, currentX, currentY } = data
+
   return (
-    <TableContainer>
-      <Table responsive>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              numStationsAtStart            </TableCell>
-            <TableCell>numStationsAtDest</TableCell>
-            <TableCell>averageDistanceAtStart</TableCell>
-            <TableCell>averageDistanceAtDest</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>{data?.data.numStationsAtStart}</TableCell>
-            <TableCell>{data?.data.numStationsAtDest}</TableCell>
-            <TableCell>{parseFloat(data?.data.averageDistanceAtStart / 1000).toFixed(2)} km</TableCell>
-            <TableCell>{parseFloat(data?.data.averageDistanceAtDest / 1000).toFixed(2)} km</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box>
+      <TableContainer>
+        <Table responsive>
+          <TableHead>
+            <TableRow>
+              <TableCell>numStationsAtStart</TableCell>
+              <TableCell>numStationsAtDest</TableCell>
+              <TableCell>averageDistanceAtStart</TableCell>
+              <TableCell>averageDistanceAtDest</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow >
+              <TableCell>{numStationsAtStart}</TableCell>
+              <TableCell>{numStationsAtDest}</TableCell>
+              <TableCell>{parseFloat(averageDistanceAtStart / 1000).toFixed(2)} km</TableCell>
+              <TableCell>{parseFloat(averageDistanceAtDest / 1000).toFixed(2)} km</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Map x={currentX} y={currentY} />
+    </Box>
   )
 }
 

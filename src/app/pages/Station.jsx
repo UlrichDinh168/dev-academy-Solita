@@ -38,7 +38,6 @@ const Station = () => {
   useEffect(() => {
     const fetch = async () => {
       const resp = await instance.get('/api/station')
-      console.log(resp, 'resp');
       setStations(resp?.data.data)
     }
 

@@ -98,7 +98,13 @@ export default function EnhancedTable({ rows, headCells, type }) {
     [order, orderBy, rows],
   );
 
+  const handleClose = () => {
+    setOpen(false)
+    setDetails([])
+  }
 
+
+  console.log(details, 'details');
 
   const handleClick = async (rowName) => {
     setOpen(true)
@@ -111,34 +117,47 @@ export default function EnhancedTable({ rows, headCells, type }) {
       console.log(response, 'response');
       const { top5AtStart, top5AtEnd } = response?.data.data
 
-      const promises = (array) => array.map(async (iterator) => {
+      const fetchData = async (id) => {
+        // Fetch data based on the given id
         const resp = await instance.post('/api/search', {
-          data: iterator[0]
+          data: id
         })
-        const { x, y } = resp?.data.data[0]
-        return [...iterator, x, y]
+        return resp;
+      };
+
+      const fetchAllData = async (myArray) => {
+        // Loop through the array and fetch data based on the second element in each item
+        const promises = myArray.map(async (item) => {
+          const data = await fetchData(item[0]);
+          console.log(data?.data.data[0], 'data');
+          return [...item, data?.data.data[0]]
+          // return data?.data.data[0];
+        });
+
+        // Wait for all promises to resolve and return the result
+        return Promise.all(promises);
+      };
+      let updatedResponse
+      updatedResponse = { ...response?.data.data, currentX: rowName.x, currentY: rowName.y }
+
+      fetchAllData(top5AtStart).then((res) => {
+        console.log(res, 'res');
+
+        updatedResponse = { ...updatedResponse, top5AtStart: res }
+        if (updatedResponse.length !== 0) setDetails(updatedResponse)
+        return updatedResponse
+
       })
+      fetchAllData(top5AtEnd).then((res) => {
+        console.log(res, 'res');
+        updatedResponse = { ...updatedResponse, top5AtEnd: res }
 
-      const top5AtStartCoordinates = promises(top5AtStart)
-      const top5AtEndCoordinates = promises(top5AtEnd)
 
-      const resultsStart = await Promise.all(top5AtStartCoordinates)
-      const resultsEnd = await Promise.all(top5AtEndCoordinates)
+        if (updatedResponse.length !== 0) setDetails(updatedResponse)
+        return updatedResponse
 
-      const updatedTop5AtStart = resultsStart.map((result) => {
-        const [name, count, x, y] = result
-        return [name, count, x, y]
       })
-      const updatedTop5AtEnd = resultsEnd.map((result) => {
-        const [name, count, x, y] = result
-        return [name, count, x, y]
-      })
-
-      const updatedResponse = { ...response?.data, data: { ...response.data.data, top5AtStart: updatedTop5AtStart, top5AtEnd: updatedTop5AtEnd } }
-
-
-      console.log(updatedResponse, 'top5AtStart');
-      if (updatedResponse.length !== 0) setDetails(updatedResponse)
+      console.log(updatedResponse, 'updatedResponse');
 
     }
     catch (err) {
@@ -218,7 +237,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <Modal open={open && details.length !== 0} data={details} loading={loading} handleClose={() => setOpen(false)} />
+      <Modal open={open && details.length !== 0} data={details} loading={loading} handleClose={handleClose} />
     </Box>
   );
 }
