@@ -31,3 +31,15 @@ export const findTopFiveStations = (arrays) => {
   // Sort the counts array in descending order by value and take the top 5
   return Object.entries(arrays).sort((a, b) => b[1] - a[1]).slice(0, 5);
 }
+
+export const fetchStation = async (name, value, model) => {
+  if (name === 'Name') {
+    const upperCase = value?.replace(/^\w/, (c) => c.toUpperCase());
+    // const regexp = new RegExp(`^${upperCase}`)
+    const searchResults = await model.find({ [name]: upperCase }).maxTimeMS(30000);
+    return searchResults
+  }
+
+  const searchResults = await model.find({ [name]: value }).maxTimeMS(30000);
+  return searchResults
+}

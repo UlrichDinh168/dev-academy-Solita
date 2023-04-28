@@ -61,7 +61,7 @@ export default function BasicModal({ open, data, handleClose, loading }) {
 
 function View1({ data }) {
   console.log(data, 'data');
-  const { numStationsAtDest, numStationsAtStart, averageDistanceAtDest, averageDistanceAtStart, currentX, currentY } = data
+  const { numStationsAtDest, numStationsAtStart, averageDistanceAtDest, averageDistanceAtStart, currentX, currentY, Osoite, Name } = data
 
   return (
     <Box>
@@ -86,55 +86,67 @@ function View1({ data }) {
         </Table>
       </TableContainer>
 
-      <Map x={currentX} y={currentY} />
+      <Map  {...{ Osoite, Name, currentX, currentY }} />
     </Box>
   )
 }
 
 function View2({ data }) {
+  const { Name, Osoite, currentX, currentY, returnTop5Start } = data
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Departure</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.data.top5AtStart.map((item, i) =>
-            <TableRow key={i}>
-              <TableCell>{item[0]}</TableCell>
-              <TableCell>{item[1]}</TableCell>
+    <Box>
+
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Departure</TableCell>
             </TableRow>
-          )
-          }
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {returnTop5Start?.map((item, i) =>
+              <TableRow key={i}>
+                <TableCell>{item?.name}</TableCell>
+                <TableCell>{item?.occurrences}</TableCell>
+              </TableRow>
+            )
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Map data={returnTop5Start} {...{ Name, Osoite, currentX, currentY }} />
+
+    </Box>
   )
 }
 
 function View3({ data }) {
+  const { Name, Osoite, currentX, currentY, returnTop5End } = data
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Destination</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.data.top5AtEnd.map((item, i) =>
-            <TableRow key={i}>
-              <TableCell>{item[0]}</TableCell>
-              <TableCell>{item[1]}</TableCell>
+    <Box>
+
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Destination</TableCell>
             </TableRow>
-          )
-          }
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {returnTop5End?.map((item, i) =>
+              <TableRow key={i}>
+                <TableCell>{item?.name}</TableCell>
+                <TableCell>{item?.occurrences}</TableCell>
+              </TableRow>
+            )
+            }
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Map data={returnTop5End} {...{ Name, Osoite, currentX, currentY }} />
+
+    </Box>
   )
 }

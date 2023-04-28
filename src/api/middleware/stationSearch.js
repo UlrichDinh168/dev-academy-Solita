@@ -1,14 +1,11 @@
 import station from '../../lib/models/station.model.js'
+import { fetchStation } from '../utils/utils.js'
 
-export default async function journeySearch(req, res) {
+export default async function stationSearch(req, res) {
   try {
     let value = req?.body.data
-    console.log(value, 'val');
     if (value?.length > 2) {
-      const upperCase = value?.replace(/^\w/, (c) => c.toUpperCase());
-      const regexp = new RegExp(`^${upperCase}`)
-
-      const searchResults = await station.find({ Name: regexp }).maxTimeMS(30000);
+      const searchResults = fetchStation('Name', value, station)
       return res.status(201).json({
         message: "Station name fetched succesfully",
         data: searchResults,

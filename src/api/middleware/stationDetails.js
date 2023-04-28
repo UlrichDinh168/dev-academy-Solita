@@ -1,5 +1,5 @@
-import { countOccurrences, findTopFiveStations } from "../utils/utils.js";
-
+import { countOccurrences, fetchStation, findTopFiveStations } from "../utils/utils.js";
+import station from '../../lib/models/station.model.js'
 const fetchStationDetails = (model) => {
 
   return async (req, res) => {
@@ -36,13 +36,37 @@ const fetchStationDetails = (model) => {
 
 
     // By counting times each station appear => top 5 in total start and return stations
-    const occurrencesAtStart = countOccurrences(stationsAtStart, 'Return station name');
-    const occurrencesAtEnd = countOccurrences(stationsAtEnd, 'Departure station name');
+    // const occurrencesAtStart = countOccurrences(stationsAtStart, 'Return station name');
+    // const occurrencesAtEnd = countOccurrences(stationsAtEnd, 'Departure station name');
+    const occurrencesAtStart = countOccurrences(stationsAtStart, 'Return station id');
+    const occurrencesAtEnd = countOccurrences(stationsAtEnd, 'Departure station id');
 
     // Sorting for top 5 
     const top5AtStart = findTopFiveStations(occurrencesAtStart)
     const top5AtEnd = findTopFiveStations(occurrencesAtEnd)
 
+    let updatedResponse
+
+    const fetchAllData = async (myArray) => {
+      let array = []
+
+      for (const iterator of myArray) {
+        let newItem = {}
+        const data = await fetchStation('ID', iterator[0], station);
+        newItem = {
+          name: data[0]?.Name,
+          occurrences: iterator[1],
+          address: data[0]?.Osoite,
+          x: data[0]?.x,
+          y: data[0]?.y,
+        }
+        array.push(newItem)
+      }
+      return array
+    };
+
+    const returnTop5Start = await fetchAllData(top5AtStart)
+    const returnTop5End = await fetchAllData(top5AtEnd)
 
     const returnDataset = {
       stationId,
@@ -50,8 +74,8 @@ const fetchStationDetails = (model) => {
       numStationsAtDest,
       averageDistanceAtStart,
       averageDistanceAtDest,
-      top5AtStart,
-      top5AtEnd
+      returnTop5Start,
+      returnTop5End
     }
 
     try {

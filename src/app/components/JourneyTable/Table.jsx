@@ -110,55 +110,19 @@ export default function EnhancedTable({ rows, headCells, type }) {
     setOpen(true)
     setLoading(true);
     try {
+      console.log(rowName, 'rowName');
       const response = await instance.post(`api/station-details`, {
         data: rowName.ID
       })
-
       console.log(response, 'response');
-      const { top5AtStart, top5AtEnd } = response?.data.data
 
-      const fetchData = async (id) => {
-        // Fetch data based on the given id
-        const resp = await instance.post('/api/search', {
-          data: id
-        })
-        return resp;
-      };
+      const { x: currentX, y: currentY, Name, Osoite } = rowName
 
-      const fetchAllData = async (myArray) => {
-        // Loop through the array and fetch data based on the second element in each item
-        const promises = myArray.map(async (item) => {
-          const data = await fetchData(item[0]);
-          console.log(data?.data.data[0], 'data');
-          return [...item, data?.data.data[0]]
-          // return data?.data.data[0];
-        });
-
-        // Wait for all promises to resolve and return the result
-        return Promise.all(promises);
-      };
       let updatedResponse
-      updatedResponse = { ...response?.data.data, currentX: rowName.x, currentY: rowName.y }
+      updatedResponse = { ...response?.data.data, currentX, currentY, Name, Osoite }
 
-      fetchAllData(top5AtStart).then((res) => {
-        console.log(res, 'res');
-
-        updatedResponse = { ...updatedResponse, top5AtStart: res }
-        if (updatedResponse.length !== 0) setDetails(updatedResponse)
-        return updatedResponse
-
-      })
-      fetchAllData(top5AtEnd).then((res) => {
-        console.log(res, 'res');
-        updatedResponse = { ...updatedResponse, top5AtEnd: res }
-
-
-        if (updatedResponse.length !== 0) setDetails(updatedResponse)
-        return updatedResponse
-
-      })
       console.log(updatedResponse, 'updatedResponse');
-
+      setDetails(updatedResponse)
     }
     catch (err) {
       console.log(err)
