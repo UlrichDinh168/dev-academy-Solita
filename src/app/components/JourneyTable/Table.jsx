@@ -107,8 +107,39 @@ export default function EnhancedTable({ rows, headCells, type }) {
       const response = await instance.post(`api/station-details`, {
         data: rowName.ID
       })
-      console.log(response?.data, 'response');
-      setDetails(response?.data)
+
+      console.log(response, 'response');
+      const { top5AtStart, top5AtEnd } = response?.data.data
+
+      const promises = (array) => array.map(async (iterator) => {
+        const resp = await instance.post('/api/search', {
+          data: iterator[0]
+        })
+        const { x, y } = resp?.data.data[0]
+        return [...iterator, x, y]
+      })
+
+      const top5AtStartCoordinates = promises(top5AtStart)
+      const top5AtEndCoordinates = promises(top5AtEnd)
+
+      const resultsStart = await Promise.all(top5AtStartCoordinates)
+      const resultsEnd = await Promise.all(top5AtEndCoordinates)
+
+      const updatedTop5AtStart = resultsStart.map((result) => {
+        const [name, count, x, y] = result
+        return [name, count, x, y]
+      })
+      const updatedTop5AtEnd = resultsEnd.map((result) => {
+        const [name, count, x, y] = result
+        return [name, count, x, y]
+      })
+
+      const updatedResponse = { ...response?.data, data: { ...response.data.data, top5AtStart: updatedTop5AtStart, top5AtEnd: updatedTop5AtEnd } }
+
+
+      console.log(updatedResponse, 'top5AtStart');
+      if (updatedResponse.length !== 0) setDetails(updatedResponse)
+
     }
     catch (err) {
       console.log(err)
@@ -148,6 +179,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
     }
 
   }
+  console.log(open && loading && details.length !== 0, 'open && loading && details.length !== 0');
   return (
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
@@ -186,7 +218,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <Modal open={open} handleClose={() => setOpen(false)} />
+      <Modal open={open && details.length !== 0} data={details} loading={loading} handleClose={() => setOpen(false)} />
     </Box>
   );
 }
