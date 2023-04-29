@@ -1,0 +1,24 @@
+.add-journey {
+  overflow: hidden;
+  display: flex;
+  height: 100%;
+
+  .wrapper-left {
+    margin-right: 1rem;
+    display: flex;
+    height: 100%;
+    width: 30%;
+    flex-direction: column;
+    .search-area {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .info {
+      margin-top: 2rem;
+    }
+  }
+  .map-container {
+    flex: 1;
+  }
+}

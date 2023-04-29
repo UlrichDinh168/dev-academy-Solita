@@ -18,10 +18,13 @@ import { instance } from '../../constant';
 
 const DEFAULT_ORDER = 'asc';
 const DEFAULT_ORDER_BY = 'Duration (m)';
-const DEFAULT_ROWS_PER_PAGE = 5;
 
 
 export default function EnhancedTable({ rows, headCells, type }) {
+  const DEFAULT_ROWS_PER_PAGE_JOURNEY = 5;
+  const DEFAULT_ROWS_PER_PAGE_STATION = 10;
+
+  const DEFAULT_ROWS_PER_PAGE = type === 'journey' ? DEFAULT_ROWS_PER_PAGE_JOURNEY : DEFAULT_ROWS_PER_PAGE_STATION
   const [order, setOrder] = React.useState(DEFAULT_ORDER);
   const [orderBy, setOrderBy] = React.useState(DEFAULT_ORDER_BY);
   const [page, setPage] = React.useState(0);
@@ -104,24 +107,18 @@ export default function EnhancedTable({ rows, headCells, type }) {
   }
 
 
-  console.log(details, 'details');
-
   const handleClick = async (rowName) => {
     setOpen(true)
     setLoading(true);
     try {
-      console.log(rowName, 'rowName');
       const response = await instance.post(`api/station-details`, {
         data: rowName.ID
       })
-      console.log(response, 'response');
-
       const { x: currentX, y: currentY, Name, Osoite } = rowName
 
       let updatedResponse
       updatedResponse = { ...response?.data.data, currentX, currentY, Name, Osoite }
 
-      console.log(updatedResponse, 'updatedResponse');
       setDetails(updatedResponse)
     }
     catch (err) {
@@ -162,23 +159,19 @@ export default function EnhancedTable({ rows, headCells, type }) {
     }
 
   }
-  console.log(open && loading && details.length !== 0, 'open && loading && details.length !== 0');
   return (
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
       className='journey-table-container'>
       <Paper sx={{ width: '100%', mb: 2, overflow: 'hidden' }}>
         <TableContainer
-
           sx={{ maxHeight: 400 }}
         >
           <Table
             aria-label="sticky table"
             sx={{ maxHeight: 400, overflow: 'hidden', minWidth: 600 }}
-
           >
             <TableHeader
-
               order={order}
               orderBy={orderBy}
               headCells={headCells}
@@ -187,11 +180,12 @@ export default function EnhancedTable({ rows, headCells, type }) {
             />
             <TableBody>
               {renderContent()}
-
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
+          showFirstButton
+          showLastButton
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows?.length || 0}
@@ -201,7 +195,11 @@ export default function EnhancedTable({ rows, headCells, type }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <Modal open={open && details.length !== 0} data={details} loading={loading} handleClose={handleClose} />
+      <Modal
+        open={open && details.length !== 0}
+        data={details}
+        loading={loading}
+        handleClose={handleClose} />
     </Box>
   );
 }

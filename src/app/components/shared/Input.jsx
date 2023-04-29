@@ -16,6 +16,7 @@ const Input = ({
   id,
   onFocus,
   type,
+  disabled,
   value,
   onBlur,
   handleClearClick
@@ -26,17 +27,18 @@ const Input = ({
         type={type}
         label={label}
         value={value}
+        disabled={disabled}
         name={name}
         placeholder={placeholder}
         onChange={onChange}
         size='small'
         inputRef={inputRef}
         id={id}
-        sx={{ marginBottom: 0.5, marginRight: 2 }}
+        sx={{ marginBottom: 1.5, marginRight: 2, width: '100%' }}
         autoComplete="off"
         onFocus={onFocus}
         onBlur={onBlur}
-        InputProps={{
+        InputProps={id === '0' ? {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
@@ -48,7 +50,7 @@ const Input = ({
               </IconButton>
             </InputAdornment>
           )
-        }}
+        } : null}
       />
     </div>
   );

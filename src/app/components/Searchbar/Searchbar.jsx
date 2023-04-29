@@ -4,7 +4,7 @@ import { instance } from '../../constant'
 import Input from "../shared/Input";
 import SearchResults from "../SearchResult/SearchResult";
 
-const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
+const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value }) => {
 
   const originRef = useRef(null)
   const destRef = useRef(null)
@@ -14,7 +14,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
   const [isFocus, setFocus] = useState(false);
   const [searchResults, setSearchResults] = useState([])
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   const handleChange = async (e) => {
     const { value, name } = e.target;
@@ -27,7 +27,6 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
     } else {
       setSearchResults([])
     }
-
   };
   const selectResult = (result, name) => {
     setFocus(false);
@@ -51,6 +50,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
     inputRef.current.value = ''
     setSearchResults([])
   }
+  console.log(input, 'input');
   return (
     <div className='searchBar__container'>
       <Input
@@ -58,6 +58,9 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit }) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         type='text'
+        // placeholder={placeholder}
+        id='0'
+        label={placeholder}
         value={input}
         inputRef={inputRef}
         name={isOrigin ? "Departure station name" : "Return station name"}
