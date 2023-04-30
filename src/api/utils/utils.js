@@ -3,11 +3,12 @@ export const findMaxMinValue = async (model, criteria) => {
   return Promise.all([
     model.findOne().sort({ [criteria]: -1 }).exec(),
     model.findOne().sort({ [criteria]: 1 }).exec()
-  ]).then(docs => {
-    const max = docs[0][criteria];
-    const min = docs[1][criteria];
+  ]).then(values => {
+    const max = values[0][criteria];
+    const min = values[1][criteria];
     return { max, min };
-  }).catch(err => {
+  }).catch(error => {
+    console.log(error, 'err in api utils');
     return { max: null, min: null };
   });
 }
@@ -34,9 +35,10 @@ export const findTopFiveStations = (arrays) => {
 
 export const fetchStation = async (name, value, model) => {
   if (name === 'Name') {
+    console.log('here');
     const upperCase = value?.replace(/^\w/, (c) => c.toUpperCase());
-    // const regexp = new RegExp(`^${upperCase}`)
-    const searchResults = await model.find({ [name]: upperCase }).maxTimeMS(30000);
+    const regexp = new RegExp(`^${upperCase}`)
+    const searchResults = await model.find({ [name]: regexp }).maxTimeMS(30000);
     return searchResults
   }
 

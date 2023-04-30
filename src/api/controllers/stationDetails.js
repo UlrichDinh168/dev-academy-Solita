@@ -19,7 +19,7 @@ const fetchStationDetails = (model) => {
 
     const numStationsAtStart = stationsAtStart.length;
     const numStationsAtDest = stationsAtEnd.length;
-
+    console.log(numStationsAtStart, 'numStationsAtStart');
 
     // Calculate total distance
     const totalDistanceAtStart = stationsAtStart.reduce((accumulator, currentTrip) => {

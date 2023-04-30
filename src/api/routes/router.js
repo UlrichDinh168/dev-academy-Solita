@@ -1,9 +1,13 @@
 // const express = require('express');
 import express from 'express';
-import stationSearch from '../middleware/stationSearch.js';
-import paginatedFetchingJourney from '../middleware/paginateJourney.js';
-import paginatedFetchingStation from '../middleware/paginateStation.js';
-import fetchStationDetails from '../middleware/stationDetails.js';
+
+import stationSearch from '../controllers/stationSearch.js';
+import paginatedFetchingJourney from '../controllers/paginateJourney.js';
+import paginatedFetchingStation from '../controllers/paginateStation.js';
+import fetchStationDetails from '../controllers/stationDetails.js';
+import addJourney from '../controllers/addJourney.js'
+import addStation from '../controllers/addStation.js'
+
 import journey from '../../lib/models/journey.model.js'
 import station from '../../lib/models/station.model.js';
 
@@ -17,5 +21,7 @@ router.get('/station', paginatedFetchingStation(station));
 router.post('/station', paginatedFetchingStation(station));
 router.post('/station-details', fetchStationDetails(journey));
 
+router.post('/add-journey', addJourney(journey));
+router.post('/add-station', addStation(station));
 
 export default router

@@ -5,7 +5,7 @@ export default async function stationSearch(req, res) {
   try {
     let value = req?.body.data
     if (value?.length > 2) {
-      const searchResults = fetchStation('Name', value, station)
+      const searchResults = await fetchStation('Name', value, station)
       return res.status(201).json({
         message: "Station name fetched succesfully",
         data: searchResults,

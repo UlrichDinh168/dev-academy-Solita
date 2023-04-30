@@ -6,6 +6,7 @@ import Button from '../components/shared/Button'
 import Input from '../components/shared/Input'
 import DateTimePicker from '../components/shared/DateTimePicker'
 import dayjs from 'dayjs';
+import { instance } from '../constant';
 
 const AddJourney = () => {
   const now = new Date()
@@ -77,8 +78,9 @@ const AddJourney = () => {
 
 
   const calculateRoute = async () => {
-    const response = await axios.get(`https://graphhopper.com/api/1/route?point=${position.lat},${position.lng}&point=${position1.lat},${position1.lng}&vehicle=bike&points_encoded=false&locale=en-US&elevation=true&key=${apiKey}`);
+    const response = await axios.get(`https://graphhopper.com/api/1/route?point=${position.lat},${position.lng}&point=${position1.lat},${position1.lng}&vehicle=bike&points_encoded=false&locale=en-US&instructions=true&elevation=true&key=${apiKey}`);
 
+    console.log(response, 'response');
     const { time, distance } = response?.data.paths[0]
 
     const future = (now.getTime() + time); // add 30 seconds (in milliseconds)
@@ -123,9 +125,10 @@ const AddJourney = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const resp = await instance.post('/api/journey', {
-      data: { ...formSubmit, }
+    const resp = await instance.post('/api/add-journey', {
+      data: formSubmit
     })
+
     console.log(resp, 'resp');
     // const convertedResp = transformResultsArray(resp?.data.data.journeys)
 
