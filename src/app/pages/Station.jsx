@@ -3,6 +3,7 @@ import { instance } from '../constant'
 import Button from '../components/shared/Button'
 import Table from '../components/JourneyTable/Table'
 import Input from "../components/shared/Input";
+import PuffLoader from 'react-spinners/PuffLoader'
 
 import Searchbar from "../components/Searchbar/Searchbar";
 const headCells = [
@@ -50,12 +51,9 @@ const Station = () => {
 
 
   useEffect(() => {
-
-
     setFilteredTable()
-
-
   }, [input])
+
 
   const handleChange = async (e) => {
     e.preventDefault();
@@ -69,7 +67,6 @@ const Station = () => {
       setStations(prev => ({ ...prev, stations: resp.data.data }))
     }
   };
-
 
 
   const onFetchNextBatch = async (params) => {
@@ -94,6 +91,7 @@ const Station = () => {
       <Table rows={stations?.stations} headCells={headCells} type='station' />
       <Button onClick={onFetchNextBatch} text='Load More' disabled={page === stations.lastPage} />
       {stations.length !== 0 ? <div className="search-area__last">Page {page} of {stations.lastPage}</div> : null}
+      {isLoading ? <PuffLoader /> : null}
 
     </div>
   )

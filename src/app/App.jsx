@@ -6,7 +6,7 @@ import AddStation from './pages/AddStation'
 import Journey from './pages/Journey'
 import Station from './pages/Station'
 
-function App() {
+const App = () => {
 
   return (
     <Router>

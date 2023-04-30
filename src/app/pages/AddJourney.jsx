@@ -8,6 +8,7 @@ import DateTimePicker from '../components/shared/DateTimePicker'
 import dayjs from 'dayjs';
 import { instance } from '../constant';
 import PuffLoader from 'react-spinners/PuffLoader'
+import Notification from '../components/shared/Notification'
 
 const AddJourney = () => {
   const now = new Date()
@@ -37,6 +38,7 @@ const AddJourney = () => {
   const [position, setPosition] = useState(center)
   const [position1, setPosition1] = useState(center)
   const [time, setTime] = useState(null)
+  const [alert, setAlert] = useState(false)
 
   console.log(position, 'posi');
   const [formSubmit, setFormSubmit] = useState({
@@ -117,14 +119,26 @@ const AddJourney = () => {
 
 
   const onJourneyCreate = async (e) => {
-    e.preventDefault();
-    setLoading(true)
-    const resp = await instance.post('/api/add-journey', {
-      data: formSubmit
-    })
+    try {
+      e.preventDefault();
+      setLoading(true)
+      const resp = await instance.post('/api/add-journey', {
+        data: formSubmit
+      })
 
-    console.log(resp, 'resp');
-    setLoading(false);
+      console.log(resp, 'resp');
+      setAlert({ isOpen: true, severity: 'success', message: resp?.data.message })
+
+    } catch (error) {
+      console.log(error, 'error');
+
+      setAlert({ isOpen: true, severity: 'error', message: error?.response.data })
+
+    } finally {
+      setLoading(false);
+
+    }
+
   }
 
 
@@ -194,7 +208,10 @@ const AddJourney = () => {
 
 
         </MapContainer>
+
       </div>
+      <Notification alert={alert} />
+
     </div>
   )
 }

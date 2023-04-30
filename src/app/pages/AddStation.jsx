@@ -5,6 +5,7 @@ import Searchbar from '../components/Searchbar/Searchbar';
 import Button from '../components/shared/Button'
 import Input from '../components/shared/Input'
 import { instance } from '../constant';
+import Notification from '../components/shared/Notification'
 import PuffLoader from 'react-spinners/PuffLoader'
 
 const AddStation = () => {
@@ -22,6 +23,7 @@ const AddStation = () => {
   const markerRef = useRef(null)
   const [position, setPosition] = useState(center)
   const [isLoading, setLoading] = useState(false)
+  const [alert, setAlert] = useState(false)
 
   const [formSubmit, setFormSubmit] = useState({
     'FID': '',
@@ -65,7 +67,6 @@ const AddStation = () => {
 
 
   const onStationCreate = async (e) => {
-
     try {
       e.preventDefault();
       setLoading(true)
@@ -73,9 +74,11 @@ const AddStation = () => {
         data: formSubmit
       })
 
+      setAlert({ isOpen: true, severity: 'success', message: resp?.data.message })
       console.log(resp, 'resp');
     } catch (error) {
       console.log(error, 'error');
+      setAlert({ isOpen: true, severity: 'error', message: error?.response.data })
     } finally {
       setLoading(false);
     }
@@ -91,7 +94,7 @@ const AddStation = () => {
 
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
   console.log(formSubmit, 'formsubmit');
-
+  console.log(alert, 'alert');
   return (
     <div className='add-station'>
       <div className="wrapper-left">
@@ -133,7 +136,6 @@ const AddStation = () => {
         </div>
       </div>
       <div className="map-container">
-
         <MapContainer
           className='station-leaflet'
 
@@ -144,13 +146,13 @@ const AddStation = () => {
           />
           <Marker icon={greenIcon} position={position} draggable={true} eventHandlers={eventHandlers} ref={markerRef}>
             <Popup >
-
               <p>{formSubmit['Name']}</p>
               <p>{formSubmit['Adress']}</p>
             </Popup>
           </Marker>
         </MapContainer>
       </div>
+      <Notification alert={alert} />
     </div>
   )
 }

@@ -6,6 +6,8 @@ import Slider from '../components/Slider/Slider'
 import { findLargestAndSmallest } from '../components/util'
 import { instance } from '../constant'
 import { transformResultsArray } from "../components/util";
+import PuffLoader from 'react-spinners/PuffLoader'
+
 const headCells = [
   {
     id: 'Departure station name',
@@ -116,25 +118,27 @@ const Journey = () => {
   return (
     <div className="search-area__wrapper">
 
-      <h2>Helsinki Bike Planner</h2>
-      <div className="search-area">
-        <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} />
-        <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} />
-        <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
-      </div>
+      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Helsinki Bike Planner</h2>
+      <div className="search-area__content">
 
-      {journeys.length !== 0 ?
-        <div className="search-area__content">
-          <div className="search-area__content-up">
-            <div className="slider">
+        <div className="search-area__content-left">
+          <div className="search-area">
+            <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' />
+            <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' />
+            <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
+          </div>
+          <div className="slider">
+            {journeys.length !== 0 ? <>
               <h5>Change both to start filtering</h5>
+
               <Slider
                 name='Duration (sec)'
                 onFilter={handleSliderChange}
                 min={sliderMinMaxValues?.durationMin}
                 max={sliderMinMaxValues?.durationMax}
                 value={sliderCurrentValue['Duration (sec)']}
-                label={'Duration'}
+                disabled={isLoading}
+                label='Duration (min)'
               />
               <Slider
                 name='Covered distance (m)'
@@ -142,19 +146,31 @@ const Journey = () => {
                 min={sliderMinMaxValues?.distantMin}
                 value={sliderCurrentValue['Covered distance (m)']}
                 max={sliderMinMaxValues?.distantMax}
-                label={'Distance'}
-              />
-            </div>
-            <Table rows={filteredTable} headCells={headCells} type='journey' />
-          </div>
-          <div className="search-area__end">
-
-            <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage} />
-            {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
+                disabled={isLoading}
+                label='Distance (km)'
+              /></> : null}
 
           </div>
         </div>
-        : null}
+        <div className="search-area__content-right">
+
+          {isLoading ? <PuffLoader /> :
+            journeys.length !== 0 ?
+              <div className="">
+                <Table rows={filteredTable} headCells={headCells} type='journey' />
+                <div className="search-area__end">
+                  <div className="load-more" style={{ maxWidth: '15rem', width: '10rem' }}>
+                    <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage} />
+                  </div>
+                  {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
+                </div>
+              </div>
+
+              : <p className="ntts">No data</p>}
+        </div>
+
+      </div>
+
     </div>
   )
 }

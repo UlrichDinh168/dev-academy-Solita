@@ -3,6 +3,7 @@
 @import "./table.scss";
 @import "./station.scss";
 @import "./addJourney.scss";
+@import "./addStation.scss";
 html {
   height: 100%;
   box-sizing: border-box;
@@ -45,10 +46,10 @@ ul {
 }
 
 .leaflet-container {
-  width: 60vw;
-  height: 40vh;
-}
-.station-leaflet {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
+// .station-leaflet {
+//   width: 10vh;
+//   height: 100vh;
+// }
