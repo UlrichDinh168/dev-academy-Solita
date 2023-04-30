@@ -1,27 +1,17 @@
 const addJourney = (model) => {
   return async (req, res) => {
-
-    console.log(req?.body, 'body');
-
     const { data } = req.body;
-    const newEntry = new model(data);
-    console.log(newEntry, 'newEntry');
-
+    const newJourney = new model(data);
     try {
-      const results = await newEntry.save()
-
-      console.log(results, 'results')
+      await newJourney.save()
       return res.status(201).json({
         message: "Journey created succesfully",
       });
-
     } catch (error) {
       console.log(error, 'error at AddJourney');
       res.status(500).json({ message: error.message });
     }
-
   }
-
 }
 
 export default addJourney

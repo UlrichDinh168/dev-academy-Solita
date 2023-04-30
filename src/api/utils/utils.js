@@ -45,3 +45,16 @@ export const fetchStation = async (name, value, model) => {
   const searchResults = await model.find({ [name]: value }).maxTimeMS(30000);
   return searchResults
 }
+
+export const findMaxValue = async (model, criteria) => {
+  try {
+    const resp = await model.findOne().sort({ [criteria]: -1 }).exec()
+    const max = Number(resp['ID'])
+    return max;
+
+  } catch (error) {
+    console.log(error, 'err in api utils');
+    return { max: null, min: null };
+  }
+
+}

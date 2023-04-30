@@ -1,7 +1,7 @@
 const paginatedFetchingJourney = (model) => {
   return async (req, res) => {
     const { data } = req?.body
-    const limit = 50
+    const limit = 10
     let query = {};
     let lastPage, previousPage, nextPage, journeys
 
