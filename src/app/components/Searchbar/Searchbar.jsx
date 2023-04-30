@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import { instance } from '../../constant'
+import axios from 'axios';
 
 import Input from "../shared/Input";
 import SearchResults from "../SearchResult/SearchResult";
 
-const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value }) => {
+const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value, type }) => {
 
   const originRef = useRef(null)
   const destRef = useRef(null)
@@ -15,42 +16,56 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value }
   const [searchResults, setSearchResults] = useState([])
 
   const [input, setInput] = useState('');
+  const apiKey = '5119eaf4-9206-46a6-9c06-2e7ffa98d33c';
 
   const handleChange = async (e) => {
     const { value, name } = e.target;
     setInput(value);
+
     if (value.length >= 2) {
-      const resp = await instance.post('/api/search', {
-        data: value
-      })
-      setSearchResults(resp.data.data)
+      if (type === 'base') {
+        const resp = await instance.post('/api/search', {
+          data: value
+        })
+        setSearchResults(resp.data.data)
+      } else {
+        const resp = await instance.post('/api/search-ext', {
+          data: value
+        })
+        setSearchResults(resp.data.data)
+
+      }
+
     } else {
       setSearchResults([])
     }
   };
   const selectResult = (result, name) => {
+    console.log(result, 'result');
     setFocus(false);
+
     setInput(result?.Name)
     onSetFormValues(result, name)
     inputRef.current.value = result?.Name
   };
 
-  const handleFocus = (params) => {
+  const handleFocus = () => {
     setFocus(true)
   }
 
   const handleBlur = (e) => {
     const { name, value } = e.target
+    if (formSubmit[name] === undefined && type === 'base') setInput('')
+    if (formSubmit['Name'] === '') setInput('')
     setFocus(false);
-    if (formSubmit[name] === undefined) setInput('')
   };
 
   const handleReset = () => {
     setInput('')
     inputRef.current.value = ''
+    inputRef.current.focus()
     setSearchResults([])
   }
-  console.log(input, 'input');
   return (
     <div className='searchBar__container'>
       <Input
@@ -73,6 +88,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value }
           inputName={isOrigin ? "Departure station name" : "Return station name"}
           searchValue={input}
           searchResults={searchResults}
+          type={type}
           selectResult={selectResult}
         />
       ) : null}

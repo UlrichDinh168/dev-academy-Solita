@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 
-export default function ContinuousSlider({ onFilter, min, max, name, label, value }) {
+export default function ContinuousSlider({ onFilter, min, max, name, label, disabled, value }) {
 
   const handleChange = (event, newValue) => {
     onFilter(newValue, name)
@@ -19,6 +19,7 @@ export default function ContinuousSlider({ onFilter, min, max, name, label, valu
         value={(value) || max}
         min={min}
         defaultValue={max}
+        disabled={disabled}
         max={max}
         step={label === 'Duration' ? 10 : 0.1}
         // marks

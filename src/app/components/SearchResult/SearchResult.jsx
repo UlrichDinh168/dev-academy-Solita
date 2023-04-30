@@ -5,18 +5,20 @@ const SearchResults = ({
   inputId,
   searchResults,
   selectResult,
-  inputName
+  inputName,
+  type
 }) => {
   const renderResults = () => {
     if (searchResults?.length === 0) return;
     if (searchValue.length > 2)
-      return searchResults?.map((result) => {
+      return searchResults?.map((result, index) => {
         return (
           <li
             className='address'
             onMouseDown={() => selectResult(result, inputName)}
-            key={result._id}>
-            <span className='address__secondary'>{result?.Name}</span>
+            key={index}>
+            <span className='address__main'>{result?.Name}</span>
+            {type !== 'base' ? <span className='address__secondary'>{result.postalcode} {result.region}</span> : null}
           </li>
         );
       });

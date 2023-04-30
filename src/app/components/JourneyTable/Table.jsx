@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import Modal from '../shared/Modal'
+import PuffLoader from 'react-spinners/PuffLoader'
 
 
 import TableHeader from './TableHeader';
@@ -21,7 +22,7 @@ const DEFAULT_ORDER_BY = 'Duration (m)';
 
 
 export default function EnhancedTable({ rows, headCells, type }) {
-  const DEFAULT_ROWS_PER_PAGE_JOURNEY = 5;
+  const DEFAULT_ROWS_PER_PAGE_JOURNEY = 10;
   const DEFAULT_ROWS_PER_PAGE_STATION = 10;
 
   const DEFAULT_ROWS_PER_PAGE = type === 'journey' ? DEFAULT_ROWS_PER_PAGE_JOURNEY : DEFAULT_ROWS_PER_PAGE_STATION
@@ -106,7 +107,6 @@ export default function EnhancedTable({ rows, headCells, type }) {
     setDetails([])
   }
 
-
   const handleClick = async (rowName) => {
     setOpen(true)
     setLoading(true);
@@ -169,7 +169,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
         >
           <Table
             aria-label="sticky table"
-            sx={{ maxHeight: 400, overflow: 'hidden', minWidth: 600 }}
+            sx={{ maxHeight: 400, overflow: 'hidden', minWidth: 700 }}
           >
             <TableHeader
               order={order}
@@ -195,6 +195,9 @@ export default function EnhancedTable({ rows, headCells, type }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+      <div style={{ height: '2rem' }}> {loading ? <PuffLoader /> : null}</div>
+
       <Modal
         open={open && details.length !== 0}
         data={details}
