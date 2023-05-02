@@ -1,11 +1,9 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { instance } from '../constant'
-import Button from '../components/shared/Button'
 import Table from '../components/JourneyTable/Table'
 import Input from "../components/shared/Input";
 import PuffLoader from 'react-spinners/PuffLoader'
 
-import Searchbar from "../components/Searchbar/Searchbar";
 const headCells = [
   {
     id: 'Name',
@@ -59,13 +57,11 @@ const Station = () => {
 
 
   useEffect(() => {
-    // if (input.length >= 2) {
     const newarr = [...stations]
     const filteredData = newarr.filter((item) =>
       item.Name.toLowerCase().includes(input.toLowerCase())
     );
     setFilteredTable(filteredData || stations)
-    // }
   }, [input])
 
 
@@ -88,7 +84,7 @@ const Station = () => {
   console.log(stations, 'station');
   return (
     <div className="station-container">
-      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Journey lookup</h2>
+      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Station lookup</h2>
 
       <Input label='Station name'
         onChange={handleChange}

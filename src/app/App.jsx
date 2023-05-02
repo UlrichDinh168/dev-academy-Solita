@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/shared/Header'
 import AddJourney from './pages/AddJourney'
 import AddStation from './pages/AddStation'
 import Journey from './pages/Journey'
 import Station from './pages/Station'
+import ResponsiveAppBar from './components/shared/Navbar';
 
 const App = () => {
 
   return (
     <Router>
-      <Header />
+      <ResponsiveAppBar />
       <Routes>
         <Route exact path="/" element={<Journey />} />
         <Route path="/station" element={<Station />} />

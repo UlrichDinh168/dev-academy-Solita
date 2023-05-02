@@ -162,13 +162,13 @@ export default function EnhancedTable({ rows, headCells, type }) {
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
       className='journey-table-container'>
-      <Paper sx={{ width: '100%', mb: 2, overflow: 'hidden' }}>
+      <Paper sx={{ width: '100%', mb: 2, overflow: 'scroll' }}>
         <TableContainer
           sx={{ maxHeight: 400 }}
         >
           <Table
             aria-label="sticky table"
-            sx={{ maxHeight: 400, overflow: 'hidden', minWidth: 700 }}
+            sx={{ maxHeight: 400, overflow: 'scroll', minWidth: 400 }}
           >
             <TableHeader
               order={order}

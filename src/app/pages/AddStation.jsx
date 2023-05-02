@@ -97,7 +97,10 @@ const AddStation = () => {
   console.log(alert, 'alert');
   return (
     <div className='add-station'>
+
       <div className="wrapper-left">
+        <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Add Station</h2>
+
         <div className="search-area">
           <Searchbar
             placeholder='Dept. station name'
@@ -137,7 +140,6 @@ const AddStation = () => {
       </div>
       <div className="map-container">
         <MapContainer
-          className='station-leaflet'
 
           center={center} zoom={11} scrollWheelZoom={true} >
           <TileLayer

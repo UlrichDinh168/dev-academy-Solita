@@ -18,7 +18,11 @@ const style = {
   boxShadow: 24,
   p: 4,
   padding: '0 4rem',
+  width: '700px',
   maxHeight: 600, overflow: 'scroll',
+  '@media (max-width: 780px)': {
+    width: '400px'
+  }
 };
 
 export default function BasicModal({ open, data, handleClose }) {
@@ -51,8 +55,12 @@ export default function BasicModal({ open, data, handleClose }) {
       >
         <Box sx={style}
         >
-          <ArrowBackIosIcon onClick={handlePreviousClick} sx={{ cursor: 'pointer', "&:hover": { opacity: "0.5" }, position: 'absolute', top: '50%', left: '1.5rem' }} />
-          <ArrowForwardIosIcon onClick={handleNextClick} sx={{ cursor: 'pointer', "&:hover": { opacity: "0.5" }, position: 'absolute', top: '50%', right: '1.5rem' }} />
+          <ArrowBackIosIcon
+            onClick={handlePreviousClick}
+            sx={{ cursor: 'pointer', "&:hover": { opacity: "0.5" }, position: 'absolute', top: '50%', left: '1.5rem' }} />
+          <ArrowForwardIosIcon
+            onClick={handleNextClick}
+            sx={{ cursor: 'pointer', "&:hover": { opacity: "0.5" }, position: 'absolute', top: '50%', right: '1.5rem' }} />
 
           {views[viewIndex]}
 

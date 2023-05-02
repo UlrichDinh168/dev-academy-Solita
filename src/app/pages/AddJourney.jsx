@@ -153,7 +153,11 @@ const AddJourney = () => {
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
   return (
     <div className='add-journey'>
+
+
       <div className="wrapper-left">
+        <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Add Journey</h2>
+
         <div className="search-area">
           <Searchbar
             placeholder='Dept. station name'
@@ -193,7 +197,6 @@ const AddJourney = () => {
       <div className="map-container">
 
         <MapContainer
-          className='station-leaflet'
           center={center}
           zoom={11}
           scrollWheelZoom={true}>
