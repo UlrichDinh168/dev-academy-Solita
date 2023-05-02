@@ -7,6 +7,7 @@ import { findLargestAndSmallest } from '../components/util'
 import { instance } from '../constant'
 import { transformResultsArray } from "../components/util";
 import PuffLoader from 'react-spinners/PuffLoader'
+import Notification from '../components/shared/Notification'
 
 const headCells = [
   {
@@ -39,6 +40,8 @@ const Journey = () => {
   const [journeys, setJourneys] = useState([])
   const [isLoading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
+  const [alert, setAlert] = useState(false)
+
   const [sliderMinMaxValues, setSliderMinMaxValues] = useState({
     distantMax: 0, distantMin: 0, durationMax: 0, durationMin: 0
   })
@@ -67,7 +70,7 @@ const Journey = () => {
     const newResult = journeys?.journeys?.filter(item => item['Covered distance (m)'] <= sliderCurrentValue['Covered distance (m)'] || item['Duration (sec)'] <= sliderCurrentValue['Duration (sec)'])
 
     setFilteredTable(newResult || journeys?.journeys)
-  }, [sliderCurrentValue,])
+  }, [sliderCurrentValue])
 
 
   const onSetFormValues = useCallback(
@@ -79,20 +82,30 @@ const Journey = () => {
   )
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true)
-    const resp = await instance.post('/api/journey', {
-      data: { ...formSubmit, page }
-    })
-    console.log(resp, 'resp');
-    const convertedResp = transformResultsArray(resp?.data.data.journeys)
+    try {
+      e.preventDefault();
+      setLoading(true)
+      const resp = await instance.post('/api/journey', {
+        data: { ...formSubmit, page }
+      })
+      console.log(resp, 'resp');
 
-    setJourneys({ ...resp?.data.data, journeys: convertedResp })
-    setLoading(false);
+      const convertedResp = transformResultsArray(resp?.data.data.journeys)
+
+      setJourneys({ ...resp?.data.data, journeys: convertedResp })
+    } catch (error) {
+      console.log(error, 'error');
+      setJourneys([])
+      setFilteredTable([])
+      setAlert({ isOpen: true, severity: 'error', message: error?.response.data.message })
+
+    } finally {
+      setLoading(false);
+    }
   }
 
 
-  const onFetchNextBatch = async (params) => {
+  const onFetchNextBatch = async () => {
     setPage(prev => prev + 1)
     setLoading(true)
     const resp = await instance.post('/api/journey', {
@@ -118,14 +131,14 @@ const Journey = () => {
   return (
     <div className="search-area__wrapper">
 
-      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Helsinki Bike Planner</h2>
+      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Journey lookup</h2>
       <div className="search-area__content">
 
         <div className="search-area__content-left">
           <div className="search-area">
-            <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' />
-            <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' />
-            <Button text='Search' disabled={isDisabled} onClick={onSubmit} />
+            <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Departure' />
+            <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Destination' />
+            <Button text='Search' disabled={isDisabled || isLoading} onClick={onSubmit} />
           </div>
           <div className="slider">
             {journeys.length !== 0 ? <>
@@ -170,6 +183,7 @@ const Journey = () => {
         </div>
 
       </div>
+      <Notification alert={alert} />
 
     </div>
   )

@@ -31,6 +31,12 @@ const headCells = [
     disablePadding: false,
     label: 'Kaupunki',
   },
+  {
+    id: 'Kapasiteet',
+    numeric: true,
+    disablePadding: false,
+    label: 'Capacity',
+  },
 ]
 
 const Station = () => {
@@ -44,53 +50,53 @@ const Station = () => {
   useEffect(() => {
     const fetch = async () => {
       const resp = await instance.get('/api/station')
-      setStations(resp?.data.data)
+      setStations(resp?.data?.data)
+      setFilteredTable(resp?.data?.data)
+
     }
     fetch()
   }, [])
 
 
   useEffect(() => {
-    setFilteredTable()
+    // if (input.length >= 2) {
+    const newarr = [...stations]
+    const filteredData = newarr.filter((item) =>
+      item.Name.toLowerCase().includes(input.toLowerCase())
+    );
+    setFilteredTable(filteredData || stations)
+    // }
   }, [input])
 
 
   const handleChange = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const { value, name } = e.target;
-    setInput(value);
-    if (value.length >= 2) {
-      const resp = await instance.post('/api/search', {
-        data: value
-      })
-      setStations(prev => ({ ...prev, stations: resp.data.data }))
+    try {
+      e.preventDefault();
+      setLoading(true);
+      const { value, name } = e.target;
+      setInput(value);
+
+    } catch (error) {
+      console.log(error, 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
-
-  const onFetchNextBatch = async (params) => {
-    setPage(prev => prev + 1)
-    setLoading(true)
-    const resp = await instance.post('/api/station', { data: { page: page + 1 } })
-
-    const newResults = [...stations.stations, ...resp?.data.data.stations]
-
-    setStations(prev => ({ ...prev, stations: newResults }))
-    setLoading(false);
-  }
+  console.log(input, 'input');
 
   console.log(stations, 'station');
-
   return (
-    <div>
-      {/* <Input onChange={handleChange}
+    <div className="station-container">
+      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Journey lookup</h2>
 
+      <Input label='Station name'
+        onChange={handleChange}
+        placeholder='Type to search ...'
         value={input}
-      /> */}
-      <Table rows={stations?.stations} headCells={headCells} type='station' />
-      <Button onClick={onFetchNextBatch} text='Load More' disabled={page === stations.lastPage} />
-      {stations.length !== 0 ? <div className="search-area__last">Page {page} of {stations.lastPage}</div> : null}
+      />
+      <Table rows={filteredTable} headCells={headCells} type='station' />
+
       {isLoading ? <PuffLoader /> : null}
 
     </div>

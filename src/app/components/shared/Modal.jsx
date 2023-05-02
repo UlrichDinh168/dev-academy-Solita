@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Map from './Map';
-
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -16,10 +17,12 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  padding: '0 4rem',
   maxHeight: 600, overflow: 'scroll',
 };
 
-export default function BasicModal({ open, data, handleClose, loading }) {
+export default function BasicModal({ open, data, handleClose }) {
+
   const [viewIndex, setViewIndex] = React.useState(0);
   const handlePreviousClick = () => {
     setViewIndex((prevIndex) => prevIndex === 0 ? views.length - 1 : prevIndex - 1);
@@ -34,25 +37,25 @@ export default function BasicModal({ open, data, handleClose, loading }) {
     <View3 data={data} />,
   ];
 
+  const _handleClose = () => {
+    handleClose()
+    setViewIndex(0)
+  }
+  console.log(viewIndex, 'viewindex');
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        onClose={_handleClose}
       >
-        <Box sx={style}>
-          <button onClick={handlePreviousClick}>Toggle View</button>
-          <button onClick={handleNextClick}>Toggle View</button>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}> */}
+        <Box sx={style}
+        >
+          <ArrowBackIosIcon onClick={handlePreviousClick} sx={{ cursor: 'pointer', "&:hover": { opacity: "0.5" }, position: 'absolute', top: '50%', left: '1.5rem' }} />
+          <ArrowForwardIosIcon onClick={handleNextClick} sx={{ cursor: 'pointer', "&:hover": { opacity: "0.5" }, position: 'absolute', top: '50%', right: '1.5rem' }} />
+
           {views[viewIndex]}
 
-          {/* </Typography> */}
         </Box>
       </Modal>
     </div>
@@ -62,41 +65,59 @@ export default function BasicModal({ open, data, handleClose, loading }) {
 function View1({ data }) {
   console.log(data, 'data');
   const { numStationsAtDest, numStationsAtStart, averageDistanceAtDest, averageDistanceAtStart, currentX, currentY, Osoite, Name } = data
+  const title = 'Basic info'
 
   return (
     <Box>
-      <TableContainer>
-        <Table responsive>
-          <TableHead>
-            <TableRow>
-              <TableCell>numStationsAtStart</TableCell>
-              <TableCell>numStationsAtDest</TableCell>
-              <TableCell>averageDistanceAtStart</TableCell>
-              <TableCell>averageDistanceAtDest</TableCell>
-            </TableRow>
-          </TableHead>
+      <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ textAlign: 'center', margin: '1rem 0' }}>
+        {title}
+      </Typography>
+      <TableContainer sx={{ textAlign: 'center', margin: '1rem 0' }}>
+        <Table responsive='true'>
           <TableBody>
-            <TableRow >
+
+            <TableRow>
+              <TableCell>Total number of journeys starting from the station</TableCell>
               <TableCell>{numStationsAtStart}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell>Total number of journeys ending at the station</TableCell>
               <TableCell>{numStationsAtDest}</TableCell>
+
+            </TableRow>
+            <TableRow>
+              <TableCell>The average distance of a journey starting from the station</TableCell>
               <TableCell>{parseFloat(averageDistanceAtStart / 1000).toFixed(2)} km</TableCell>
+
+            </TableRow>
+            <TableRow>
+
+              <TableCell>The average distance of a journey ending at the station</TableCell>
               <TableCell>{parseFloat(averageDistanceAtDest / 1000).toFixed(2)} km</TableCell>
+
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
 
-      <Map  {...{ Osoite, Name, currentX, currentY }} />
+      <div style={{ height: '60vh' }}>
+        <Map  {...{ Osoite, Name, currentX, currentY }} />
+      </div>
     </Box>
   )
 }
 
 function View2({ data }) {
   const { Name, Osoite, currentX, currentY, returnTop5Start } = data
+  const title = 'Top 5 most popular return stations for journeys ending at the station'
+
   return (
     <Box>
-
-      <TableContainer>
+      <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ textAlign: 'center', margin: '2rem 0' }}>
+        {title}
+      </Typography>
+      <TableContainer sx={{ textAlign: 'center', margin: '1rem 0' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -115,18 +136,23 @@ function View2({ data }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Map data={returnTop5Start} {...{ Name, Osoite, currentX, currentY }} />
+      <div style={{ height: '60vh' }}>
 
+        <Map data={returnTop5Start} {...{ Name, Osoite, currentX, currentY }} />
+      </div>
     </Box>
   )
 }
 
 function View3({ data }) {
   const { Name, Osoite, currentX, currentY, returnTop5End } = data
+  const title = 'Top 5 most popular return stations for journeys ending at the station'
   return (
     <Box>
-
-      <TableContainer>
+      <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ textAlign: 'center', margin: '2rem 0' }}>
+        {title}
+      </Typography>
+      <TableContainer sx={{ textAlign: 'center', margin: '1rem 0' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -145,8 +171,9 @@ function View3({ data }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Map data={returnTop5End} {...{ Name, Osoite, currentX, currentY }} />
-
+      <div style={{ height: '60vh' }}>
+        <Map data={returnTop5End} {...{ Name, Osoite, currentX, currentY }} title={title} />
+      </div>
     </Box>
   )
 }

@@ -108,11 +108,11 @@ const AddJourney = () => {
       setFormSubmit(prevState => ({ ...prevState, [name]: result?.Nimi }))
 
       if (name === 'Departure station name') {
-        setPosition({ lat: result?.coordinates[1], lng: result?.coordinates[0] })
+        setPosition({ lat: result?.y, lng: result?.x })
         setFormSubmit(prev => ({ ...prev, ['Departure station id']: padNum(result?.ID) }))
 
       } else {
-        setPosition1({ lat: result?.coordinates[1], lng: result?.coordinates[0] })
+        setPosition1({ lat: result?.y, lng: result?.x })
         setFormSubmit(prev => ({ ...prev, ['Return station id']: padNum(result?.ID) }))
       }
     }
@@ -159,10 +159,11 @@ const AddJourney = () => {
             placeholder='Dept. station name'
             isOrigin={true}
             onSetFormValues={onSetFormValues}
+            type='base'
             formSubmit={formSubmit} />
-
           <Searchbar
             placeholder='Dest. station name'
+            type='base'
             isOrigin={false}
             onSetFormValues={onSetFormValues}
             formSubmit={formSubmit} />
