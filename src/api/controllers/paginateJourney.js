@@ -3,7 +3,7 @@ const paginatedFetchingJourney = (model) => {
     const { data } = req?.body
     const limit = 10
     let query = {};
-    let lastPage, previousPage, nextPage, journeys
+    let lastPage, previousPage, nextPage
 
     let depName = data['Departure station name'];
     let retName = data['Return station name']
@@ -43,9 +43,13 @@ const paginatedFetchingJourney = (model) => {
 
     try {
       // skip startIndex to begin a new fetch 
-      journeys = await model.find(query).limit(limit).skip(startIndex).exec();
+      const journeys = await model.find(query).limit(limit).skip(startIndex).exec();
       const returnDataset = {
         lastPage, previousPage, nextPage, journeys
+      }
+
+      if (journeys.length === 0) {
+        return res.status(404).json({ message: 'There was no journey for these stations', data: [] });
       }
 
       return res.status(201).json({
