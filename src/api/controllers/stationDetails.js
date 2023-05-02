@@ -36,8 +36,6 @@ const fetchStationDetails = (model) => {
 
 
     // By counting times each station appear => top 5 in total start and return stations
-    // const occurrencesAtStart = countOccurrences(stationsAtStart, 'Return station name');
-    // const occurrencesAtEnd = countOccurrences(stationsAtEnd, 'Departure station name');
     const occurrencesAtStart = countOccurrences(stationsAtStart, 'Return station id');
     const occurrencesAtEnd = countOccurrences(stationsAtEnd, 'Departure station id');
 
@@ -45,7 +43,6 @@ const fetchStationDetails = (model) => {
     const top5AtStart = findTopFiveStations(occurrencesAtStart)
     const top5AtEnd = findTopFiveStations(occurrencesAtEnd)
 
-    let updatedResponse
 
     const fetchAllData = async (myArray) => {
       let array = []
@@ -56,6 +53,7 @@ const fetchStationDetails = (model) => {
         newItem = {
           name: data[0]?.Name,
           occurrences: iterator[1],
+          capacity: data[0].Kapasiteet,
           address: data[0]?.Osoite,
           x: data[0]?.x,
           y: data[0]?.y,
