@@ -5,7 +5,7 @@ import axios from 'axios';
 import Input from "../shared/Input";
 import SearchResults from "../SearchResult/SearchResult";
 
-const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value, type }) => {
+const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
   const originRef = useRef(null)
   const destRef = useRef(null)
@@ -73,9 +73,9 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, placeholder, value, 
         onFocus={handleFocus}
         onBlur={handleBlur}
         type='text'
-        // placeholder={placeholder}
         id='0'
-        label={placeholder}
+        placeholder='Type to search ...'
+        label={label}
         value={input}
         inputRef={inputRef}
         name={isOrigin ? "Departure station name" : "Return station name"}

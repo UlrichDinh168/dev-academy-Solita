@@ -116,8 +116,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
       })
       const { x: currentX, y: currentY, Name, Osoite } = rowName
 
-      let updatedResponse
-      updatedResponse = { ...response?.data.data, currentX, currentY, Name, Osoite }
+      let updatedResponse = { ...response?.data.data, currentX, currentY, Name, Osoite }
 
       setDetails(updatedResponse)
     }
@@ -201,7 +200,6 @@ export default function EnhancedTable({ rows, headCells, type }) {
       <Modal
         open={open && details.length !== 0}
         data={details}
-        loading={loading}
         handleClose={handleClose} />
     </Box>
   );

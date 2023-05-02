@@ -9,7 +9,7 @@ const StationTableRow = ({ row, labelId, handleClick, type }) => {
       hover
       tabIndex={-1}
       onClick={() => handleClick(row)}
-      sx={{ cursor: `${type !== 'journey' ? 'pointer' : 'auto'}` }}
+      sx={{ cursor: `${type !== 'journey' ? 'pointer' : 'none'}` }}
     >
       <TableCell
         component="th"
@@ -25,6 +25,9 @@ const StationTableRow = ({ row, labelId, handleClick, type }) => {
       </TableCell>
       <TableCell
         align="right">{row['Kaupunki']}
+      </TableCell>
+      <TableCell
+        align="right">{row['Kapasiteet']}
       </TableCell>
     </TableRow>
   )
