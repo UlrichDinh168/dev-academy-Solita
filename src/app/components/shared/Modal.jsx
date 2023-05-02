@@ -18,7 +18,6 @@ const style = {
   boxShadow: 24,
   p: 4,
   padding: '0 4rem',
-  width: '700px',
   maxHeight: 600, overflow: 'scroll',
   '@media (max-width: 780px)': {
     width: '400px'

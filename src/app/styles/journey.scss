@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: scroll;
     height: 100%;
     margin: 0 2rem 1rem 2rem;
   }
@@ -44,7 +45,7 @@
 }
 
 .slider {
-  margin: 0.5rem 2rem 0 0;
+  // margin: 0.5rem 2rem 0 0;
 }
 
 .searchBar__container {
@@ -94,4 +95,30 @@
   font-size: 5rem;
   opacity: 0.05;
   font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .search-area {
+    margin-bottom: 0rem;
+    &__content {
+      display: flex;
+      flex-direction: column;
+      &-left,
+      &-right {
+        width: 100%;
+      }
+    }
+    .slider {
+      display: flex;
+      align-items: center !important;
+      justify-content: center;
+      flex-direction: column;
+    }
+    &__content-right {
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
 }

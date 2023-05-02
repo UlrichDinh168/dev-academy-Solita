@@ -22,3 +22,23 @@
     flex: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .add-journey {
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+    .wrapper-left {
+      width: 100%;
+    }
+    .map-container {
+      height: 100vh;
+      flex: auto;
+      margin-top: 1rem;
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
