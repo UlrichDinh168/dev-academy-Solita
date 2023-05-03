@@ -1,8 +1,8 @@
-import { digitransitAPI } from '../../app/constant.js'
+const { digitransitAPI } = require('../constant.js');
 
 const stationSearchExtented = async (req, res) => {
   try {
-    let value = req?.body.data
+    let value = req?.body?.data
     if (value?.length > 2) {
 
       const defaultData = await digitransitAPI.get(
@@ -40,4 +40,4 @@ const stationSearchExtented = async (req, res) => {
   }
 };
 
-export default stationSearchExtented
+module.exports = stationSearchExtented;

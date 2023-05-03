@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const journeySchema = mongoose.Schema({
   Departure: {
@@ -36,4 +36,4 @@ const journeySchema = mongoose.Schema({
 })
 
 const journey = mongoose.model("journey", journeySchema);
-export default journey
+module.exports = journey

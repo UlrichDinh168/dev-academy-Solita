@@ -1,7 +1,7 @@
-import station from '../../lib/models/station.model.js'
-import { fetchStation } from '../utils/utils.js'
+const station = require('../../lib/models/station.model');
+const { fetchStation } = require('../utils/utils.js');
 
-export default async function stationSearch(req, res) {
+const stationSearch = async (req, res) => {
   try {
     let value = req?.body.data
     if (value?.length > 2) {
@@ -17,3 +17,5 @@ export default async function stationSearch(req, res) {
   }
 
 }
+
+module.exports = stationSearch;

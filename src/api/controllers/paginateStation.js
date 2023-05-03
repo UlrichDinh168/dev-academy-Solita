@@ -14,4 +14,4 @@ const paginatedFetchingStation = (model) => {
     }
   };
 };
-export default paginatedFetchingStation
+module.exports = paginatedFetchingStation;

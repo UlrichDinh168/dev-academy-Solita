@@ -1,5 +1,6 @@
-import { countOccurrences, fetchStation, findTopFiveStations } from "../utils/utils.js";
-import station from '../../lib/models/station.model.js'
+const { countOccurrences, findTopFiveStations, fetchStation } = require('../utils/utils.js');
+const station = require('../../lib/models/station.model.js');
+
 const fetchStationDetails = (model) => {
 
   return async (req, res) => {
@@ -91,5 +92,4 @@ const fetchStationDetails = (model) => {
   }
 
 }
-
-export default fetchStationDetails
+module.exports = fetchStationDetails;

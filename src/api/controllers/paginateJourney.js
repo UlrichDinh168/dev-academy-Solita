@@ -62,4 +62,4 @@ const paginatedFetchingJourney = (model) => {
     }
   };
 };
-export default paginatedFetchingJourney
+module.exports = paginatedFetchingJourney;
