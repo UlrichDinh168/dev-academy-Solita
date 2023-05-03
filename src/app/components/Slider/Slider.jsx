@@ -10,14 +10,18 @@ export default function ContinuousSlider({ onFilter, min, max, name, label, disa
   };
 
   return (
-    <Box sx={{ width: 200 }} className='slider-container'>
+    <Box
+      sx={{ width: 200, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+
+      className='slider-container'>
       <Typography id="input-slider" gutterBottom sx={{ color: 'black' }}>
         {label}
       </Typography>
       <Slider
-        sx={{ color: 'grey' }}
+        sx={{ color: 'grey', padding: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         value={(value) || max}
         min={min}
+        size='small'
         defaultValue={max}
         disabled={disabled}
         max={max}

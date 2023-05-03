@@ -16,6 +16,7 @@ import StationTableRow from './StationTableRow';
 
 import { getComparator, stableSort } from '../util'
 import { instance } from '../../constant';
+import { Grid } from '@mui/material';
 
 const DEFAULT_ORDER = 'asc';
 const DEFAULT_ORDER_BY = 'Duration (m)';
@@ -162,13 +163,15 @@ export default function EnhancedTable({ rows, headCells, type }) {
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
       className='journey-table-container'>
-      <Paper sx={{ width: '100%', mb: 2, overflow: 'scroll' }}>
+      <Paper sx={{ width: '100%', mb: 2, }}>
+        {/* <Grid xs={12}> */}
+
         <TableContainer
           sx={{ maxHeight: 400 }}
         >
           <Table
             aria-label="sticky table"
-            sx={{ maxHeight: 400, overflow: 'scroll', minWidth: 400 }}
+            sx={{ maxHeight: 400, minWidth: 200 }}
           >
             <TableHeader
               order={order}
@@ -201,7 +204,9 @@ export default function EnhancedTable({ rows, headCells, type }) {
         open={open && details.length !== 0}
         data={details}
         handleClose={handleClose} />
+      {/* </Grid > */}
     </Box>
+
   );
 }
 

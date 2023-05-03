@@ -131,7 +131,7 @@ const Journey = () => {
   return (
     <div className="search-area__wrapper">
 
-      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Journey lookup</h2>
+      <h2 >Journey lookup</h2>
       <div className="search-area__content">
 
         <div className="search-area__content-left">
@@ -141,6 +141,7 @@ const Journey = () => {
             <Button text='Search' disabled={isDisabled || isLoading} onClick={onSubmit} />
           </div>
           <div className="slider">
+
             {journeys.length !== 0 ? <>
               <h5>Change both to start filtering</h5>
 
@@ -162,22 +163,27 @@ const Journey = () => {
                 disabled={isLoading}
                 label='Distance (km)'
               /></> : null}
+            <div className="search-area__end">
+              {journeys.length !== 0 ? <div className="load-more" style={{ maxWidth: '15rem', width: '10rem', textAlign: 'center' }}>
+                {
 
+                }
+                <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage || isLoading} />
+                {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
+
+              </div> : null}
+
+            </div>
           </div>
         </div>
         <div className="search-area__content-right">
 
           {isLoading ? <PuffLoader /> :
             journeys.length !== 0 ?
-              <div className="">
-                <Table rows={filteredTable} headCells={headCells} type='journey' />
-                <div className="search-area__end">
-                  <div className="load-more" style={{ maxWidth: '15rem', width: '10rem' }}>
-                    <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage} />
-                  </div>
-                  {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
-                </div>
-              </div>
+              // <div className="">
+              <Table rows={filteredTable} headCells={headCells} type='journey' />
+
+              // </div>
 
               : <p className="ntts">No data</p>}
         </div>
