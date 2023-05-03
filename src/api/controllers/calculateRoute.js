@@ -1,30 +1,54 @@
-const { graphhopperAPI, fetchKeys } = require('../constant.js');
-
-const apiKey = '5119eaf4-9206-46a6-9c06-2e7ffa98d33c';
+const axios = require('axios');
 
 const calculateRoute = async (req, res) => {
+
   try {
+
     const { departure, destination } = req?.body?.data;
-    console.log(departure, destination, 'req');
 
-    const graphhopper_api_key = await fetchKeys()
-    console.log(graphhopper_api_key, 'graphhopper_api_key');
+    const query = createQuery(departure, destination)
 
-    const response = await graphhopperAPI.get(`/route?point=${departure[0]},${departure[1]}&point=${destination[0]},${destination[1]}&vehicle=bike&points_encoded=false&locale=en-US&instructions=true&elevation=true&key=${apiKey}`);
+    const instance = await axios({
+      method: 'post',
+      url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+      headers: {
+        'Content-Type': 'application/graphql',
+        'digitransit-subscription-key': '486aab41f80e491e9068ec79e3a3f30d',
+      },
+      data: query
+    });
 
-    const { time, distance, instructions } = response?.data?.paths[0]
-    console.log(time, distance, 'sss');
 
     return res.status(200).json({
       message: "Station name fetched succesfully",
-      data: { time, distance, instructions },
+      data: instance?.data?.data?.plan?.itineraries[0]?.legs,
     });
 
   } catch (error) {
-    console.log("err", error);
+    console.log(error?.data?.errors, 'error');
+
     return res.status(400).json({ message: "Could not fetch journey" });
   }
 
 }
+
+const createQuery = (departure, destination) =>
+  `
+  {
+    plan(
+      from: {lat: ${departure[0]}, lon: ${departure[1]}}
+      to: {lat: ${destination[0]}, lon: ${destination[1]}}
+      numItineraries: 3
+      transportModes: [{mode: BICYCLE}]
+    ) {
+      itineraries {
+        legs {
+          duration
+          distance
+        }
+      }
+    }
+  }
+  `
 
 module.exports = calculateRoute 

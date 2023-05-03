@@ -136,10 +136,10 @@ function ResponsiveAppBar() {
             }}>
             {HeaderList.map((page, index) => (
               <Button
-                key={page.id}
+                key={index}
                 href={page.path}
                 onClick={onClickItem}
-                sx={{ my: 2, color: 'white', display: 'block', textDecoration: ` ${selectedNavItem === index ? 'underline' : 'none'}` }}
+                sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page.name}
               </Button>
