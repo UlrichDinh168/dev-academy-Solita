@@ -137,38 +137,44 @@ const Journey = () => {
         <div className="search-area__content-left">
           <div className="search-area">
             <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Departure' />
+
             <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Destination' />
+
             <Button text='Search' disabled={isDisabled || isLoading} onClick={onSubmit} />
           </div>
-          <div className="slider">
-
+          <div className="slider-container">
             {journeys.length !== 0 ? <>
               <h5>Change both to start filtering</h5>
+              <div className="slider">
 
-              <Slider
-                name='Duration (sec)'
-                onFilter={handleSliderChange}
-                min={sliderMinMaxValues?.durationMin}
-                max={sliderMinMaxValues?.durationMax}
-                value={sliderCurrentValue['Duration (sec)']}
-                disabled={isLoading}
-                label='Duration (min)'
-              />
-              <Slider
-                name='Covered distance (m)'
-                onFilter={handleSliderChange}
-                min={sliderMinMaxValues?.distantMin}
-                value={sliderCurrentValue['Covered distance (m)']}
-                max={sliderMinMaxValues?.distantMax}
-                disabled={isLoading}
-                label='Distance (km)'
-              /></> : null}
+                <Slider
+                  name='Duration (sec)'
+                  onFilter={handleSliderChange}
+                  min={sliderMinMaxValues?.durationMin}
+                  max={sliderMinMaxValues?.durationMax}
+                  value={sliderCurrentValue['Duration (sec)']}
+                  disabled={isLoading}
+                  label='Duration (min)'
+                />
+
+                <Slider
+                  name='Covered distance (m)'
+                  onFilter={handleSliderChange}
+                  min={sliderMinMaxValues?.distantMin}
+                  value={sliderCurrentValue['Covered distance (m)']}
+                  max={sliderMinMaxValues?.distantMax}
+                  disabled={isLoading}
+                  label='Distance (km)'
+                />
+              </div>
+
+            </> : null}
+
             <div className="search-area__end">
               {journeys.length !== 0 ? <div className="load-more" style={{ maxWidth: '15rem', width: '10rem', textAlign: 'center' }}>
-                {
 
-                }
                 <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage || isLoading} />
+
                 {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
 
               </div> : null}

@@ -198,7 +198,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
         />
       </Paper>
 
-      <div style={{ height: '2rem' }}> {loading ? <PuffLoader /> : null}</div>
+      <div className="loading">{loading ? <PuffLoader /> : null}</div>
 
       <Modal
         open={open && details.length !== 0}

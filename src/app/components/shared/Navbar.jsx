@@ -134,7 +134,7 @@ function ResponsiveAppBar() {
           <Box
             sx={{
               flexGrow: 1, display: { xs: 'none', md: 'flex' }, height: '100%',
-              padding: '4px', marginLeft: '16rem'
+              padding: '4px', marginLeft: '10rem'
             }}>
             {HeaderList.map((page, index) => (
               <Button

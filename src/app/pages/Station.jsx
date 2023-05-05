@@ -93,7 +93,6 @@ const Station = () => {
       />
       <Table rows={filteredTable} headCells={headCells} type='station' />
 
-      {isLoading ? <PuffLoader /> : null}
 
     </div>
   )

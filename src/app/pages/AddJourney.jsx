@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { instance } from '../constant';
 import PuffLoader from 'react-spinners/PuffLoader'
 import Notification from '../components/shared/Notification'
+import { padNum } from '../components/util';
 
 const greenIcon = new L.Icon({
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -104,10 +105,7 @@ const AddJourney = () => {
   }, [position.lat, position.lng, position1.lat, position1.lng]);
 
 
-  const padNum = (num) => {
-    let str = num?.toString().padStart(3, '0');
-    return (str)
-  }
+
 
 
   const onSetFormValues =
@@ -117,11 +115,11 @@ const AddJourney = () => {
 
       if (name === 'Departure station name') {
         setPosition({ lat: result?.y, lng: result?.x })
-        setFormSubmit(prev => ({ ...prev, ['Departure station id']: padNum(result?.ID) }))
+        setFormSubmit(prev => ({ ...prev, ['Departure station id']: padNum(result?.ID, 3) }))
 
       } else {
         setPosition1({ lat: result?.y, lng: result?.x })
-        setFormSubmit(prev => ({ ...prev, ['Return station id']: padNum(result?.ID) }))
+        setFormSubmit(prev => ({ ...prev, ['Return station id']: padNum(result?.ID, 3) }))
       }
     }
 

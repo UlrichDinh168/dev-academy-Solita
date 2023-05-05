@@ -52,3 +52,40 @@ export function transformResultsArray(results) {
   return transformedResults;
 }
 
+
+export const padNum = (num, digit) => {
+  let str = num?.toString().padStart(digit, '0');
+  return (str)
+}
+
+export const convertMinutesToHours = (seconds) => {
+  // const hours = Math.floor(seconds / 3600);
+  // const remainingMinutes = seconds % 60;
+
+  // if (hours === 0) {
+  //   return `${remainingMinutes} minutes`;
+  // } else if (remainingMinutes === 0) {
+  //   return `${hours} hours`;
+  // } else {
+  //   return `${hours} hours and ${remainingMinutes} minutes`;
+  // }
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+
+  let result = '';
+  if (days > 0) {
+    result += `${days} day${days === 1 ? '' : 's'} `;
+  }
+  if (hours > 0) {
+    result += `${hours} hour${hours === 1 ? '' : 's'} `;
+  }
+  if (minutes > 0) {
+    result += `${minutes} minute${minutes === 1 ? '' : 's'}`;
+  }
+  if (result === '') {
+    result = `${seconds} second${seconds === 1 ? '' : 's'}`;
+  }
+
+  return result;
+}
