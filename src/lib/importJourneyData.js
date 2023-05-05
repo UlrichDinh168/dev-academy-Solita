@@ -1,14 +1,15 @@
-import dotenv from 'dotenv';
-import fastcsv from 'fast-csv';
-import path from 'path';
-import express from 'express';
-import fs from 'fs';
-import mongoose from 'mongoose';
-import { fileURLToPath } from 'url';
-import journey from './models/journey.model.js';
-import { color } from 'console-log-colors';
-
+const fs = require('fs');
+const express = require('express');
+const fastcsv = require('fast-csv');
+const path = require('path');
+const mongoose = require('mongoose');
+const { fileURLToPath } = require('url');
+const { color } = require('console-log-colors');
+const dotenv = require('dotenv');
 dotenv.config();
+
+const journey = require('./models/journey.model.js');
+
 
 // Initialize server for importing 
 const app = express();
@@ -20,8 +21,8 @@ const server = app.listen(8000, () => {
 
 // ======================== =============================
 const mongoString = process.env.DATABASE_URL
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 const directoryPath = path.join(__dirname, './csv');
 
 mongoose.connect(mongoString);
@@ -44,7 +45,12 @@ let totalRemoveCount = 0;
  * It also logs information about the import process to the console, 
  * including the number of rows imported and the number of invalid rows discarded. 
  */
-database.on('connected', () => {
+database.on('connected', async () => {
+  await journey.createIndexes([
+    { key: { "Covered distance (m)": 1 } },
+    { key: { "Duration (sec)": 1 } }
+  ]);
+
   console.log(color.yellowBright("\nJourney database connected success!"));
   console.log(color.green("\nAdding to database ... \n"));
   console.time('Importing data to MongoDB took');
@@ -104,4 +110,4 @@ database.on('connected', () => {
 })
 
 
-export default server;
+module.exports = server;

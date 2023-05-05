@@ -1,14 +1,14 @@
-import dotenv from 'dotenv';
-import fastcsv from 'fast-csv';
-import express from 'express';
-import fs from 'fs';
-import mongoose from 'mongoose';
-import path from 'path';
-import station from './models/station.model.js';
-import { fileURLToPath } from 'url';
-import { color } from 'console-log-colors';
-
+const fs = require('fs');
+const express = require('express');
+const fastcsv = require('fast-csv');
+const mongoose = require('mongoose');
+const path = require('path');
+const { fileURLToPath } = require('url');
+const { color } = require('console-log-colors');
+const dotenv = require('dotenv');
 dotenv.config();
+
+const station = require('./models/station.model.js');
 
 // Initialize server for importing 
 const app = express();
@@ -28,8 +28,8 @@ database.on('error', (error) => {
   console.log(error)
 })
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const directoryPath = path.join(__dirname, './csv');
 const files = fs.readdirSync(directoryPath).filter(file => file.includes('deduplicated') && !file.includes('2021'));
@@ -97,4 +97,4 @@ database.on('connected', () => {
   })
 });
 
-export default server;
+module.exports = server;
