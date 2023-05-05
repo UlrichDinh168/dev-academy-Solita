@@ -1,7 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import Searchbar from '../components/Searchbar/Searchbar'
-import axios from 'axios';
 import Button from '../components/shared/Button'
 import Input from '../components/shared/Input'
 import DateTimePicker from '../components/shared/DateTimePicker'
@@ -10,30 +9,27 @@ import { instance } from '../constant';
 import PuffLoader from 'react-spinners/PuffLoader'
 import Notification from '../components/shared/Notification'
 
+const greenIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+const redIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+const center = {
+  lat: 60.170,
+  lng: 24.939
+}
+
 const AddJourney = () => {
   const now = new Date()
 
   const ISOStringTime = now.toISOString()
-  const center = {
-    lat: 60.170,
-    lng: 24.939
-  }
-
-
-  const greenIcon = new L.Icon({
-    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-  });
-  const redIcon = new L.Icon({
-    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-  });
-  const apiKey = '5119eaf4-9206-46a6-9c06-2e7ffa98d33c';
-
 
   const [position, setPosition] = useState(center)
   const [position1, setPosition1] = useState(center)
@@ -73,25 +69,37 @@ const AddJourney = () => {
     },
   }), [])
 
-  const calculateRoute = async () => {
-    const response = await axios.get(`https://graphhopper.com/api/1/route?point=${position?.lat},${position?.lng}&point=${position1.lat},${position1.lng}&vehicle=bike&points_encoded=false&locale=en-US&instructions=true&elevation=true&key=${apiKey}`);
+  const calculateRoute = async (departure, destination) => {
+    const response = await instance.post(`/api/get-routes`, {
+      data: { departure, destination }
+    });
 
     console.log(response, 'response');
-    const { time, distance } = response?.data.paths[0]
 
-    const future = (now.getTime() + time); // add 30 seconds (in milliseconds)
+    const data = response?.data?.data[0]
+    console.log(data, 'data');
+
+    if (!data) {
+      setAlert({ isOpen: true, severity: 'warning', message: 'Same location' })
+      return
+    }
+
+    const { duration, distance } = data?.legs[0]
+
+    const future = (now.getTime() + duration);
     const formatted = new Date(future).toISOString(); // format as string
 
-    setTime(time)
+    setTime(duration)
 
-    setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: time, ['Covered distance (m)']: distance, ['Return']: formatted }))
+    setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: duration, ['Covered distance (m)']: distance, ['Return']: formatted }))
 
   };
 
+  console.log(formSubmit, 'formsub');
 
   useEffect(() => {
     if (formSubmit['Departure station name'] !== '' && formSubmit['Return station name'] !== '') {
-      calculateRoute();
+      calculateRoute([position.lat, position.lng], [position1.lat, position1.lng]);
     }
   }, [position.lat, position.lng, position1.lat, position1.lng]);
 
@@ -188,7 +196,7 @@ const AddJourney = () => {
             id='1'
             label='Duration (min)'
             disabled
-            value={Math.ceil(formSubmit?.['Duration (sec)'] / 60000)} />
+            value={Math.ceil(formSubmit?.['Duration (sec)'] / 60)} />
         </div>
 
         <Button text='Add Journey' disabled={!isDisabled} onClick={onJourneyCreate} />

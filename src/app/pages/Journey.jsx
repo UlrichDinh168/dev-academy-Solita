@@ -180,11 +180,7 @@ const Journey = () => {
 
           {isLoading ? <PuffLoader /> :
             journeys.length !== 0 ?
-              // <div className="">
               <Table rows={filteredTable} headCells={headCells} type='journey' />
-
-              // </div>
-
               : <p className="ntts">No data</p>}
         </div>
 

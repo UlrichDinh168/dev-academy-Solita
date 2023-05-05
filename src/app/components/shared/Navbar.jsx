@@ -30,10 +30,13 @@ function ResponsiveAppBar() {
       name: 'Add Station',
       path: '/add-station'
     },
+    {
+      name: 'Statistics',
+      path: '/statistics'
+    },
   ]
 
   const [anchorElNav, setAnchorElNav] = React.useState(false);
-  const [selectedNavItem, setSelectedNavItem] = React.useState(null)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -45,7 +48,6 @@ function ResponsiveAppBar() {
 
   const onClickItem = (page, index) => {
     navigate(page.path)
-    setSelectedNavItem(index)
     setAnchorElNav(false)
     handleCloseNavMenu()
   }
