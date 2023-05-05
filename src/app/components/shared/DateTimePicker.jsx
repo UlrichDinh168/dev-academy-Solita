@@ -15,6 +15,7 @@ export default function DateTimePickerValue({ value, onChange, label, disabled }
           disabled={disabled}
           value={value}
           onChange={onChange}
+          sx={{ overflow: 'hidden', minWidth: '200px' }}
         />
       </DemoContainer>
     </LocalizationProvider>
