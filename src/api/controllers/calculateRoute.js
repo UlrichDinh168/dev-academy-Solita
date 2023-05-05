@@ -18,10 +18,11 @@ const calculateRoute = async (req, res) => {
       data: query
     });
 
+    console.log(instance?.data, 'instance');
 
     return res.status(200).json({
       message: "Station name fetched succesfully",
-      data: instance?.data?.data?.plan?.itineraries[0]?.legs,
+      data: instance?.data?.data?.plan?.itineraries
     });
 
   } catch (error) {

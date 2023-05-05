@@ -1,13 +1,13 @@
 const express = require("express");
-// const { fileURLToPath } = require('url');
 const { color } = require('console-log-colors');
 const cors = require("cors");
-// const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
+
 dotenv.config();
 
 const router = require('./api/routes/router');

@@ -20,14 +20,13 @@ const fetchStationDetails = (model) => {
 
     const numStationsAtStart = stationsAtStart.length;
     const numStationsAtDest = stationsAtEnd.length;
-    console.log(numStationsAtStart, 'numStationsAtStart');
 
     // Calculate total distance
-    const totalDistanceAtStart = stationsAtStart.reduce((accumulator, currentTrip) => {
-      return accumulator + currentTrip['Covered distance (m)']
+    const totalDistanceAtStart = stationsAtStart.reduce((acc, currentTrip) => {
+      return acc + currentTrip['Covered distance (m)']
     }, 0)
-    const totalDistanceAtDest = stationsAtStart.reduce((accumulator, currentTrip) => {
-      return accumulator + currentTrip['Covered distance (m)']
+    const totalDistanceAtDest = stationsAtStart.reduce((acc, currentTrip) => {
+      return acc + currentTrip['Covered distance (m)']
     }, 0)
 
 
