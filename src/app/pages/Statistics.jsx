@@ -5,27 +5,12 @@ import dayjs from 'dayjs';
 import PuffLoader from 'react-spinners/PuffLoader'
 import { convertMinutesToHours, padNum } from '../components/util';
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const options = {
+const stationOptions = {
   responsive: true,
   plugins: {
     legend: {
@@ -33,11 +18,12 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Bar Chart',
+      text: 'Top 10 Most Busiest Stations',
     },
   },
 };
-export const routeOptions = {
+
+const routeOptions = {
   responsive: true,
   plugins: {
     legend: {
@@ -45,62 +31,52 @@ export const routeOptions = {
     },
     title: {
       display: true,
-      text: 'Chart.js Bar Chart',
+      text: 'Top 10 Most Popular Routes',
     },
   },
 };
 
-
-// TODO: 
-// - Average duration per month
-// - Busiest departure stations per month
-// - Popular routes per month
-// - Monthly trends:  the number of journeys and the total distance traveled per month over time.
 
 const Statistics = () => {
   const [basic, setBasic] = useState([])
   const [topRoutes, setTopRoutes] = useState([])
   const [topStations, setTopStations] = useState([])
-
   const [basicLoading, setBasicLoading] = useState(false)
   const [stationLoading, setStationLoading] = useState(false)
-  const [routeLoading, setRouteLoading] = useState(false)
 
+  const [routeLoading, setRouteLoading] = useState(false)
   const [selectedTime, setSelectedTime] = useState(null)
 
   const stationLabels = topStations?.busiestStations?.length > 0 ? topStations?.busiestStations?.map(station => station.station) : []
+  const routeLabels = topRoutes?.popularRoutes?.length > 0 ? topRoutes?.popularRoutes?.map(route => route.route) : []
 
   const stationData = {
     labels: stationLabels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Station Name',
         data: topStations?.busiestStations?.length > 0 ? topStations?.busiestStations?.map((station) => station.count) : [],
         backgroundColor: 'grey',
       },
-
     ],
   };
-
-  const routeLabels = topRoutes?.popularRoutes?.length > 0 ? topRoutes?.popularRoutes?.map(route => route.route) : []
 
   const routeData = {
     labels: routeLabels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Routes',
         data: topRoutes?.popularRoutes?.length > 0 ? topRoutes?.popularRoutes?.map((route) => route.count) : [],
         backgroundColor: 'grey',
       },
-
     ],
   };
+
 
   const fetchData = async (url, data, setLoadingState, setStateFn) => {
     try {
       setLoadingState(true);
       const resp = await instance.post(url, { data });
-      console.log(resp, 'resp');
 
       setStateFn(resp?.data?.data[0]);
     } catch (error) {
@@ -112,32 +88,26 @@ const Statistics = () => {
 
 
   const onChange = async (event) => {
-    const dateTime1 = `${dayjs(event).year()}-${padNum(dayjs(event).month() + 1, 2)}`
-    // const dateTime1 = `2021-${padNum(dayjs(event).month() + 1, 2)}`
+    const dateTime = `${dayjs(event).year()}-${padNum(dayjs(event).month() + 1, 2)}`
 
-    console.log(dateTime1, 'event');
-
-    setSelectedTime(dateTime1)
+    setSelectedTime(dateTime)
     setTimeout(async () => {
-      await fetchData('/api/statistic-1', dateTime1, setBasicLoading, setBasic)
+      await fetchData('/api/statistic-basic', dateTime, setBasicLoading, setBasic)
     }, 1000);
 
     setTimeout(async () => {
-      await fetchData('/api/statistic-2', dateTime1, setRouteLoading, setTopRoutes)
-    }, 500);
+      await fetchData('/api/statistic-route', dateTime, setRouteLoading, setTopRoutes)
+    }, 1000);
 
     setTimeout(async () => {
-      await fetchData('/api/statistic-3', dateTime1, setStationLoading, setTopStations)
-    }, 500);
+      await fetchData('/api/statistic-station', dateTime, setStationLoading, setTopStations)
+    }, 1000);
   }
 
-  console.log(topStations, 'topStations');
-  console.log(topRoutes, 'topRoutes');
 
   return (
     <div className='statistic-container' >
       <div className="date-container" >
-
         <YearMonthPciker value={selectedTime} onChange={onChange} />
       </div>
 
@@ -154,7 +124,7 @@ const Statistics = () => {
           {stationLoading ? < PuffLoader /> :
             topStations?.length !== 0 ?
               <div className="bar-container" style={{ width: '100%', height: '400px' }}>
-                <Bar options={options} data={stationData} />
+                <Bar options={stationOptions} data={stationData} />
               </div>
               : ''
           }
@@ -170,7 +140,6 @@ const Statistics = () => {
           }
         </div>
       </div>
-
     </div>
   )
 }
@@ -181,12 +150,12 @@ const BasicComponent = ({ basic }) => {
 
       <div className="basic-container__wrapper-item">
         <p>Total Distance</p>
-        <h3>{basic?.totalDistance ? `${Number(basic?.totalDistance / 1000).toFixed(2)} km` : 'No data'}</h3>
+        <h3>{basic?.totalDistance ? `${(basic?.totalDistance / 1000).toFixed(2)} km` : 'No data'}</h3>
       </div>
 
       <div className="basic-container__wrapper-item">
         <p>Avg. Distance</p>
-        <h3> {basic?.averageDistance ? `${Number((basic?.averageDistance / 1000).toFixed(2))} km` : 'No data'}</h3>
+        <h3> {basic?.averageDistance ? `${((basic?.averageDistance / 1000).toFixed(2))} km` : 'No data'}</h3>
       </div>
 
       <div className="basic-container__wrapper-item">

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -36,7 +36,7 @@ function ResponsiveAppBar() {
     },
   ]
 
-  const [anchorElNav, setAnchorElNav] = React.useState(false);
+  const [anchorElNav, setAnchorElNav] = useState(false);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,6 +51,7 @@ function ResponsiveAppBar() {
     setAnchorElNav(false)
     handleCloseNavMenu()
   }
+
   return (
     <AppBar position="static" sx={{ backgroundColor: 'grey' }}>
       <Container maxWidth="xl">

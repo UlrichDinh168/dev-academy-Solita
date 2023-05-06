@@ -24,8 +24,6 @@
       flex-direction: column;
       padding-right: 1rem;
       width: 30vh;
-
-      // border-right: 1px solid gray;
     }
     &-right {
       flex: 1;
@@ -55,7 +53,6 @@
     &-container {
       margin-top: 1rem;
     }
-    // margin: 0.5rem 2rem 0 0;
   }
 }
 
@@ -111,7 +108,6 @@
 @media (max-width: 768px) {
   .search-area {
     margin-bottom: 0rem;
-    // overflow: scroll;
     &__last {
       margin-top: 0;
     }

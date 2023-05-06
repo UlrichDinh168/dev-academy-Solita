@@ -22,7 +22,7 @@ const Map = ({ Osoite, Name, currentX, currentY, data }) => {
           <p>{Osoite}</p>
         </Popup>
       </Marker>
-      {/* Use flatMap to filter station that also appear in top 5 */}
+      {/* Use flatMap to filter out station that also appear in top 5 and display that station in different color. */}
       {data && data.length !== 0 ? data.flatMap((position, index) => {
         if (position?.y === currentY && position?.x === currentX) return []
         return (

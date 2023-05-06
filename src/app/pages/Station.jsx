@@ -48,7 +48,6 @@ const Station = () => {
       const resp = await instance.get('/api/station')
       setStations(resp?.data?.data)
       setFilteredTable(resp?.data?.data)
-
     }
     fetch()
   }, [])
@@ -87,6 +86,7 @@ const Station = () => {
           placeholder='Type to search ...'
           value={input}
         />
+
         <Table rows={filteredTable} headCells={headCells} type='station' />
 
       </>}

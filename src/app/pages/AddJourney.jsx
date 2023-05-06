@@ -1,14 +1,16 @@
 import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import dayjs from 'dayjs';
+import { instance } from '../constant';
+import { padNum } from '../components/util';
+
 import Searchbar from '../components/Searchbar/Searchbar'
 import Button from '../components/shared/Button'
 import Input from '../components/shared/Input'
-import DateTimePicker from '../components/shared/DateTimePicker'
-import dayjs from 'dayjs';
-import { instance } from '../constant';
 import PuffLoader from 'react-spinners/PuffLoader'
 import Notification from '../components/shared/Notification'
-import { padNum } from '../components/util';
+import DateTimePicker from '../components/shared/DateTimePicker'
+
 
 const greenIcon = new L.Icon({
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -16,28 +18,30 @@ const greenIcon = new L.Icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
+
 const redIcon = new L.Icon({
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
+
 const center = {
   lat: 60.170,
   lng: 24.939
 }
 
+
 const AddJourney = () => {
   const now = new Date()
-
   const ISOStringTime = now.toISOString()
 
-  const [position, setPosition] = useState(center)
-  const [position1, setPosition1] = useState(center)
+  const [departure, setDeparture] = useState(center)
+  const [destination, setDestination] = useState(center)
   const [time, setTime] = useState(null)
   const [alert, setAlert] = useState(false)
+  const [isLoading, setLoading] = useState(false)
 
-  console.log(position, 'posi');
   const [formSubmit, setFormSubmit] = useState({
     'Departure': ISOStringTime,
     'Return': ISOStringTime,
@@ -47,38 +51,40 @@ const AddJourney = () => {
     'Covered distance (m)': '',
     'Duration (sec)': ''
   })
-  const [isLoading, setLoading] = useState(false)
 
-  const markerRef = useRef(null)
-  const markerRef2 = useRef(null)
+  const departureMarkerRef = useRef(null)
+  const destinationMarkerRef = useRef(null)
 
-  const eventHandlers = useMemo(() => ({
+  const departureHandler = useMemo(() => ({
     dragend() {
-      const marker = markerRef?.current
+      const marker = departureMarkerRef?.current
       if (marker != null) {
-        setPosition(marker?.getLatLng())
+        setDeparture(marker?.getLatLng())
       }
     },
   }), [])
 
-  const eventHandlers2 = useMemo(() => ({
+  const destinationHandler = useMemo(() => ({
     dragend() {
-      const marker = markerRef2?.current
+      const marker = destinationMarkerRef?.current
       if (marker != null) {
-        setPosition1(marker?.getLatLng())
+        setDestination(marker?.getLatLng())
       }
     },
   }), [])
 
+
+  /**
+   * Calculates the route between two locations and updates the state with relevant information
+   * @param {array} departure 
+   * @param {array} destination 
+   */
   const calculateRoute = async (departure, destination) => {
     const response = await instance.post(`/api/get-routes`, {
       data: { departure, destination }
     });
 
-    console.log(response, 'response');
-
     const data = response?.data?.data[0]
-    console.log(data, 'data');
 
     if (!data) {
       setAlert({ isOpen: true, severity: 'warning', message: 'Same location' })
@@ -86,39 +92,32 @@ const AddJourney = () => {
     }
 
     const { duration, distance } = data?.legs[0]
-
     const future = (now.getTime() + duration);
     const formatted = new Date(future).toISOString(); // format as string
 
     setTime(duration)
 
     setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: duration, ['Covered distance (m)']: distance, ['Return']: formatted }))
-
   };
 
-  console.log(formSubmit, 'formsub');
 
   useEffect(() => {
     if (formSubmit['Departure station name'] !== '' && formSubmit['Return station name'] !== '') {
-      calculateRoute([position.lat, position.lng], [position1.lat, position1.lng]);
+      calculateRoute([departure.lat, departure.lng], [destination.lat, destination.lng]);
     }
-  }, [position.lat, position.lng, position1.lat, position1.lng]);
-
-
-
+  }, [departure.lat, departure.lng, destination.lat, destination.lng]);
 
 
   const onSetFormValues =
     async (result, name) => {
-      console.log(result, 'result');
       setFormSubmit(prevState => ({ ...prevState, [name]: result?.Nimi }))
 
       if (name === 'Departure station name') {
-        setPosition({ lat: result?.y, lng: result?.x })
+        setDeparture({ lat: result?.y, lng: result?.x })
         setFormSubmit(prev => ({ ...prev, ['Departure station id']: padNum(result?.ID, 3) }))
 
       } else {
-        setPosition1({ lat: result?.y, lng: result?.x })
+        setDestination({ lat: result?.y, lng: result?.x })
         setFormSubmit(prev => ({ ...prev, ['Return station id']: padNum(result?.ID, 3) }))
       }
     }
@@ -131,53 +130,52 @@ const AddJourney = () => {
       const resp = await instance.post('/api/add-journey', {
         data: formSubmit
       })
-
-      console.log(resp, 'resp');
+      // set notification when create journey successfully
       setAlert({ isOpen: true, severity: 'success', message: resp?.data.message })
 
     } catch (error) {
       console.log(error, 'error');
-
+      // set notification when create journey fail
       setAlert({ isOpen: true, severity: 'error', message: error?.response.data })
 
     } finally {
       setLoading(false);
-
     }
-
   }
 
 
-
   const onDateTimeChange = (params) => {
+    // Auto add duration when user change starting time
     const newTime = dayjs(params).add(time, 'millisecond')
-    console.log(newTime, 'newTime');
     setFormSubmit(prev => ({ ...prev, ['Return']: newTime }))
   }
 
 
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
+
+
   return (
     <div className='add-journey'>
-
-
       <div className="wrapper-left">
         <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Add Journey</h2>
-
         <div className="search-area">
           <Searchbar
             placeholder='Dept. station name'
             isOrigin={true}
             onSetFormValues={onSetFormValues}
             type='base'
-            formSubmit={formSubmit} />
+            formSubmit={formSubmit}
+          />
+
           <Searchbar
             placeholder='Dest. station name'
             type='base'
             isOrigin={false}
             onSetFormValues={onSetFormValues}
-            formSubmit={formSubmit} />
+            formSubmit={formSubmit}
+          />
         </div>
+
         <div className="date-time">
           <DateTimePicker value={dayjs(formSubmit['Departure'])} onChange={onDateTimeChange} />
           <DateTimePicker value={dayjs(formSubmit['Return'])} disabled />
@@ -188,20 +186,23 @@ const AddJourney = () => {
             id='1'
             label='Covered distance (km)'
             disabled
-            value={Number((formSubmit?.['Covered distance (m)']) / 1000).toFixed(2)} />
+            value={Number((formSubmit?.['Covered distance (m)']) / 1000).toFixed(2)}
+          />
 
           <Input
             id='1'
             label='Duration (min)'
             disabled
-            value={Math.ceil(formSubmit?.['Duration (sec)'] / 60)} />
+            value={Math.ceil(formSubmit?.['Duration (sec)'] / 60)}
+          />
         </div>
 
         <Button text='Add Journey' disabled={!isDisabled} onClick={onJourneyCreate} />
         {isLoading ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', }}><PuffLoader /></div> : null}
-      </div>
-      <div className="map-container">
 
+      </div>
+
+      <div className="map-container">
         <MapContainer
           center={center}
           zoom={11}
@@ -210,18 +211,17 @@ const AddJourney = () => {
             attribution='&copy; <a href="https://www.graphhopper.com/">GraphHopper</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
-          <Marker icon={greenIcon} position={position} eventHandlers={eventHandlers} ref={markerRef}>
+
+          <Marker icon={greenIcon} departure={departure} eventHandlers={departureHandler} ref={departureMarkerRef}>
           </Marker>
 
-          <Marker icon={redIcon} position={position1} eventHandlers={eventHandlers2} ref={markerRef2}>
+          <Marker icon={redIcon} departure={destination} eventHandlers={destinationHandler} ref={destinationMarkerRef}>
           </Marker>
-
 
         </MapContainer>
-
       </div>
-      <Notification alert={alert} />
 
+      <Notification alert={alert} />
     </div>
   )
 }

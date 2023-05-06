@@ -46,10 +46,12 @@ export default function EnhancedTable({ rows, headCells, type }) {
     setVisibleRows(rowsOnMount);
   }, [rows]);
 
+
   const handleRequestSort = useCallback(
     (event, newOrderBy) => {
       const isAsc = orderBy === newOrderBy && order === 'asc';
       const toggledOrder = isAsc ? 'desc' : 'asc';
+
       setOrder(toggledOrder);
       setOrderBy(newOrderBy);
 
@@ -63,6 +65,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
     },
     [order, orderBy, page, rowsPerPage, rows],
   );
+
 
   const handleChangePage = useCallback(
     (event, newPage) => {
@@ -91,10 +94,10 @@ export default function EnhancedTable({ rows, headCells, type }) {
       );
 
       setVisibleRows(updatedRows);
-
     },
     [order, orderBy, rows],
   );
+
 
   const handleClose = () => {
     setOpen(false)
@@ -119,6 +122,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
     }
     setLoading(false);
   }
+
 
   const renderContent = () => {
     if (type === 'journey') {
@@ -150,8 +154,9 @@ export default function EnhancedTable({ rows, headCells, type }) {
         })
         : null
     }
-
   }
+
+
   return (
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}

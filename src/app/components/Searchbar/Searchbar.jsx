@@ -1,6 +1,5 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { instance } from '../../constant'
-import axios from 'axios';
 
 import Input from "../shared/Input";
 import SearchResults from "../SearchResult/SearchResult";
@@ -16,10 +15,9 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
   const [searchResults, setSearchResults] = useState([])
 
   const [input, setInput] = useState('');
-  const apiKey = '5119eaf4-9206-46a6-9c06-2e7ffa98d33c';
 
   const handleChange = async (e) => {
-    const { value, name } = e.target;
+    const { value } = e.target;
     setInput(value);
 
     if (value.length >= 2) {
@@ -33,15 +31,13 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
           data: value
         })
         setSearchResults(resp.data.data)
-
       }
-
     } else {
       setSearchResults([])
     }
   };
+
   const selectResult = (result, name) => {
-    console.log(result, 'result');
     setFocus(false);
 
     setInput(result?.Name)
@@ -54,7 +50,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
   }
 
   const handleBlur = (e) => {
-    const { name, value } = e.target
+    const { name } = e.target
     if (formSubmit[name] === undefined && type === 'base') setInput('')
     if (formSubmit['Name'] === '') setInput('')
     setFocus(false);
@@ -62,10 +58,10 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
   const handleReset = () => {
     setInput('')
-    inputRef.current.value = ''
     inputRef.current.focus()
     setSearchResults([])
   }
+
   return (
     <div className='searchBar__container'>
       <Input

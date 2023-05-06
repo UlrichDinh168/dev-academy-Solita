@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
@@ -12,11 +12,12 @@ export default function ContinuousSlider({ onFilter, min, max, name, label, disa
   return (
     <Box
       sx={{ width: 200, width: { xs: 150 }, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
-
       className='slider-container'>
+
       <Typography id="input-slider" gutterBottom sx={{ color: 'black' }}>
         {label}
       </Typography>
+
       <Slider
         sx={{ color: 'grey', padding: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         value={(value) || max}
