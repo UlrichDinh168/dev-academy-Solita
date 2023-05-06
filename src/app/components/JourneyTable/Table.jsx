@@ -1,45 +1,38 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
+
 import TablePagination from '@mui/material/TablePagination';
 import Paper from '@mui/material/Paper';
 import Modal from '../shared/Modal'
 import PuffLoader from 'react-spinners/PuffLoader'
-
-
 import TableHeader from './TableHeader';
+
 import JourneyTableRow from './JourneyTableRow';
 import StationTableRow from './StationTableRow';
-
 import { getComparator, stableSort } from '../util'
 import { instance } from '../../constant';
-import { Grid } from '@mui/material';
 
 const DEFAULT_ORDER = 'asc';
 const DEFAULT_ORDER_BY = 'Duration (m)';
+const DEFAULT_ROWS_PER_PAGE = 10;
 
 
 export default function EnhancedTable({ rows, headCells, type }) {
-  const DEFAULT_ROWS_PER_PAGE_JOURNEY = 10;
-  const DEFAULT_ROWS_PER_PAGE_STATION = 10;
+  const [order, setOrder] = useState(DEFAULT_ORDER);
+  const [orderBy, setOrderBy] = useState(DEFAULT_ORDER_BY);
+  const [page, setPage] = useState(0);
+  const [visibleRows, setVisibleRows] = useState(null);
 
-  const DEFAULT_ROWS_PER_PAGE = type === 'journey' ? DEFAULT_ROWS_PER_PAGE_JOURNEY : DEFAULT_ROWS_PER_PAGE_STATION
-  const [order, setOrder] = React.useState(DEFAULT_ORDER);
-  const [orderBy, setOrderBy] = React.useState(DEFAULT_ORDER_BY);
-  const [page, setPage] = React.useState(0);
-  const [visibleRows, setVisibleRows] = React.useState(null);
-  const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
-  const [details, setDetails] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-
-  const [open, setOpen] = React.useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
+  const [details, setDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
 
-  React.useEffect(() => {
-    // const datasetArray = type ==='journey'? rows
+  useEffect(() => {
     let rowsOnMount = stableSort(
       rows,
       getComparator(DEFAULT_ORDER, DEFAULT_ORDER_BY),
@@ -53,7 +46,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
     setVisibleRows(rowsOnMount);
   }, [rows]);
 
-  const handleRequestSort = React.useCallback(
+  const handleRequestSort = useCallback(
     (event, newOrderBy) => {
       const isAsc = orderBy === newOrderBy && order === 'asc';
       const toggledOrder = isAsc ? 'desc' : 'asc';
@@ -71,7 +64,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
     [order, orderBy, page, rowsPerPage, rows],
   );
 
-  const handleChangePage = React.useCallback(
+  const handleChangePage = useCallback(
     (event, newPage) => {
       setPage(newPage);
       const sortedRows = stableSort(rows, getComparator(order, orderBy));
@@ -84,7 +77,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
     [order, orderBy, rowsPerPage, rows,],
   );
 
-  const handleChangeRowsPerPage = React.useCallback(
+  const handleChangeRowsPerPage = useCallback(
     (event) => {
       const updatedRowsPerPage = Number(event.target.value, 10);
       setRowsPerPage(updatedRowsPerPage);
@@ -164,8 +157,6 @@ export default function EnhancedTable({ rows, headCells, type }) {
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
       className='journey-table-container'>
       <Paper sx={{ width: '100%', mb: 2, }}>
-        {/* <Grid xs={12}> */}
-
         <TableContainer
           sx={{ maxHeight: 400 }}
         >
@@ -203,8 +194,8 @@ export default function EnhancedTable({ rows, headCells, type }) {
       <Modal
         open={open && details.length !== 0}
         data={details}
-        handleClose={handleClose} />
-      {/* </Grid > */}
+        handleClose={handleClose}
+      />
     </Box>
 
   );

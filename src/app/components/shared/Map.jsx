@@ -16,7 +16,6 @@ const Map = ({ Osoite, Name, currentX, currentY, data }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* <MarkerClusterGroup> */}
       <Marker icon={greenIcon} position={[currentY, currentX]} >
         <Popup>
           <p>{Name}</p>
@@ -45,8 +44,6 @@ const Map = ({ Osoite, Name, currentX, currentY, data }) => {
           </Marker>
         )
       }
-      {/* </MarkerClusterGroup> */}
-
     </MapContainer>
   )
 }

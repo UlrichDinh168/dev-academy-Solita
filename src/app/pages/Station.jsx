@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { instance } from '../constant'
 import Table from '../components/JourneyTable/Table'
 import Input from "../components/shared/Input";
@@ -39,9 +39,7 @@ const headCells = [
 
 const Station = () => {
   const [stations, setStations] = useState([])
-  const [page, setPage] = useState(1)
   const [isLoading, setLoading] = useState(false)
-  const [formSubmit, setFormSubmit] = useState({})
   const [input, setInput] = useState("");
   const [filteredTable, setFilteredTable] = useState([])
 
@@ -57,8 +55,8 @@ const Station = () => {
 
 
   useEffect(() => {
-    const newarr = [...stations]
-    const filteredData = newarr.filter((item) =>
+    const newStations = [...stations]
+    const filteredData = newStations.filter((item) =>
       item.Name.toLowerCase().includes(input.toLowerCase())
     );
     setFilteredTable(filteredData || stations)
@@ -69,7 +67,7 @@ const Station = () => {
     try {
       e.preventDefault();
       setLoading(true);
-      const { value, name } = e.target;
+      const { value, } = e.target;
       setInput(value);
 
     } catch (error) {
@@ -79,20 +77,19 @@ const Station = () => {
     }
   };
 
-  console.log(input, 'input');
-
-  console.log(stations, 'station');
   return (
     <div className="station-container">
       <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Station lookup</h2>
 
-      <Input label='Station name'
-        onChange={handleChange}
-        placeholder='Type to search ...'
-        value={input}
-      />
-      <Table rows={filteredTable} headCells={headCells} type='station' />
+      {isLoading ? <PuffLoader /> : <>
+        <Input label='Station name'
+          onChange={handleChange}
+          placeholder='Type to search ...'
+          value={input}
+        />
+        <Table rows={filteredTable} headCells={headCells} type='station' />
 
+      </>}
 
     </div>
   )
