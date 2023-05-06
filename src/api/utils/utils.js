@@ -35,7 +35,6 @@ const findTopFiveStations = (arrays) => {
 
 const fetchStation = async (name, value, model) => {
   if (name === 'Name') {
-    console.log('here');
     const upperCase = value?.replace(/^\w/, (c) => c.toUpperCase());
     const regexp = new RegExp(`^${upperCase}`)
     const searchResults = await model.find({ [name]: regexp }).maxTimeMS(30000);
