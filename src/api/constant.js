@@ -1,6 +1,5 @@
 const axios = require('axios')
 
-
 const digitransitAPI = axios.create({
   baseURL: 'https://api.digitransit.fi',
   headers: {
