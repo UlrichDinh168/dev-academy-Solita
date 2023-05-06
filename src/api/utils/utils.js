@@ -59,4 +59,28 @@ const findMaxValue = async (model, criteria) => {
 
 }
 
-module.exports = { findMaxMinValue, findMaxValue, findTopFiveStations, countOccurrences, fetchStation }
+/**
+ * Generate GraphQL query string
+ * @param {array} departure 
+ * @param {array} destination 
+ */
+const createQuery = (departure, destination) =>
+  `
+  {
+    plan(
+      from: {lat: ${departure[0]}, lon: ${departure[1]}}
+      to: {lat: ${destination[0]}, lon: ${destination[1]}}
+      numItineraries: 3
+      transportModes: [{mode: BICYCLE}]
+    ) {
+      itineraries {
+        legs {
+          duration
+          distance
+        }
+      }
+    }
+  }
+  `
+
+module.exports = { findMaxMinValue, findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }

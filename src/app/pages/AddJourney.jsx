@@ -212,10 +212,10 @@ const AddJourney = () => {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
 
-          <Marker icon={greenIcon} departure={departure} eventHandlers={departureHandler} ref={departureMarkerRef}>
+          <Marker icon={greenIcon} position={departure} eventHandlers={departureHandler} ref={departureMarkerRef}>
           </Marker>
 
-          <Marker icon={redIcon} departure={destination} eventHandlers={destinationHandler} ref={destinationMarkerRef}>
+          <Marker icon={redIcon} position={destination} eventHandlers={destinationHandler} ref={destinationMarkerRef}>
           </Marker>
 
         </MapContainer>

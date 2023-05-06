@@ -7,8 +7,6 @@ const fetchStationDetails = (model) => {
     const stationId = req.body.data;
     let stationsAtStart, stationsAtEnd
 
-    console.log(stationId, 'stationId');
-
     try {
       // Count the journeys starting and ending with a station
       stationsAtStart = await model.find({ 'Departure station id': `${stationId}` });
@@ -20,6 +18,7 @@ const fetchStationDetails = (model) => {
 
     const numStationsAtStart = stationsAtStart.length;
     const numStationsAtDest = stationsAtEnd.length;
+
 
     // Calculate total distance
     const totalDistanceAtStart = stationsAtStart.reduce((acc, currentTrip) => {
@@ -38,6 +37,7 @@ const fetchStationDetails = (model) => {
     // By counting times each station appear => top 5 in total start and return stations
     const occurrencesAtStart = countOccurrences(stationsAtStart, 'Return station id');
     const occurrencesAtEnd = countOccurrences(stationsAtEnd, 'Departure station id');
+
 
     // Sorting for top 5 
     const top5AtStart = findTopFiveStations(occurrencesAtStart)
@@ -84,11 +84,8 @@ const fetchStationDetails = (model) => {
       });
     } catch (error) {
       res.status(500).json({ message: error.message });
-
     }
-
-
   }
-
 }
+
 module.exports = fetchStationDetails;

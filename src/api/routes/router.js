@@ -5,6 +5,7 @@ const paginatedFetchingStation = require('../controllers/paginateStation.js');
 const fetchStationDetails = require('../controllers/stationDetails.js');
 const stationSearchExtented = require('../controllers/stationSearchExtented.js');
 const calculateRoute = require('../controllers/calculateRoute.js');
+const { basicStatistic, routeStatistic, stationStatistic } = require('../controllers/statistic.js');
 
 const addJourney = require('../controllers/addJourney.js');
 const addStation = require('../controllers/addStation.js');
@@ -26,5 +27,10 @@ router.post('/get-routes', calculateRoute);
 
 router.post('/add-journey', addJourney(journey));
 router.post('/add-station', addStation(station));
+
+router.post('/statistic-basic', basicStatistic(journey));
+router.post('/statistic-route', routeStatistic(journey));
+router.post('/statistic-station', stationStatistic(journey));
+
 
 module.exports = router;

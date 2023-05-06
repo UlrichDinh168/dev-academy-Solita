@@ -21,7 +21,7 @@
 4. In the root folder
 
 - Run `npm i` to install all required dependencies.
-- Run `npm run deduplication` to remove all the dupped lines in the files.
+- Run `npm run dedup` to remove all the dupped lines in the files.
 - Run `npm run import` to auto import 'clean' files to database.
 
 ## Stuff to do
@@ -46,49 +46,49 @@
 #### Recommended
 
 - List journeys
-  - If you don't implement pagination, use some hard-coded limit for the list length because showing several million rows would make any browser choke
-- For each journey show departure and return stations, covered distance in kilometers and duration in minutes
+  - [x]If you don't implement pagination, use some hard-coded limit for the list length because showing several million rows would make any browser choke
+- [x] For each journey show departure and return stations, covered distance in kilometers and duration in minutes
 
 #### Additional
 
-- Pagination
-- Ordering per column
-- Searching
-- Filtering
+- [x] Pagination
+- [x] Ordering per column
+- [x] Searching
+- [x] Filtering
 
 ### Station list
 
 #### Recommended
 
-- List all the stations
+- [x] List all the stations
 
 #### Additional
 
-- Pagination
-- Searching
+- [x] Pagination
+- [x] Searching
 
 ### Single station view
 
 #### Recommended
 
-- Station name
-- Station address
-- Total number of journeys starting from the station
-- Total number of journeys ending at the station
+- [x] Station name
+- [x] Station address
+- [x] Total number of journeys starting from the station
+- [x] Total number of journeys ending at the station
 
 #### Additional
 
-- Station location on the map
-- The average distance of a journey starting from the station
-- The average distance of a journey ending at the station
-- Top 5 most popular return stations for journeys starting from the station
-- Top 5 most popular departure stations for journeys ending at the station
-- Ability to filter all the calculations per month
+- [x] Station location on the map
+- [x] The average distance of a journey starting from the station
+- [x] The average distance of a journey ending at the station
+- [x] Top 5 most popular return stations for journeys starting from the station
+- [x] Top 5 most popular departure stations for journeys ending at the station
+- [x] Ability to filter all the calculations per month
 
 ## Surprise us with
 
-- Endpoints to store new journeys data or new bicycle stations
-- Running backend in Docker
-- Running backend in Cloud
+- [x] Endpoints to store new journeys data or new bicycle stations
+- [x] Running backend in Cloud
+- [x] Create UI for adding journeys or bicycle stations
 - Implement E2E tests
-- Create UI for adding journeys or bicycle stations
+- Running backend in Docker

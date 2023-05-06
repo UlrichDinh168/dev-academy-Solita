@@ -1,11 +1,10 @@
 const axios = require('axios');
+const { createQuery } = require('../utils/utils');
 
 const calculateRoute = async (req, res) => {
 
   try {
-
     const { departure, destination } = req?.body?.data;
-
     const query = createQuery(departure, destination)
 
     const instance = await axios({
@@ -18,7 +17,6 @@ const calculateRoute = async (req, res) => {
       data: query
     });
 
-    console.log(instance?.data, 'instance');
 
     return res.status(200).json({
       message: "Station name fetched succesfully",
@@ -33,23 +31,6 @@ const calculateRoute = async (req, res) => {
 
 }
 
-const createQuery = (departure, destination) =>
-  `
-  {
-    plan(
-      from: {lat: ${departure[0]}, lon: ${departure[1]}}
-      to: {lat: ${destination[0]}, lon: ${destination[1]}}
-      numItineraries: 3
-      transportModes: [{mode: BICYCLE}]
-    ) {
-      itineraries {
-        legs {
-          duration
-          distance
-        }
-      }
-    }
-  }
-  `
+
 
 module.exports = calculateRoute 

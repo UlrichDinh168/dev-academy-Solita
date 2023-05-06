@@ -4,6 +4,7 @@ const { fetchStation } = require('../utils/utils.js');
 const stationSearch = async (req, res) => {
   try {
     let value = req?.body.data
+
     if (value?.length > 2) {
       const searchResults = await fetchStation('Name', value, station)
       return res.status(201).json({
@@ -12,7 +13,8 @@ const stationSearch = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("err", error);
+
+    console.log("error", error);
     return res.status(400).json({ message: "Failed to fetch journey name" });
   }
 

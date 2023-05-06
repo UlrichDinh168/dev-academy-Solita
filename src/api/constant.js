@@ -1,9 +1,5 @@
 const axios = require('axios')
 
-const graphhopperAPI = axios.create({
-  baseURL: 'https://graphhopper.com/api/1'
-})
-
 
 const digitransitAPI = axios.create({
   baseURL: 'https://api.digitransit.fi',
@@ -14,4 +10,4 @@ const digitransitAPI = axios.create({
 });
 
 
-module.exports = { digitransitAPI, graphhopperAPI, }
+module.exports = { digitransitAPI }

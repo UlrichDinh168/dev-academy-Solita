@@ -1,7 +1,5 @@
 const paginatedFetchingStation = (model) => {
   return async (req, res) => {
-    const { data } = req?.body
-
     try {
       const data = await model.find({});
 
@@ -14,4 +12,5 @@ const paginatedFetchingStation = (model) => {
     }
   };
 };
+
 module.exports = paginatedFetchingStation;

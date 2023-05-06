@@ -20,8 +20,8 @@ const paginatedFetchingJourney = (model) => {
     try {
       const docs = await model.find(query).countDocuments().exec();
       lastPage = Math.ceil((docs / limit)); // identify last page based on limit per batch
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
 
     const page = 1
@@ -34,6 +34,7 @@ const paginatedFetchingJourney = (model) => {
         limit
       };
     }
+
     if (endIndex < await model.countDocuments().exec()) {
       nextPage = {
         page: page + 1,
@@ -42,7 +43,7 @@ const paginatedFetchingJourney = (model) => {
     }
 
     try {
-      // skip startIndex to begin a new fetch 
+      // skip startIndex to begin a new fetch fetch
       const journeys = await model.find(query).limit(limit).skip(startIndex).exec();
       const returnDataset = {
         lastPage, previousPage, nextPage, journeys
@@ -62,4 +63,5 @@ const paginatedFetchingJourney = (model) => {
     }
   };
 };
+
 module.exports = paginatedFetchingJourney;

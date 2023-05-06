@@ -19,6 +19,7 @@ const stationSearchExtented = async (req, res) => {
       ];
 
       const newData = []
+
       for (const key in combinedData) {
         if (Object.hasOwnProperty.call(combinedData, key)) {
           let newObj = {}
