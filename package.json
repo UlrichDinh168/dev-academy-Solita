@@ -1,10 +1,6 @@
 {
   "name": "vite-react-express-boilerplate",
   "version": "0.0.0",
-  "engines": {
-    "node": ">=18",
-    "npm": ">=8"
-  },
   "scripts": {
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "client:dev": "vite",
