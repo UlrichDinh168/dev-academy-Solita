@@ -11,7 +11,7 @@ export default function ContinuousSlider({ onFilter, min, max, name, label, disa
 
   return (
     <Box
-      sx={{ width: 200, width: { xs: 150 }, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+      sx={{ width: 200, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
       className='slider-container'>
 
       <Typography id="input-slider" gutterBottom sx={{ color: 'black' }}>

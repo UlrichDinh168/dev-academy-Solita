@@ -10,7 +10,7 @@ const SearchResults = ({
 }) => {
   const renderResults = () => {
     if (searchResults?.length === 0) return;
-    if (searchValue.length > 2)
+    if (searchValue?.length > 2)
       return searchResults?.map((result, index) => {
         return (
           <li

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import { instance } from '../../constant'
 
 import Input from "../shared/Input";
@@ -8,28 +8,38 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
   const originRef = useRef(null)
   const destRef = useRef(null)
+  const inputRef = isOrigin ? originRef : destRef
+
   const inputId = isOrigin ? "origin-input" : "destination-input";
 
-  const inputRef = isOrigin ? originRef : destRef
   const [isFocus, setFocus] = useState(false);
   const [searchResults, setSearchResults] = useState([])
-
   const [input, setInput] = useState('');
+
+
+  useEffect(() => {
+    if (formSubmit['Name'] && formSubmit['Name'] !== '') {
+      setInput(formSubmit['Name'])
+    }
+  }, [formSubmit['Name']])
+
 
   const handleChange = async (e) => {
     const { value } = e.target;
+
     setInput(value);
 
     if (value.length >= 2) {
       if (type === 'base') {
-        const resp = await instance.post('/api/search', {
+        const resp = await instance.post('/api/station-search', {
           data: value
         })
         setSearchResults(resp.data.data)
       } else {
-        const resp = await instance.post('/api/search-ext', {
+        const resp = await instance.post('/api/station-search-ext', {
           data: value
         })
+
         setSearchResults(resp.data.data)
       }
     } else {
@@ -61,6 +71,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
     inputRef.current.focus()
     setSearchResults([])
   }
+
 
   return (
     <div className='searchBar__container'>

@@ -39,7 +39,10 @@ const headCells = [
 ]
 
 const Journey = () => {
-  const [formSubmit, setFormSubmit] = useState({})
+  const [formSubmit, setFormSubmit] = useState({
+    'Departure station name': '',
+    'Return station name': ''
+  })
   const [journeys, setJourneys] = useState([])
   const [isLoading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
@@ -145,10 +148,10 @@ const Journey = () => {
   const isDisabled = !formSubmit["Departure station name"] && !formSubmit["Return station name"]
 
   return (
-    <div className="search-area__wrapper">
+    <div className="journey-wrapper">
       <h2 >Journey lookup</h2>
-      <div className="search-area__content">
-        <div className="search-area__content-left">
+      <div className="journey-content">
+        <div className="journey-content__left">
           <div className="search-area">
             <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Departure' />
 
@@ -184,18 +187,18 @@ const Journey = () => {
 
             </> : null}
 
-            <div className="search-area__end">
+            <div className="journey-end">
               {journeys.length !== 0 ? <div className="load-more" style={{ maxWidth: '15rem', width: '10rem', textAlign: 'center' }}>
 
                 <Button onClick={onFetchNextBatch} text='Load More' disabled={page === journeys.lastPage || isLoading} />
 
-                {journeys.length !== 0 ? <div className="search-area__last">Page {page} of {journeys.lastPage}</div> : null}
+                {journeys.length !== 0 ? <div className="journey-last">Page {page} of {journeys.lastPage}</div> : null}
 
               </div> : null}
             </div>
           </div>
         </div>
-        <div className="search-area__content-right">
+        <div className="journey-content__right">
           {isLoading ? <PuffLoader /> :
             journeys.length !== 0 ?
               <Table rows={filteredTable} headCells={headCells} type='journey' />

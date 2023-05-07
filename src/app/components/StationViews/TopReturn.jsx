@@ -10,9 +10,9 @@ const TopDeparture = ({ data }) => {
 
   return (
     <Box>
-      <h3 style={{ textAlign: 'center' }}>{title}</h3>
+      <h2 style={{ textAlign: 'center' }}>{title}</h2>
 
-      <TableContainer sx={{ textAlign: 'center', margin: '1rem 0' }}>
+      <TableContainer sx={{ textAlign: 'center', margin: '1rem 0', marginBottom: '3rem' }}>
         <Table>
           <TableHead>
             <TableRow>

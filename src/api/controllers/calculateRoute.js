@@ -2,7 +2,6 @@ const axios = require('axios');
 const { createQuery } = require('../utils/utils');
 
 const calculateRoute = async (req, res) => {
-
   try {
     const { departure, destination } = req?.body?.data;
     const query = createQuery(departure, destination)
@@ -24,7 +23,7 @@ const calculateRoute = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error?.data?.errors, 'error');
+    console.log(error, 'error');
 
     return res.status(400).json({ message: "Could not fetch journey" });
   }

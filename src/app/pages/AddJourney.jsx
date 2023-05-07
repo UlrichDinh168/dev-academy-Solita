@@ -100,12 +100,12 @@ const AddJourney = () => {
     }, { totalTime: 0, totalDistance: 0 })
 
 
-    const future = (now.getTime() + newData.totalTime);
+    const future = (now.getTime() + newData?.totalTime * 1000);
     const formatted = new Date(future).toISOString(); // format as string
 
-    setTime(newData.totalTime)
+    setTime(newData?.totalTime)
 
-    setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: newData.totalTime, ['Covered distance (m)']: Number((newData.totalDistance).toFixed(2)), ['Return']: formatted }))
+    setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: newData?.totalTime, ['Covered distance (m)']: parseInt(newData?.totalDistance.toFixed(2)), ['Return']: formatted }))
   };
 
 
@@ -171,6 +171,9 @@ const AddJourney = () => {
   }
 
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
+
+
+
 
   return (
     <div className='add-journey'>

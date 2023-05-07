@@ -3,7 +3,6 @@ const express = require('express');
 const fastcsv = require('fast-csv');
 const mongoose = require('mongoose');
 const path = require('path');
-const { fileURLToPath } = require('url');
 const { color } = require('console-log-colors');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -28,13 +27,10 @@ database.on('error', (error) => {
   console.log(error)
 })
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const directoryPath = path.join(__dirname, './csv');
 const files = fs.readdirSync(directoryPath).filter(file => file.includes('deduplicated') && !file.includes('2021'));
 
-let totalRowCount = 0;
 
 /**
  * Extendable version for importing station csv files to Mongo.
@@ -47,6 +43,8 @@ database.on('connected', () => {
   console.log(color.yellowBright("\nStation database connected success!"));
   console.log(color.green("\nAdding to database ... \n"));
   console.time('Importing data to MongoDB took');
+
+  let totalRowCount = 0;
 
   files.forEach(file => {
     const outputFilePath = path.resolve(directoryPath, file);

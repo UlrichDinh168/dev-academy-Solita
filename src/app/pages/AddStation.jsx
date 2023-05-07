@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import Searchbar from '../components/Searchbar/Searchbar';
 import Button from '../components/shared/Button'
@@ -47,23 +47,37 @@ const AddStation = () => {
       const marker = markerRef.current
       if (marker != null) {
         setPosition(marker.getLatLng())
+
+        name(marker.getLatLng())
+
         setFormSubmit(prev => ({ ...prev, x: marker.getLatLng()?.lng, y: marker.getLatLng()?.lat }))
       }
     },
   }), [])
 
-  const onSetFormValues =
-    async (result) => {
-      const { coordinates: [x, y], label, region, Name, postalcode } = result
-      const randomNum = Math.floor(Math.random() * 37) + 8;
+  const name = async (position) => {
+    const resp = await instance.post('/api/address-lookup', {
+      data: position
+    })
 
-      const array = Name.split(',')
-      const newAddress = `${array[1]},${array[2]},${postalcode}`
+    const { coordinates: [x, y], label, region } = resp?.data?.data
+    const randomNum = Math.floor(Math.random() * 37) + 8;
 
-      setPosition({ lat: y, lng: x })
-      setFormSubmit({ Nimi: label, Name: label, Namn: label, Osoite: newAddress, Adress: newAddress, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y })
-    }
+    setFormSubmit(prev => ({
+      ...prev,
+      Nimi: label, Name: label, Namn: label, Osoite: label, Adress: label, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y
+    }))
+  }
 
+
+  const onSetFormValues = (result) => {
+    const { coordinates: [x, y], label, region } = result
+    const randomNum = Math.floor(Math.random() * 37) + 8;
+
+
+    setPosition({ lat: y, lng: x })
+    setFormSubmit({ Nimi: label, Name: label, Namn: label, Osoite: label, Adress: label, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y })
+  }
 
   const onStationCreate = async (e) => {
     try {
@@ -89,9 +103,7 @@ const AddStation = () => {
     setFormSubmit(prev => ({ ...prev, [name]: value }))
   };
 
-
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
-
   return (
     <div className='add-station'>
       <div className="wrapper-left">
@@ -130,7 +142,7 @@ const AddStation = () => {
             name='y'
             value={formSubmit?.['x']} />
 
-          <Button text='Add Journey' disabled={!isDisabled} onClick={onStationCreate} />
+          <Button text='Add Station' disabled={!isDisabled} onClick={onStationCreate} />
           {isLoading ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', }}><PuffLoader /></div> : null}
 
         </div>
@@ -148,7 +160,6 @@ const AddStation = () => {
           <Marker icon={greenIcon} position={position} draggable={true} eventHandlers={eventHandlers} ref={markerRef}>
             <Popup >
               <p>{formSubmit['Name']}</p>
-              <p>{formSubmit['Adress']}</p>
             </Popup>
           </Marker>
         </MapContainer>

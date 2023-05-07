@@ -43,7 +43,7 @@ const fetchStationDetails = (model) => {
     const top5AtStart = findTopFiveStations(occurrencesAtStart)
     const top5AtEnd = findTopFiveStations(occurrencesAtEnd)
 
-
+    // Fetch data from stations in top5 accordingly.
     const fetchAllData = async (myArray) => {
       let array = []
 
