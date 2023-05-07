@@ -39,7 +39,10 @@ const headCells = [
 ]
 
 const Journey = () => {
-  const [formSubmit, setFormSubmit] = useState({})
+  const [formSubmit, setFormSubmit] = useState({
+    'Departure station name': '',
+    'Return station name': ''
+  })
   const [journeys, setJourneys] = useState([])
   const [isLoading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
