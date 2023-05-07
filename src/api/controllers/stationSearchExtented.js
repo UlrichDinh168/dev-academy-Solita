@@ -24,7 +24,8 @@ const stationSearchExtented = async (req, res) => {
         if (Object.hasOwnProperty.call(combinedData, key)) {
           let newObj = {}
           const element = combinedData[key];
-          const { geometry: { coordinates }, properties: { name: label, label: Name, postalcode, region } } = element
+          const { geometry: { coordinates },
+            properties: { name: label, label: Name, postalcode, region } } = element
           newObj = { coordinates, label, Name, postalcode, region }
           newData.push(newObj)
         }

@@ -3,12 +3,12 @@ const express = require('express');
 const fastcsv = require('fast-csv');
 const path = require('path');
 const mongoose = require('mongoose');
-const { fileURLToPath } = require('url');
+
+const journey = require('./models/journey.model.js');
 const { color } = require('console-log-colors');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const journey = require('./models/journey.model.js');
 
 
 // Initialize server for importing 
@@ -21,8 +21,6 @@ const server = app.listen(8000, () => {
 
 // ======================== =============================
 const mongoString = process.env.DATABASE_URL
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 const directoryPath = path.join(__dirname, './csv');
 
 mongoose.connect(mongoString);

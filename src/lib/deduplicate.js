@@ -2,20 +2,16 @@ const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
 const { color } = require('console-log-colors');
-const { fileURLToPath } = require('url');
 
 
 /**
  * Reads one or more CSV files and removes duplicate lines from them. 
- * The resulting CSV files are saved with the same name
- * but with the suffix "-deduplicated" added before the file extension.
+ * The resulting CSV files are saved with the same name with the suffix "-deduplicated" added before the file extension.
  *
  * @param {Array<string>} filePaths - An array of file paths to the CSV files to deduplicate.
  * @returns {Promise<Array<string>>} - A Promise that resolves to an array of file paths of the resulting deduplicated CSV files.
  */
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const directoryPath = path.join(__dirname, './csv/');
 const files = fs.readdirSync(directoryPath).filter(file => file.includes('2021') && !file.includes('deduplicated'));
