@@ -31,12 +31,12 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
     if (value.length >= 2) {
       if (type === 'base') {
-        const resp = await instance.post('/api/search', {
+        const resp = await instance.post('/api/station-search', {
           data: value
         })
         setSearchResults(resp.data.data)
       } else {
-        const resp = await instance.post('/api/search-ext', {
+        const resp = await instance.post('/api/station-search-ext', {
           data: value
         })
 

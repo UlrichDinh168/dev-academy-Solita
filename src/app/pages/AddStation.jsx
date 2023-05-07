@@ -50,7 +50,6 @@ const AddStation = () => {
 
         name(marker.getLatLng())
 
-        console.log(marker.getLatLng(), 'marker.getLatLng()');
         setFormSubmit(prev => ({ ...prev, x: marker.getLatLng()?.lng, y: marker.getLatLng()?.lat }))
       }
     },
@@ -105,7 +104,6 @@ const AddStation = () => {
   };
 
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
-
   return (
     <div className='add-station'>
       <div className="wrapper-left">
@@ -144,7 +142,7 @@ const AddStation = () => {
             name='y'
             value={formSubmit?.['x']} />
 
-          <Button text='Add Journey' disabled={!isDisabled} onClick={onStationCreate} />
+          <Button text='Add Station' disabled={!isDisabled} onClick={onStationCreate} />
           {isLoading ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', }}><PuffLoader /></div> : null}
 
         </div>

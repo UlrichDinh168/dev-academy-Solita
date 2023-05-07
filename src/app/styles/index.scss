@@ -36,7 +36,9 @@ code {
 .css-mdvjgm-MuiButtonBase-root-MuiButton-root:hover {
   background-color: grey !important;
 }
-
+.css-b3dvpx-MuiStack-root > .MuiTextField-root {
+  min-width: 0 !important;
+}
 .css-eg0mwd-MuiSlider-thumb:hover {
   box-shadow: 0px 0px 0px 8px rgba(154, 160, 166, 0.16) !important;
 }
