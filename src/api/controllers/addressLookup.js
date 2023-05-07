@@ -2,15 +2,11 @@ const { digitransitAPI } = require("../constant");
 
 const getAddressLookup = async (req, res) => {
   const position = req?.body?.data
-  console.log(position, 'position');
 
   try {
     const resp = await digitransitAPI.get(
       `/geocoding/v1/reverse?point.lat=${position?.lat}&point.lon=${position?.lng}&lang=fi&size=1&layers=address`,
     );
-
-
-    console.log(resp?.data?.features, 'resp');
 
     if (resp.length === 0)
       return res.status(404).json({ message: "No results found." });
