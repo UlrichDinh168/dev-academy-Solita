@@ -12,6 +12,7 @@ dotenv.config();
 
 const router = require('./api/routes/router');
 
+console.log(process.env.DATABASE_URL, 'process.env.DATABASE_URL');
 
 // Setup database connection
 mongoose.connect(process.env.DATABASE_URL);
