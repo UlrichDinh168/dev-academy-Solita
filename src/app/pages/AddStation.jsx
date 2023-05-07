@@ -64,7 +64,6 @@ const AddStation = () => {
       setFormSubmit({ Nimi: label, Name: label, Namn: label, Osoite: newAddress, Adress: newAddress, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y })
     }
 
-
   const onStationCreate = async (e) => {
     try {
       e.preventDefault();
