@@ -85,7 +85,7 @@
 
 #### Extra
 
-- [x] Auto calculate distance and duration using HSL Digitransit API and locate positions in map.
+- [x] Auto calculate distance and duration using HSL Digitransit API and locate positions on map.
 - [x] Display notification to users when create journey successfully or error when user entering same locations.
 
 ### Add Station
