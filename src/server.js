@@ -12,11 +12,9 @@ dotenv.config();
 
 const router = require('./api/routes/router');
 
-const { PORT = 3001, DATABASE_URL } = process.env;
-
 
 // Setup database connection
-mongoose.connect(DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL);
 const database = mongoose.connection
 database.on('error', (error) => {
   console.log(error)
@@ -80,6 +78,7 @@ app.use((error, req, res, next) => {
   });
 });
 
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
