@@ -31,9 +31,9 @@ This is a [pre-assignment](https://github.com/solita/dev-academy-2023-exercise) 
 
 ## Documentation
 
-[⚙️ Local Setup](./docs/Setup.md)
-[🧮 Architecture](./docs/Architecture.md)
-[🔑 API Docs](./docs/API.md)
+[⚙️ Local Setup](./docs/Setup.md)\
+[🧮 Architecture](./docs/Architecture.md)\
+[🔑 API Docs](./docs/API.md)\
 [💡 Features](./docs/Features.md)
 
 ## License
