@@ -105,7 +105,6 @@ const Statistics = () => {
   }
 
 
-  console.log(topRoutes, 'topRoutes');
   return (
     <div className='statistic-container' >
       <div className="date-container" >

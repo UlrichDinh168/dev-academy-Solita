@@ -12,7 +12,7 @@ const calculateRoute = async (req, res) => {
       url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
       headers: {
         'Content-Type': 'application/graphql',
-        'digitransit-subscription-key': '486aab41f80e491e9068ec79e3a3f30d',
+        'digitransit-subscription-key': process.env.DIGITRANSIT_KEY,
       },
       data: query
     });
