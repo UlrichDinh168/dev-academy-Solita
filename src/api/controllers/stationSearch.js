@@ -7,7 +7,7 @@ const stationSearch = async (req, res) => {
 
     if (value?.length > 2) {
       const searchResults = await fetchStation('Name', value, station)
-      return res.status(201).json({
+      return res.status(200).json({
         message: "Station name fetched succesfully",
         data: searchResults,
       });

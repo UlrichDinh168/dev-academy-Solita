@@ -91,13 +91,21 @@ const AddJourney = () => {
       return
     }
 
-    const { duration, distance } = data?.legs[0]
-    const future = (now.getTime() + duration);
+
+    // sum total of time + duration from all the legs sent by HSL Digitransit.
+    const newData = data?.legs?.reduce((acc, cur) => {
+      acc.totalTime += cur['duration'];
+      acc.totalDistance += cur['distance'];
+      return acc;
+    }, { totalTime: 0, totalDistance: 0 })
+
+
+    const future = (now.getTime() + newData.totalTime);
     const formatted = new Date(future).toISOString(); // format as string
 
-    setTime(duration)
+    setTime(newData.totalTime)
 
-    setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: duration, ['Covered distance (m)']: distance, ['Return']: formatted }))
+    setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: newData.totalTime, ['Covered distance (m)']: Number((newData.totalDistance).toFixed(2)), ['Return']: formatted }))
   };
 
 
@@ -143,16 +151,26 @@ const AddJourney = () => {
     }
   }
 
-
   const onDateTimeChange = (params) => {
     // Auto add duration when user change starting time
-    const newTime = dayjs(params).add(time, 'millisecond')
+    const newTime = dayjs(params).add(time * 1000, 'millisecond')
     setFormSubmit(prev => ({ ...prev, ['Return']: newTime }))
   }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    let newVal
+    if (name === 'Covered distance (m)') {
+      newVal = Number((value * 1000).toFixed(2))
+    } else {
+      newVal = value * 60
+
+    }
+
+    setFormSubmit(prev => ({ ...prev, [name]: newVal }))
+  }
 
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
-
 
   return (
     <div className='add-journey'>
@@ -184,15 +202,17 @@ const AddJourney = () => {
         <div className="info">
           <Input
             id='1'
+            onChange={handleChange}
             label='Covered distance (km)'
-            disabled
-            value={Number((formSubmit?.['Covered distance (m)']) / 1000).toFixed(2)}
+            name='Covered distance (m)'
+            value={(formSubmit?.['Covered distance (m)'] / 1000)}
           />
 
           <Input
             id='1'
             label='Duration (min)'
-            disabled
+            name='Duration (sec)'
+            onChange={handleChange}
             value={Math.ceil(formSubmit?.['Duration (sec)'] / 60)}
           />
         </div>

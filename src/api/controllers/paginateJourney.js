@@ -53,7 +53,7 @@ const paginatedFetchingJourney = (model) => {
         return res.status(404).json({ message: 'There was no journey for these stations', data: [] });
       }
 
-      return res.status(201).json({
+      return res.status(200).json({
         message: "Data fetched succesfully",
         data: returnDataset
         ,
