@@ -14,6 +14,7 @@ const router = require('./api/routes/router');
 
 const { PORT = 3001, DATABASE_URL } = process.env;
 
+
 // Setup database connection
 mongoose.connect(DATABASE_URL);
 const database = mongoose.connection
