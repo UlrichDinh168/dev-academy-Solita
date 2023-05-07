@@ -7,7 +7,6 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-
 dotenv.config();
 
 const router = require('./api/routes/router');
