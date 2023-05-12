@@ -1,6 +1,6 @@
 # Helsinki city bike app (Solita Dev Academy pre-assignment 2023)
 
-[Live demo](https://solita-dev-ulrich.herokuapp.com/)
+## [Live demo](https://solita-dev-ulrich.herokuapp.com/)
 
 ## Introduction
 
@@ -31,8 +31,8 @@ This is a [pre-assignment](https://github.com/solita/dev-academy-2023-exercise) 
 
 ## Documentation
 
-[⚙️ Local Setup](./docs/Setup.md)\
 [🧮 Architecture](./docs/Architecture.md)\
+[⚙️ Local Setup](./docs/Setup.md)\
 [🔑 API Docs](./docs/API.md)\
 [💡 Features](./docs/Features.md)
 

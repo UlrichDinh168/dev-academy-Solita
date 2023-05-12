@@ -1,7 +1,12 @@
-const fs = require('fs');
-const readline = require('readline');
-const path = require('path');
-const { color } = require('console-log-colors');
+// const fs = require('fs');
+// const readline = require('readline');
+// const path = require('path');
+// const { color } = require('console-log-colors');
+
+import fs from 'fs';
+import readline from 'readline';
+import path from 'path';
+import { color } from 'console-log-colors';
 
 
 /**
@@ -67,3 +72,7 @@ deduplicateCSVFiles(files)
   .catch(error => {
     console.error(error);
   });
+
+
+// module.exports = deduplicateCSVFiles
+export default deduplicateCSVFiles

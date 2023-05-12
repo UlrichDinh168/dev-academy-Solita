@@ -1,18 +1,3 @@
-// find min, max value for each batch calls
-const findMaxMinValue = async (model, criteria) => {
-  return Promise.all([
-    model.findOne().sort({ [criteria]: -1 }).exec(),
-    model.findOne().sort({ [criteria]: 1 }).exec()
-  ]).then(values => {
-    const max = values[0][criteria];
-    const min = values[1][criteria];
-    return { max, min };
-  }).catch(error => {
-    console.log(error, 'err in api utils');
-    return { max: null, min: null };
-  });
-}
-
 /**
  * Count the occurrences of objects in the array by using key as identifier.
  * @param {array} arr 
@@ -47,15 +32,13 @@ const fetchStation = async (name, value, model) => {
 
 const findMaxValue = async (model, criteria) => {
   try {
-    const resp = await model.findOne().sort({ [criteria]: -1 }).exec()
+    const resp = await model.findOne().sort({ [criteria]: -1 }).maxTimeMS(30000).exec()
     const max = Number(resp['ID'])
     return max;
 
   } catch (error) {
     console.log(error, 'err in api utils');
-    return { max: null, min: null };
   }
-
 }
 
 /**
@@ -82,4 +65,5 @@ const createQuery = (departure, destination) =>
   }
   `
 
-module.exports = { findMaxMinValue, findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
+// export { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
+module.exports = { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }

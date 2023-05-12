@@ -1,4 +1,5 @@
-const { digitransitAPI } = require("../constant");
+// const { digitransitAPI } = require("../constant");
+import { digitransitAPI } from '../constant.js';
 
 const getAddressLookup = async (req, res) => {
   const position = req?.body?.data
@@ -8,7 +9,7 @@ const getAddressLookup = async (req, res) => {
       `/geocoding/v1/reverse?point.lat=${position?.lat}&point.lon=${position?.lng}&lang=fi&size=1&layers=address`,
     );
 
-    if (resp.length === 0)
+    if (resp.data?.features.length === 0)
       return res.status(404).json({ message: "No results found." });
 
     const { geometry: { coordinates },
@@ -16,7 +17,7 @@ const getAddressLookup = async (req, res) => {
     } = resp?.data?.features[0]
 
     return res.status(200).json({
-      message: "Location fetched succesfully",
+      message: "Location fetched successfully",
       data: { coordinates, Name, postalcode, label, region }
     });
 
@@ -26,4 +27,5 @@ const getAddressLookup = async (req, res) => {
   }
 };
 
-module.exports = getAddressLookup
+export default getAddressLookup
+// module.exports = getAddressLookup

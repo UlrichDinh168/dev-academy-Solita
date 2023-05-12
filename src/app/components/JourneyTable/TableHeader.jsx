@@ -11,9 +11,10 @@ export default function TableHeader(props) {
   const createSortHandler = (newOrderBy) => (event) => {
     onRequestSort(event, newOrderBy);
   };
-
   return (
-    <TableHead>
+    <TableHead
+      data-cy={`table-header`}
+    >
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell

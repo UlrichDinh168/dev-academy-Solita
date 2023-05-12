@@ -1,11 +1,11 @@
-const { findMaxValue } = require('../utils/utils.js');
-
+// const { findMaxValue } = require('../utils/utils.js');
+import { findMaxValue } from '../utils/utils.js';
 const addStation = (model) => {
   return async (req, res) => {
     try {
       const { data } = req.body;
       // Check for existing user with the same username
-      const existingJourney = await model.findOne({ 'Name': data.Name });
+      const existingJourney = await model.findOne({ 'Name': data?.Name });
       if (existingJourney) {
         return res.status(409).send('Station is already taken');
       }
@@ -21,7 +21,7 @@ const addStation = (model) => {
       await newStation.save()
 
       return res.status(201).json({
-        message: "Station created succesfully",
+        message: "Station created successfully",
       });
 
     } catch (err) {
@@ -30,4 +30,5 @@ const addStation = (model) => {
     }
   }
 }
-module.exports = addStation;
+export default addStation
+// module.exports = addStation;

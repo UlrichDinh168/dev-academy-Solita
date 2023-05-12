@@ -7,15 +7,15 @@
 _**Endpoint**_
 
 ```
-GET /api/journey
+GET /api/get-journey
 ```
 
 _**Example request**_
 
 ```
 data: {
-  'Departure station name': 'Pasila asema',
-  'Return station name': 'Kamppi',
+  'Departure station name': 'Pasilan asema',
+  'Return station name': 'Kamppi (M)',
   page: 1
 }
 ```
@@ -64,9 +64,9 @@ _**Example request**_
 data: {
     "Departure": "2023-05-07T18:09:17.325Z",
     "Return": "2023-05-07T18:14:01.089Z",
-    "Departure station name": "Pasila asema",
+    "Departure station name": "Pasilan asema",
     "Departure station id": "007",
-    "Return station name": "Kamppi",
+    "Return station name": "Kamppi (M)",
     "Return station id": "906",
     "Covered distance (m)": 842,
     "Duration (sec)": 242
@@ -77,7 +77,7 @@ _**Example response**_
 
 ```
 data: {
-  message: "Journey created succesfully"
+  message: "Journey created successfully"
 }
 ```
 
@@ -126,7 +126,7 @@ data: {
 _**Endpoint**_
 
 ```
-GET /api/station
+GET /api/get-station
 ```
 
 **Example response**
@@ -134,7 +134,7 @@ GET /api/station
 ```
 {
   "data": [
-    "message": "Data fetched succesfully",
+    "message": "Stations fetched successfully",
     {
       "_id": "6453aa4da44acbb9a0fc0d81",
       "FID": 1,
@@ -167,7 +167,7 @@ GET /api/station-details
 _**Example request**_
 
 ```
-{data: stationId}
+{data: 501}
 ```
 
 **Example response**
@@ -234,7 +234,7 @@ _**Example request**_
 
 ```
 {
-  data: 'Pasila asema'
+  data: 'Design Museum'
 }
 ```
 
@@ -353,7 +353,7 @@ _**Example request**_
 
 ```
 data: {
-  message: "Station created succesfully"
+  message: "Station created successfully"
 }
 ```
 
@@ -369,7 +369,7 @@ _**Example request**_
 
 ```
 {
- position: [24.938311,60.187904]
+ position: {lat:24.938311,lng:60.187904}
 }
 ```
 

@@ -1,5 +1,8 @@
-const { countOccurrences, findTopFiveStations, fetchStation } = require('../utils/utils.js');
-const station = require('../../lib/models/station.model.js');
+// const { countOccurrences, findTopFiveStations, fetchStation } = require('../utils/utils.js');
+// const station = require('../../lib/models/station.model.js');
+
+import { countOccurrences, findTopFiveStations, fetchStation } from '../utils/utils.js';
+import station from '../../lib/models/station.model.js';
 
 const fetchStationDetails = (model) => {
 
@@ -75,10 +78,9 @@ const fetchStationDetails = (model) => {
       returnTop5Start,
       returnTop5End
     }
-
     try {
       return res.status(200).json({
-        message: "Data fetched succesfully",
+        message: "Data fetched successfully",
         data: returnDataset
         ,
       });
@@ -88,4 +90,5 @@ const fetchStationDetails = (model) => {
   }
 }
 
-module.exports = fetchStationDetails;
+export default fetchStationDetails
+// module.exports = fetchStationDetails;

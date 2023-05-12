@@ -24,8 +24,9 @@ const Input = ({
   return (
     <div className='input__wrapper' >
       <TextField
-        type={type}
+        type={type || 'text'}
         label={label}
+        data-cy={`input-value`}
         value={value}
         disabled={disabled}
         name={name}
@@ -42,7 +43,7 @@ const Input = ({
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
-                aria-label="toggle password visibility"
+                aria-label="toggle visibility"
                 onClick={handleClearClick}
                 edge="end"
               >

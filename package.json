@@ -1,21 +1,25 @@
 {
   "name": "vite-react-express-boilerplate",
   "version": "0.0.0",
+  "type": "module",
   "engines": {
     "node": ">=16",
     "npm": ">=8"
   },
   "scripts": {
+    "start": "node dist/server.js",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "client:dev": "vite",
     "server:dev": "nodemon src/server.js",
-    "server:build": "babel --verbose --out-dir dist --only 'src/server.js,src/api/,src/lib' src",
-    "client:build": "vite build",
     "build": "npm run server:build && npm run client:build",
-    "serve": "vite preview",
+    "client:build": "vite build",
+    "server:build": "babel --verbose --out-dir dist --only 'src/server.js,src/api/,src/lib' src",
     "test": "vitest",
-    "start": "node dist/server.js",
-    "import": "node src/lib/importStationData.js && node src/lib/importJourneyData.js",
+    "coverage": "vitest run --coverage",
+    "cypress": "cypress open",
+    "import": "npm run import-journey && npm run import-station",
+    "import-journey": "node src/lib/importJourneyData.js",
+    "import-station": "node src/lib/importStationData.js",
     "dedup": "node src/lib/deduplicate.js"
   },
   "devDependencies": {
@@ -23,9 +27,14 @@
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-react": "^7.18.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "@vitejs/plugin-react": "^1.3.2",
+    "@vitest/coverage-c8": "^0.31.0",
+    "@vitest/ui": "^0.31.0",
     "babel-loader": "^8.2.2",
     "concurrently": "^6.2.1",
+    "cypress": "^12.12.0",
     "http-proxy-middleware": "^2.0.1",
     "jsdom": "^22.0.0",
     "nodemon": "^2.0.13",
@@ -49,6 +58,7 @@
     "express": "^4.17.1",
     "fast-csv": "^4.3.6",
     "leaflet": "^1.9.3",
+    "mongodb": "^5.4.0",
     "mongoose": "^7.0.4",
     "morgan": "^1.10.0",
     "react": "^18.2.0",
@@ -56,6 +66,7 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.10.0",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "supertest": "^6.3.3"
   }
 }

@@ -15,14 +15,19 @@ const JourneyTableRow = (row, index, labelId) => {
         id={labelId}
         scope="row"
         padding="normal"
+        data-cy={`table-data`}
       >
         {row?.row['Departure station name']}
       </TableCell>
-      <TableCell align="right">{row?.row['Return station name']}</TableCell>
       <TableCell
+        data-cy={`table-data`}
+        align="right">{row?.row['Return station name']}</TableCell>
+      <TableCell
+        data-cy={`table-data`}
         align="right">{row?.row['Covered distance (m)']}
       </TableCell>
       <TableCell
+        data-cy={`table-data`}
         align="right">{row?.row['Duration (sec)']}
       </TableCell>
     </TableRow>

@@ -7,6 +7,7 @@ const StationTableRow = ({ row, labelId, handleClick, type }) => {
   return (
     <TableRow
       hover
+      data-cy='table-row'
       tabIndex={-1}
       onClick={() => handleClick(row)}
       sx={{ cursor: `${type !== 'journey' ? 'pointer' : 'none'}` }}
@@ -15,18 +16,24 @@ const StationTableRow = ({ row, labelId, handleClick, type }) => {
         component="th"
         id={labelId}
         scope="row"
+        data-cy={`table-data`}
         padding="normal"
       >
         {row['Name']}
       </TableCell>
-      <TableCell align="right">{row['Operaattor']}</TableCell>
       <TableCell
+        data-cy={`table-data`}
+        align="right">{row['Operaattor']}</TableCell>
+      <TableCell
+        data-cy={`table-data`}
         align="right">{row['Osoite']}
       </TableCell>
       <TableCell
+        data-cy={`table-data`}
         align="right">{row['Kaupunki']}
       </TableCell>
       <TableCell
+        data-cy={`table-data`}
         align="right">{row['Kapasiteet']}
       </TableCell>
     </TableRow>

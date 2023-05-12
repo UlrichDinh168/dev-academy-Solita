@@ -1,12 +1,25 @@
-const fs = require('fs');
-const express = require('express');
-const fastcsv = require('fast-csv');
-const path = require('path');
-const mongoose = require('mongoose');
+// const fs = require('fs');
+// const express = require('express');
+// const fastcsv = require('fast-csv');
+// const path = require('path');
+// const mongoose = require('mongoose');
 
-const journey = require('./models/journey.model.js');
-const { color } = require('console-log-colors');
-const dotenv = require('dotenv');
+// const journey = require('./models/journey.model.js');
+// const { color } = require('console-log-colors');
+// const dotenv = require('dotenv');
+// const { validateData } = require('./utils/validateData.js');
+
+import fs from 'fs';
+import express from 'express';
+import fastcsv from 'fast-csv';
+import path from 'path';
+import mongoose from 'mongoose';
+
+import journey from './models/journey.model.js';
+import { color } from 'console-log-colors';
+import dotenv from 'dotenv';
+import { validateData } from './utils/validateData.js';
+
 dotenv.config();
 
 
@@ -63,7 +76,9 @@ database.on('connected', async () => {
 
     const csvStream = fastcsv
       .parse({ headers: true, ignoreEmpty: true })
-      .validate(journeyRow => parseInt(journeyRow['Covered distance (m)']) >= 10 && parseInt(journeyRow['Duration (sec)']) >= 10)
+      // .validate(journeyRow => parseInt(journeyRow['Covered distance (m)']) >= 10 && parseInt(journeyRow['Duration (sec)']) >= 10)
+      .validate((journeyRow) => validateData(journeyRow)
+      )
       .on("data", async (row) => {
         // Add the row to the current chunk of data
         ++counter
@@ -107,5 +122,5 @@ database.on('connected', async () => {
   });
 })
 
-
-module.exports = server;
+export default server
+// module.exports = server;

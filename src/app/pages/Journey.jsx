@@ -102,7 +102,7 @@ const Journey = () => {
     try {
       e.preventDefault();
       setLoading(true)
-      const resp = await instance.post('/api/journey', {
+      const resp = await instance.post('/api/get-journey', {
         data: { ...formSubmit, page }
       })
 
@@ -127,7 +127,7 @@ const Journey = () => {
   const onFetchNextBatch = async () => {
     setPage(prev => prev + 1)
     setLoading(true)
-    const resp = await instance.post('/api/journey', {
+    const resp = await instance.post('/api/get-journey', {
       data: { ...formSubmit, page: page + 1 }
     })
 
@@ -149,21 +149,21 @@ const Journey = () => {
 
   return (
     <div className="journey-wrapper">
-      <h2 >Journey lookup</h2>
+      <h2>Journey lookup</h2>
       <div className="journey-content">
         <div className="journey-content__left">
           <div className="search-area">
-            <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Departure' />
+            <Searchbar isOrigin={true} onSetFormValues={onSetFormValues} formSubmit={formSubmit} genre='base' label='Departure' />
 
-            <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} type='base' label='Destination' />
+            <Searchbar isOrigin={false} onSetFormValues={onSetFormValues} formSubmit={formSubmit} genre='base' label='Destination' />
 
             <Button text='Search' disabled={isDisabled || isLoading} onClick={onSubmit} />
           </div>
           <div className="slider-container">
             {journeys.length !== 0 ? <>
               <h5>Change both to start filtering</h5>
-              <div className="slider">
 
+              <div className="slider">
                 <Slider
                   name='Duration (sec)'
                   onFilter={handleSliderChange}
@@ -198,10 +198,12 @@ const Journey = () => {
             </div>
           </div>
         </div>
-        <div className="journey-content__right">
+        <div className="journey-content__right"
+          data-cy={`journey-content__right`}
+        >
           {isLoading ? <PuffLoader /> :
             journeys.length !== 0 ?
-              <Table rows={filteredTable} headCells={headCells} type='journey' />
+              <Table rows={filteredTable} headCells={headCells} type='journey' defaultOrderBy='Duration (sec)' />
               : <p className="ntts">No data</p>}
         </div>
       </div>

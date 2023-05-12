@@ -47,15 +47,15 @@ const Statistics = () => {
   const [routeLoading, setRouteLoading] = useState(false)
   const [selectedTime, setSelectedTime] = useState(null)
 
-  const stationLabels = topStations?.busiestStations?.length > 0 ? topStations?.busiestStations?.map(station => station.station) : []
-  const routeLabels = topRoutes?.popularRoutes?.length > 0 ? topRoutes?.popularRoutes?.map(route => route.route) : []
+  const stationLabels = topStations[0]?.busiestStations?.length > 0 ? topStations[0]?.busiestStations?.map(station => station.station) : []
+  const routeLabels = topRoutes?.length > 0 ? topRoutes?.map(route => `${route._id.route.departure}\n-${route._id.route.return}`) : []
 
   const stationData = {
     labels: stationLabels,
     datasets: [
       {
         label: 'Station Name',
-        data: topStations?.busiestStations?.length > 0 ? topStations?.busiestStations?.map((station) => station.count) : [],
+        data: topStations[0]?.busiestStations?.length > 0 ? topStations[0]?.busiestStations?.map((station) => station.count) : [],
         backgroundColor: 'grey',
       },
     ],
@@ -66,7 +66,7 @@ const Statistics = () => {
     datasets: [
       {
         label: 'Routes',
-        data: topRoutes?.popularRoutes?.length > 0 ? topRoutes?.popularRoutes?.map((route) => route.count) : [],
+        data: topRoutes?.length > 0 ? topRoutes?.map((route) => route.count) : [],
         backgroundColor: 'grey',
       },
     ],
@@ -77,8 +77,7 @@ const Statistics = () => {
     try {
       setLoadingState(true);
       const resp = await instance.post(url, { data });
-
-      setStateFn(resp?.data?.data[0]);
+      setStateFn(resp?.data?.data);
     } catch (error) {
       console.log(error, 'error');
     } finally {
@@ -107,6 +106,8 @@ const Statistics = () => {
 
   return (
     <div className='statistic-container' >
+      <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Statistics</h2>
+
       <div className="date-container" >
         <YearMonthPciker value={selectedTime} onChange={onChange} />
       </div>
@@ -150,27 +151,27 @@ const BasicComponent = ({ basic }) => {
 
       <div className="basic-container__wrapper-item">
         <p>Total Distance</p>
-        <h3>{basic?.totalDistance ? `${(basic?.totalDistance / 1000).toFixed(2)} km` : 'No data'}</h3>
+        <h3>{basic[0]?.totalDistance ? `${(basic[0]?.totalDistance / 1000).toFixed(2)} km` : 'No data'}</h3>
       </div>
 
       <div className="basic-container__wrapper-item">
         <p>Avg. Distance</p>
-        <h3> {basic?.averageDistance ? `${((basic?.averageDistance / 1000).toFixed(2))} km` : 'No data'}</h3>
+        <h3> {basic[0]?.averageDistance ? `${((basic[0]?.averageDistance / 1000).toFixed(2))} km` : 'No data'}</h3>
       </div>
 
       <div className="basic-container__wrapper-item">
         <p>Total Duration</p>
-        <h3> {basic?.totalDuration ? convertMinutesToHours((basic?.totalDuration)) : 'No data'}</h3>
+        <h3> {basic[0]?.totalDuration ? convertMinutesToHours((basic[0]?.totalDuration)) : 'No data'}</h3>
       </div>
 
       <div className="basic-container__wrapper-item">
         <p>Avg. Duration</p>
-        <h3> {basic?.averageDuration ? convertMinutesToHours(basic?.averageDuration) : 'No data'}</h3>
+        <h3> {basic[0]?.averageDuration ? convertMinutesToHours(basic[0]?.averageDuration) : 'No data'}</h3>
       </div>
 
       <div className="basic-container__wrapper-item">
         <p>Total journeys</p>
-        <h3> {basic?.count ? (basic?.count) : 'No data'}</h3>
+        <h3> {basic[0]?.count ? (basic[0]?.count) : 'No data'}</h3>
       </div>
     </div>
   )

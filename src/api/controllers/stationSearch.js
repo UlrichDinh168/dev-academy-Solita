@@ -1,5 +1,9 @@
-const station = require('../../lib/models/station.model');
-const { fetchStation } = require('../utils/utils.js');
+// const station = require('../../lib/models/station.model');
+// const { fetchStation } = require('../utils/utils.js');
+
+import { fetchStation } from '../utils/utils.js';
+import station from '../../lib/models/station.model.js';
+
 
 const stationSearch = async (req, res) => {
   try {
@@ -8,7 +12,7 @@ const stationSearch = async (req, res) => {
     if (value?.length > 2) {
       const searchResults = await fetchStation('Name', value, station)
       return res.status(200).json({
-        message: "Station name fetched succesfully",
+        message: "Station name fetched successfully",
         data: searchResults,
       });
     }
@@ -20,4 +24,5 @@ const stationSearch = async (req, res) => {
 
 }
 
-module.exports = stationSearch;
+export default stationSearch
+// module.exports = stationSearch;

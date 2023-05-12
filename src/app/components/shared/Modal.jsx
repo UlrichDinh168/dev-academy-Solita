@@ -52,6 +52,7 @@ const ModalComp = ({ open, data, handleClose }) => {
       <Modal
         open={open}
         onClose={_handleClose}
+        data-cy='modal'
       >
         <Box sx={style}
         >

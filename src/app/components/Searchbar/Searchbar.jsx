@@ -1,10 +1,9 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import { instance } from '../../constant'
-
 import Input from "../shared/Input";
 import SearchResults from "../SearchResult/SearchResult";
 
-const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
+const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, genre, label }) => {
 
   const originRef = useRef(null)
   const destRef = useRef(null)
@@ -18,10 +17,10 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
 
   useEffect(() => {
-    if (formSubmit['Name'] && formSubmit['Name'] !== '') {
+    if (formSubmit && formSubmit['Name'] && formSubmit['Name'] !== '') {
       setInput(formSubmit['Name'])
     }
-  }, [formSubmit['Name']])
+  }, [formSubmit && formSubmit['Name']])
 
 
   const handleChange = async (e) => {
@@ -29,8 +28,8 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
     setInput(value);
 
-    if (value.length >= 2) {
-      if (type === 'base') {
+    if (value?.length >= 2) {
+      if (genre === 'base') {
         const resp = await instance.post('/api/station-search', {
           data: value
         })
@@ -61,7 +60,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
 
   const handleBlur = (e) => {
     const { name } = e.target
-    if (formSubmit[name] === undefined && type === 'base') setInput('')
+    if (formSubmit[name] === undefined && genre === 'base') setInput('')
     if (formSubmit['Name'] === '') setInput('')
     setFocus(false);
   };
@@ -79,7 +78,7 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        type='text'
+        type={type}
         id='0'
         placeholder='Type to search ...'
         label={label}
@@ -89,13 +88,13 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, label }) => {
         focus={isFocus}
         handleClearClick={handleReset}
       />
-      {searchResults.length > 0 && isFocus ? (
+      {searchResults?.length > 0 && isFocus ? (
         <SearchResults
           inputId={inputId}
           inputName={isOrigin ? "Departure station name" : "Return station name"}
           searchValue={input}
           searchResults={searchResults}
-          type={type}
+          genre={genre}
           selectResult={selectResult}
         />
       ) : null}

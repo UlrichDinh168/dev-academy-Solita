@@ -1,5 +1,10 @@
-const axios = require('axios');
-const { createQuery } = require('../utils/utils');
+import axios from 'axios';
+import { createQuery } from '../utils/utils.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+// const axios = require('axios');
+// const { createQuery } = require('../utils/utils');
 
 const calculateRoute = async (req, res) => {
   try {
@@ -16,9 +21,8 @@ const calculateRoute = async (req, res) => {
       data: query
     });
 
-
     return res.status(200).json({
-      message: "Station name fetched succesfully",
+      message: "Journey fetched successfully",
       data: instance?.data?.data?.plan?.itineraries
     });
 
@@ -27,9 +31,9 @@ const calculateRoute = async (req, res) => {
 
     return res.status(400).json({ message: "Could not fetch journey" });
   }
-
 }
 
 
 
-module.exports = calculateRoute 
+export default calculateRoute
+// module.exports = calculateRoute 

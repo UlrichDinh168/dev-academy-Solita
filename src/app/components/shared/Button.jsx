@@ -5,6 +5,7 @@ export default function BasicButton({ text, disabled, onClick }) {
   return (
     <Button sx={{ background: 'lightgrey', height: '2.4rem', maxHeight: '3rem', color: 'black', width: '100%' }}
       onClick={onClick}
+      data-cy={`search-button`}
       disabled={disabled}
       variant="text"
       type='submit'

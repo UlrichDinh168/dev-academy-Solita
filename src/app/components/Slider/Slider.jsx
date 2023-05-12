@@ -24,6 +24,7 @@ export default function ContinuousSlider({ onFilter, min, max, name, label, disa
         min={min}
         size='small'
         defaultValue={max}
+        data-cy='slider'
         disabled={disabled}
         max={max}
         step={label === 'Duration' ? 10 : 0.1}

@@ -45,7 +45,7 @@ const Station = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const resp = await instance.get('/api/station')
+      const resp = await instance.get('/api/get-station')
       setStations(resp?.data?.data)
       setFilteredTable(resp?.data?.data)
     }
@@ -56,7 +56,7 @@ const Station = () => {
   useEffect(() => {
     const newStations = [...stations]
     const filteredData = newStations.filter((item) =>
-      item.Name.toLowerCase().includes(input.toLowerCase())
+      item?.Name?.toLowerCase().includes(input?.toLowerCase())
     );
     setFilteredTable(filteredData || stations)
   }, [input])
@@ -81,13 +81,14 @@ const Station = () => {
       <h2 style={{ textAlign: 'center', margin: ' 2rem 0' }}>Station lookup</h2>
 
       {isLoading ? <PuffLoader /> : <>
-        <Input label='Station name'
+        <Input
+          label='Station name'
           onChange={handleChange}
           placeholder='Type to search ...'
           value={input}
         />
 
-        <Table rows={filteredTable} headCells={headCells} type='station' />
+        <Table rows={filteredTable} headCells={headCells} type='station' defaultOrderBy={'Name'} />
 
       </>}
 

@@ -6,7 +6,7 @@ const SearchResults = ({
   searchResults,
   selectResult,
   inputName,
-  type
+  genre
 }) => {
   const renderResults = () => {
     if (searchResults?.length === 0) return;
@@ -18,7 +18,7 @@ const SearchResults = ({
             onMouseDown={() => selectResult(result, inputName)}
             key={index}>
             <span className='address__main'>{result?.Name}</span>
-            {type !== 'base' ? <span className='address__secondary'>{result.postalcode} {result.region}</span> : null}
+            {genre !== 'base' ? <span className='address__secondary'>{result.postalcode} {result.region}</span> : null}
           </li>
         );
       });

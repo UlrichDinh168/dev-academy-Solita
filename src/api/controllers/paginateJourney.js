@@ -54,7 +54,7 @@ const paginatedFetchingJourney = (model) => {
       }
 
       return res.status(200).json({
-        message: "Data fetched succesfully",
+        message: "Data fetched successfully",
         data: returnDataset
       });
     } catch (e) {
@@ -63,4 +63,5 @@ const paginatedFetchingJourney = (model) => {
   };
 };
 
-module.exports = paginatedFetchingJourney;
+export default paginatedFetchingJourney
+// module.exports = paginatedFetchingJourney;

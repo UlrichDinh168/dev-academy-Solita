@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const stationSchema = mongoose.Schema({
   FID: {
@@ -56,4 +57,5 @@ const stationSchema = mongoose.Schema({
 });
 
 const station = mongoose.model("station", stationSchema);
-module.exports = station
+// module.exports = station
+export default station

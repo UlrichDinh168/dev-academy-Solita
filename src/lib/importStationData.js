@@ -1,13 +1,23 @@
-const fs = require('fs');
-const express = require('express');
-const fastcsv = require('fast-csv');
-const mongoose = require('mongoose');
-const path = require('path');
-const { color } = require('console-log-colors');
-const dotenv = require('dotenv');
-dotenv.config();
+// const fs = require('fs');
+// const express = require('express');
+// const fastcsv = require('fast-csv');
+// const mongoose = require('mongoose');
+// const path = require('path');
+// const { color } = require('console-log-colors');
+// const station = require('./models/station.model.js');
+// const dotenv = require('dotenv');
 
-const station = require('./models/station.model.js');
+import fs from 'fs';
+import express from 'express';
+import fastcsv from 'fast-csv';
+import mongoose from 'mongoose';
+import path from 'path';
+import { color } from 'console-log-colors';
+import station from './models/station.model.js';
+import dotenv from 'dotenv';
+
+
+dotenv.config();
 
 // Initialize server for importing 
 const app = express();
@@ -95,4 +105,5 @@ database.on('connected', () => {
   })
 });
 
-module.exports = server;
+// module.exports = server;
+export default server

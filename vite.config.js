@@ -9,6 +9,14 @@ const { PORT = 3001 } = process.env;
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/app/__test__/setup.js',
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    }
+  },
   server: {
     proxy: {
       '/api': {

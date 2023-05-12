@@ -1,17 +1,35 @@
-const express = require("express");
-const { color } = require('console-log-colors');
-const cors = require("cors");
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+// const express = require("express");
+// const { color } = require('console-log-colors');
+// const cors = require("cors");
+// const path = require('path');
+// const cookieParser = require('cookie-parser');
+// const logger = require('morgan');
+// const mongoose = require('mongoose');
+// const dotenv = require('dotenv');
+// const router = require('./api/routes/router');
+
+import express from "express";
+import { color } from 'console-log-colors';
+import cors from "cors";
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import router from './api/routes/router.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
-const router = require('./api/routes/router');
 
-console.log(process.env.DATABASE_URL, 'process.env.DATABASE_URL');
+// Set the default port for development
+
+let port = process.env.PORT
+
+const { DATABASE_URL } = process.env;
 
 // Setup database connection
 mongoose.connect(process.env.DATABASE_URL);
@@ -50,6 +68,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -78,8 +97,11 @@ app.use((error, req, res, next) => {
   });
 });
 
+// Start the server
+// Override the port for testing
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => console.log(`Listening on port ${port}`))
+}
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// module.exports = app
+export default app

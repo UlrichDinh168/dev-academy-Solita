@@ -8,15 +8,17 @@ const addJourney = (model) => {
 
       await newJourney.save()
       return res.status(201).json({
-        message: "Journey created succesfully",
+        message: "Journey created successfully",
       });
 
     } catch (error) {
 
-      console.log(error, 'error at AddJourney');
+      console.log(error, 'error');
       res.status(500).json({ message: error.message });
     }
   }
 }
 
-module.exports = addJourney 
+// module.exports = addJourney
+
+export default addJourney

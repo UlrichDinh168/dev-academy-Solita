@@ -16,7 +16,15 @@ export const descendingComparator = (a, b, orderBy) => {
   }
   return 0;
 }
-
+export const ascendingComparator = (a, b, orderBy) => {
+  if (a[orderBy] < b[orderBy]) {
+    return -1;
+  }
+  if (a[orderBy] > b[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
 /**
  * USED IN: Table.jsx
  * 
@@ -28,7 +36,7 @@ export const descendingComparator = (a, b, orderBy) => {
 export const getComparator = (order, orderBy) => {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => descendingComparator(a, b, orderBy) * -1;
+    : (a, b) => ascendingComparator(a, b, orderBy);
 }
 
 

@@ -16,13 +16,13 @@ import { getComparator, stableSort } from '../util'
 import { instance } from '../../constant';
 
 const DEFAULT_ORDER = 'asc';
-const DEFAULT_ORDER_BY = 'Duration (m)';
 const DEFAULT_ROWS_PER_PAGE = 10;
 
 
-export default function EnhancedTable({ rows, headCells, type }) {
+export default function EnhancedTable({ rows, headCells, type, defaultOrderBy }) {
+
   const [order, setOrder] = useState(DEFAULT_ORDER);
-  const [orderBy, setOrderBy] = useState(DEFAULT_ORDER_BY);
+  const [orderBy, setOrderBy] = useState(defaultOrderBy);
   const [page, setPage] = useState(0);
   const [visibleRows, setVisibleRows] = useState(null);
 
@@ -31,11 +31,11 @@ export default function EnhancedTable({ rows, headCells, type }) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-
+  // Auto sort Table by DEFAULT_ORDER & defaultOrderBy whenever rows change
   useEffect(() => {
     let rowsOnMount = stableSort(
       rows,
-      getComparator(DEFAULT_ORDER, DEFAULT_ORDER_BY),
+      getComparator(DEFAULT_ORDER, defaultOrderBy),
     );
 
     rowsOnMount = rowsOnMount?.slice(
@@ -47,7 +47,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
   }, [rows]);
 
 
-  const handleRequestSort = useCallback(
+  const handleSort = useCallback(
     (event, newOrderBy) => {
       const isAsc = orderBy === newOrderBy && order === 'asc';
       const toggledOrder = isAsc ? 'desc' : 'asc';
@@ -67,7 +67,7 @@ export default function EnhancedTable({ rows, headCells, type }) {
   );
 
 
-  const handleChangePage = useCallback(
+  const handlePageChange = useCallback(
     (event, newPage) => {
       setPage(newPage);
       const sortedRows = stableSort(rows, getComparator(order, orderBy));
@@ -161,9 +161,12 @@ export default function EnhancedTable({ rows, headCells, type }) {
     <Box
       sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'right' }}
       className='journey-table-container'>
-      <Paper sx={{ width: '100%', mb: 2, }}>
+      <Paper sx={{ width: '100%', mb: 2, }}
+        data-cy={`table-wrapper`}
+      >
         <TableContainer
           sx={{ maxHeight: 400 }}
+          data-cy={`table-container`}
         >
           <Table
             aria-label="sticky table"
@@ -173,10 +176,12 @@ export default function EnhancedTable({ rows, headCells, type }) {
               order={order}
               orderBy={orderBy}
               headCells={headCells}
-              onRequestSort={handleRequestSort}
+              onRequestSort={handleSort}
               rowCount={rows?.length}
             />
-            <TableBody>
+            <TableBody
+              data-cy={`table-body`}
+            >
               {renderContent()}
             </TableBody>
           </Table>
@@ -184,12 +189,13 @@ export default function EnhancedTable({ rows, headCells, type }) {
         <TablePagination
           showFirstButton
           showLastButton
+          data-cy='pagination'
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows?.length || 0}
           rowsPerPage={rowsPerPage}
           page={page}
-          onPageChange={handleChangePage}
+          onPageChange={handlePageChange}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>

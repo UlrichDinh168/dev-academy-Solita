@@ -48,35 +48,35 @@ const AddStation = () => {
       if (marker != null) {
         setPosition(marker.getLatLng())
 
-        name(marker.getLatLng())
+        geoSearch(marker.getLatLng())
 
         setFormSubmit(prev => ({ ...prev, x: marker.getLatLng()?.lng, y: marker.getLatLng()?.lat }))
       }
     },
   }), [])
 
-  const name = async (position) => {
+  const geoSearch = async (position) => {
     const resp = await instance.post('/api/address-lookup', {
       data: position
     })
 
-    const { coordinates: [x, y], label, region } = resp?.data?.data
+    const { coordinates: [x, y], label, region, Name } = resp?.data?.data
     const randomNum = Math.floor(Math.random() * 37) + 8;
 
     setFormSubmit(prev => ({
       ...prev,
-      Nimi: label, Name: label, Namn: label, Osoite: label, Adress: label, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y
+      Nimi: label, Name: label, Namn: label, Osoite: Name, Adress: Name, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y
     }))
   }
 
 
   const onSetFormValues = (result) => {
-    const { coordinates: [x, y], label, region } = result
+    const { coordinates: [x, y], label, region, Name, postalcode } = result
     const randomNum = Math.floor(Math.random() * 37) + 8;
-
+    const address = `${Name}, ${postalcode}`
 
     setPosition({ lat: y, lng: x })
-    setFormSubmit({ Nimi: label, Name: label, Namn: label, Osoite: label, Adress: label, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y })
+    setFormSubmit({ Nimi: label, Name: label, Namn: label, Osoite: address, Adress: address, Kaupunki: region, Stad: region, Operaattor: 'CityBike Finland', Kapasiteet: randomNum, x, y })
   }
 
   const onStationCreate = async (e) => {
@@ -117,12 +117,7 @@ const AddStation = () => {
           />
         </div>
         <div className="info">
-          <Input
-            id='1'
-            label='Name'
-            name='Name'
-            onChange={handleChange}
-            value={formSubmit?.['Name']} />
+
           <Input
             id='1'
             label='Address'
@@ -140,7 +135,7 @@ const AddStation = () => {
             label='longitude'
             onChange={handleChange}
             name='y'
-            value={formSubmit?.['x']} />
+            value={formSubmit?.['y']} />
 
           <Button text='Add Station' disabled={!isDisabled} onClick={onStationCreate} />
           {isLoading ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', }}><PuffLoader /></div> : null}

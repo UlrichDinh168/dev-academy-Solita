@@ -1,4 +1,5 @@
-const { digitransitAPI } = require('../constant.js');
+// const { digitransitAPI } = require('../constant.js');
+import { digitransitAPI } from "../constant.js";
 
 const stationSearchExtented = async (req, res) => {
   try {
@@ -32,7 +33,7 @@ const stationSearchExtented = async (req, res) => {
       }
 
       return res.status(200).json({
-        message: "Station name fetched succesfully",
+        message: "Station name fetched successfully",
         data: newData,
       });
     }
@@ -42,4 +43,5 @@ const stationSearchExtented = async (req, res) => {
   }
 };
 
-module.exports = stationSearchExtented;
+// module.exports = stationSearchExtented;
+export default stationSearchExtented

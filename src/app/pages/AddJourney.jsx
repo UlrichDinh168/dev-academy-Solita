@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import dayjs from 'dayjs';
 import { instance } from '../constant';
 import { padNum } from '../components/util';
@@ -91,7 +91,6 @@ const AddJourney = () => {
       return
     }
 
-
     // sum total of time + duration from all the legs sent by HSL Digitransit.
     const newData = data?.legs?.reduce((acc, cur) => {
       acc.totalTime += cur['duration'];
@@ -108,7 +107,7 @@ const AddJourney = () => {
     setFormSubmit(prev => ({ ...prev, ['Duration (sec)']: newData?.totalTime, ['Covered distance (m)']: parseInt(newData?.totalDistance.toFixed(2)), ['Return']: formatted }))
   };
 
-
+  // Calculate routes whenever the locations change
   useEffect(() => {
     if (formSubmit['Departure station name'] !== '' && formSubmit['Return station name'] !== '') {
       calculateRoute([departure.lat, departure.lng], [destination.lat, destination.lng]);
@@ -116,6 +115,7 @@ const AddJourney = () => {
   }, [departure.lat, departure.lng, destination.lat, destination.lng]);
 
 
+  // After selecting value for the search bar, set the formSubmit state
   const onSetFormValues =
     async (result, name) => {
       setFormSubmit(prevState => ({ ...prevState, [name]: result?.Nimi }))
@@ -130,7 +130,7 @@ const AddJourney = () => {
       }
     }
 
-
+  // Create new journey
   const onJourneyCreate = async (e) => {
     try {
       e.preventDefault();
@@ -138,25 +138,24 @@ const AddJourney = () => {
       const resp = await instance.post('/api/add-journey', {
         data: formSubmit
       })
-      // set notification when create journey successfully
-      setAlert({ isOpen: true, severity: 'success', message: resp?.data.message })
+      setAlert({ isOpen: true, severity: 'success', message: resp?.data.message })      // set notification when create journey successfully
 
     } catch (error) {
       console.log(error, 'error');
-      // set notification when create journey fail
-      setAlert({ isOpen: true, severity: 'error', message: error?.response.data })
+      setAlert({ isOpen: true, severity: 'error', message: error?.response.data })       // set notification when create journey fail
 
     } finally {
       setLoading(false);
     }
   }
 
+  // Change date time function
   const onDateTimeChange = (params) => {
-    // Auto add duration when user change starting time
-    const newTime = dayjs(params).add(time * 1000, 'millisecond')
+    const newTime = dayjs(params).add(time * 1000, 'millisecond')     // Auto add duration when user change starting time
     setFormSubmit(prev => ({ ...prev, ['Return']: newTime }))
   }
 
+  // Handle input change function
   const handleChange = (e) => {
     const { name, value } = e.target
     let newVal
@@ -164,16 +163,12 @@ const AddJourney = () => {
       newVal = Number((value * 1000).toFixed(2))
     } else {
       newVal = value * 60
-
     }
 
     setFormSubmit(prev => ({ ...prev, [name]: newVal }))
   }
 
   const isDisabled = Object.values(formSubmit).every(value => value !== '')
-
-
-
 
   return (
     <div className='add-journey'>
@@ -184,13 +179,15 @@ const AddJourney = () => {
             placeholder='Dept. station name'
             isOrigin={true}
             onSetFormValues={onSetFormValues}
-            type='base'
+            genre='base'
+            type='text'
             formSubmit={formSubmit}
           />
 
           <Searchbar
             placeholder='Dest. station name'
-            type='base'
+            genre='base'
+            type='text'
             isOrigin={false}
             onSetFormValues={onSetFormValues}
             formSubmit={formSubmit}
@@ -208,11 +205,13 @@ const AddJourney = () => {
             onChange={handleChange}
             label='Covered distance (km)'
             name='Covered distance (m)'
+            type='number'
             value={(formSubmit?.['Covered distance (m)'] / 1000)}
           />
 
           <Input
             id='1'
+            type='number'
             label='Duration (min)'
             name='Duration (sec)'
             onChange={handleChange}
@@ -236,9 +235,15 @@ const AddJourney = () => {
           />
 
           <Marker icon={greenIcon} position={departure} eventHandlers={departureHandler} ref={departureMarkerRef}>
+            <Popup>
+              <p>{formSubmit?.['Departure station name']}</p>
+            </Popup>
           </Marker>
 
           <Marker icon={redIcon} position={destination} eventHandlers={destinationHandler} ref={destinationMarkerRef}>
+            <Popup>
+              <p>{formSubmit?.['Return station name']}</p>
+            </Popup>
           </Marker>
 
         </MapContainer>
