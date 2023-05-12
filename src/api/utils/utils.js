@@ -65,5 +65,5 @@ const createQuery = (departure, destination) =>
   }
   `
 
-// export { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
-module.exports = { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
+export { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
+// module.exports = { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
