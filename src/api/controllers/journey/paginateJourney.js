@@ -1,4 +1,4 @@
-const paginatedFetchingJourney = (model) => {
+const paginatedFetchJourney = (model) => {
   return async (req, res) => {
     const { data } = req?.body
     const limit = 10
@@ -63,5 +63,4 @@ const paginatedFetchingJourney = (model) => {
   };
 };
 
-export default paginatedFetchingJourney
-// module.exports = paginatedFetchingJourney;
+export default paginatedFetchJourney

@@ -1,8 +1,5 @@
-// const { countOccurrences, findTopFiveStations, fetchStation } = require('../utils/utils.js');
-// const station = require('../../lib/models/station.model.js');
-
-import { countOccurrences, findTopFiveStations, fetchStation } from '../utils/utils.js';
-import station from '../../lib/models/station.model.js';
+import { countOccurrences, findTopFiveStations, fetchStation } from '../../utils/utils.js';
+import station from '../../../lib/models/station.model.js';
 
 const fetchStationDetails = (model) => {
 
@@ -58,8 +55,8 @@ const fetchStationDetails = (model) => {
           occurrences: iterator[1],
           capacity: data[0].Kapasiteet,
           address: data[0]?.Osoite,
-          x: data[0]?.x,
-          y: data[0]?.y,
+          latitude: data[0]?.x,
+          longitude: data[0]?.y,
         }
         array.push(newItem)
       }
@@ -91,4 +88,3 @@ const fetchStationDetails = (model) => {
 }
 
 export default fetchStationDetails
-// module.exports = fetchStationDetails;

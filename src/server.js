@@ -1,13 +1,3 @@
-// const express = require("express");
-// const { color } = require('console-log-colors');
-// const cors = require("cors");
-// const path = require('path');
-// const cookieParser = require('cookie-parser');
-// const logger = require('morgan');
-// const mongoose = require('mongoose');
-// const dotenv = require('dotenv');
-// const router = require('./api/routes/router');
-
 import express from "express";
 import { color } from 'console-log-colors';
 import cors from "cors";
@@ -26,14 +16,13 @@ dotenv.config();
 
 
 // Set the default port for development
-
 let port = process.env.PORT
-
-const { DATABASE_URL } = process.env;
 
 // Setup database connection
 mongoose.connect(process.env.DATABASE_URL);
+
 const database = mongoose.connection
+
 database.on('error', (error) => {
   console.log(error)
 });
@@ -48,6 +37,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 app.use(cookieParser());
+
 app.use("/api", router);
 
 
@@ -82,6 +72,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
@@ -103,5 +94,4 @@ if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => console.log(`Listening on port ${port}`))
 }
 
-// module.exports = app
 export default app

@@ -1,8 +1,5 @@
-// const station = require('../../lib/models/station.model');
-// const { fetchStation } = require('../utils/utils.js');
-
-import { fetchStation } from '../utils/utils.js';
-import station from '../../lib/models/station.model.js';
+import { fetchStation } from '../../utils/utils.js';
+import station from '../../../lib/models/station.model.js';
 
 
 const stationSearch = async (req, res) => {
@@ -25,4 +22,3 @@ const stationSearch = async (req, res) => {
 }
 
 export default stationSearch
-// module.exports = stationSearch;

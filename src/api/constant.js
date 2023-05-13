@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(process.env.DIGITRANSIT_KEY, 'process.env.DIGITRANSIT_KEY');
 
 const digitransitAPI = axios.create({
   baseURL: 'https://api.digitransit.fi',

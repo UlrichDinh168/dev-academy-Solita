@@ -1,5 +1,5 @@
-// const { findMaxValue } = require('../utils/utils.js');
-import { findMaxValue } from '../utils/utils.js';
+import { findMaxValue } from '../../utils/utils.js';
+
 const addStation = (model) => {
   return async (req, res) => {
     try {
@@ -31,4 +31,3 @@ const addStation = (model) => {
   }
 }
 export default addStation
-// module.exports = addStation;

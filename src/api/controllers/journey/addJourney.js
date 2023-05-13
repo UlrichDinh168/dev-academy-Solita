@@ -19,6 +19,4 @@ const addJourney = (model) => {
   }
 }
 
-// module.exports = addJourney
-
 export default addJourney

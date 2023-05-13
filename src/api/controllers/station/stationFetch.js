@@ -15,4 +15,3 @@ const stationFetch = (model) => {
 };
 
 export default stationFetch
-// module.exports = stationFetch;
