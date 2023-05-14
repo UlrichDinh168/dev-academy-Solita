@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Add STATION PAGE', () => {
+describe('ADD STATION PAGE', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/add-station')
     cy.wait(1000)
@@ -35,10 +35,12 @@ describe('Add STATION PAGE', () => {
     })
   })
 
+
   context('Search value in Input field', () => {
+
     it('Should display search values only when have 3 or more characters', () => {
       cy.get('.search-area').within(() => {
-        cy.intercept('POST', '/api/station-search-ext').as('searchResults')
+        cy.intercept('POST', '/api/address-search').as('searchResults')
         cy.get(`[data-cy="input-value"]`)
           .type('Majuri')
         cy.wait('@searchResults')
@@ -46,12 +48,12 @@ describe('Add STATION PAGE', () => {
 
       })
     })
-
   })
+
 
   Cypress.Commands.add('fillSearchbars', (place) => {
     cy.get('.search-area').within(() => {
-      cy.intercept('POST', '/api/station-search-ext').as('searchResults')
+      cy.intercept('POST', '/api/address-search').as('searchResults')
       cy.get(`[data-cy="input-value"]`)
         .first()
         .type(place)
@@ -66,9 +68,8 @@ describe('Add STATION PAGE', () => {
 
   context('Add Station', () => {
 
-
     it('should display Success message when station created', () => {
-      cy.intercept('POST', '/api/add-station', {
+      cy.intercept('POST', '/api/station/add', {
         statusCode: 200,
         body: {
           success: true,
@@ -91,8 +92,5 @@ describe('Add STATION PAGE', () => {
 
       cy.get('[data-cy="notification"]').should('contain', 'Station is already taken')
     })
-
-
-
   })
 })

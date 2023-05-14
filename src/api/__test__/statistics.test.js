@@ -3,13 +3,13 @@ import supertest from 'supertest'
 import server from '../../server.js'
 
 
-describe('POST /statistic-basic', () => {
+describe('POST /statistics/basic', () => {
 
   it('should return "Journey created successfully" when journey created successfully', async () => {
     const mockDate = '2021-05'
 
     const resp = await supertest(server)
-      .post('/api/statistic-basic')
+      .post('/api/statistics/basic')
       .send({ data: mockDate })
 
     const data = resp.body.data
@@ -26,13 +26,13 @@ describe('POST /statistic-basic', () => {
   })
 })
 
-describe('POST /statistic-route', () => {
+describe('POST /statistics/route', () => {
 
   it('should return Route Statistic in correct format', async () => {
     const mockDate = '2021-05'
 
     const resp = await supertest(server)
-      .post('/api/statistic-route')
+      .post('/api/statistics/route')
       .send({ data: mockDate })
 
     const data = resp.body.data
@@ -51,13 +51,13 @@ describe('POST /statistic-route', () => {
 })
 
 
-describe('POST /statistic-station', () => {
+describe('POST /statistics/station', () => {
 
   it('should return Route Statistic in a correct format', async () => {
     const mockDate = '2021-05'
 
     const resp = await supertest(server)
-      .post('/api/statistic-station')
+      .post('/api/statistics/station')
       .send({ data: mockDate })
 
     const data = resp.body.data[0].busiestStations[0]

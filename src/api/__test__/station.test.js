@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeAll, afterAll, it, afterEach, beforeEach } from 'vitest';
+import { describe, expect, beforeAll, afterAll, it } from 'vitest';
 import supertest from 'supertest'
 import server from '../../server.js'
 import { MongoClient } from 'mongodb';
@@ -7,27 +7,27 @@ dotenv.config()
 
 const { DATABASE_URL, DB_NAME } = process.env;
 
-describe('GET /get-station', () => {
+describe('GET /station/get', () => {
 
   it('responds with "Stations fetched successfully"', async () => {
     const resp = await supertest(server)
-      .get('/api/get-station')
+      .get('/api/station/get')
 
     expect(resp.status).toBe(200)
     expect(resp.body).toHaveProperty('data');
     expect(resp.body.data).toBeInstanceOf(Array);
 
-    expect(resp.body.message).to.equal('Stations fetched successfully');
+    expect(resp.body.message).to.equal('Stations fetched successfully.');
   });
 });
 
 
-describe('POST /station-search', () => {
+describe('POST /station/search', () => {
 
   it('should return an array of data objects with correct structure', async () => {
 
     const resp = await supertest(server)
-      .post('/api/station-search')
+      .post('/api/station/search')
       .send({
         data: 'Design Museum'
       })
@@ -59,11 +59,11 @@ describe('POST /station-search', () => {
   });
 })
 
-describe('POST /station-search-ext', () => {
+describe('POST /address-search', () => {
 
   it('should return an array of data objects with correct structure', async () => {
     const resp = await supertest(server)
-      .post('/api/station-search-ext')
+      .post('/api/address-search')
       .send({
         data: 'Kamppi'
       })
@@ -87,12 +87,12 @@ describe('POST /station-search-ext', () => {
   });
 })
 
-describe('POST /station-details', () => {
+describe('POST /station/details', () => {
 
   it('should return an array of data objects with correct structure', async () => {
 
     const resp = await supertest(server)
-      .post('/api/station-details')
+      .post('/api/station/details')
       .send({
         data: '501'
       })
@@ -115,7 +115,7 @@ describe('POST /station-details', () => {
 }, 30000)
 
 
-describe('POST /add-station', () => {
+describe('POST /station/add', () => {
   let client;
   let db;
 
@@ -151,11 +151,11 @@ describe('POST /add-station', () => {
       y: 60.169119
     }
     const resp = await supertest(server)
-      .post('/api/add-station')
+      .post('/api/station/add')
       .send({ data: stationData })
 
     expect(resp.status).toBe(409);
-    expect(resp.text).to.equal("Station is already taken");
+    expect(resp.text).to.equal("Station is already taken.");
   })
 
   it('should create station successfully and return the correct message and station properties', async () => {
@@ -169,22 +169,22 @@ describe('POST /add-station', () => {
       Stad: "Uusimaa",
       Kapasiteet: Math.floor(Math.random() * 37) + 8,
       Operaattor: "CityBike Finland",
-      x: 24.99405,
-      y: 60.309719
+      latitude: 24.99405,
+      longitude: 60.309719
 
     }
     const resp = await supertest(server)
-      .post('/api/add-station')
+      .post('/api/station/add')
       .send({ data: stationData })
 
     expect(resp.status).toBe(201);
-    expect(resp.body.message).to.equal("Station created successfully");
+    expect(resp.body.message).to.equal("Station created successfully.");
 
   })
 
 })
 
-describe('GET /get-station', async () => {
+describe('GET /station/get', async () => {
 
   it('should return a successful response with location data', async () => {
 

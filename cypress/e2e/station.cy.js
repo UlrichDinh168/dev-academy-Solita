@@ -53,7 +53,5 @@ describe('STATION PAGE', () => {
       cy.wait(1000)
       cy.get('body').find('[data-cy="modal"]').should('exist');
     })
-
-
   })
 })

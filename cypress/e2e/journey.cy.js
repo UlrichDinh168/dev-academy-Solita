@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+
 describe('JOURNEY PAGE', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
@@ -30,13 +31,12 @@ describe('JOURNEY PAGE', () => {
   })
 
 
-
   // /**
   //  * Define Cypress Command to set search bars' values
   //  */
   Cypress.Commands.add('fillSearchbars', (departure, destination) => {
     cy.get('.search-area').within(() => {
-      cy.intercept('POST', '/api/station-search').as('searchResults')
+      cy.intercept('POST', '/api/station/search').as('searchResults')
       cy.get(`[data-cy="input-value"]`)
         .first()
         .type(departure)
@@ -48,7 +48,7 @@ describe('JOURNEY PAGE', () => {
     })
 
     cy.get('.search-area').within(() => {
-      cy.intercept('POST', '/api/station-search').as('searchResults')
+      cy.intercept('POST', '/api/station/search').as('searchResults')
       cy.get(`[data-cy="input-value"]`)
         .last()
         .type(destination)
@@ -72,9 +72,10 @@ describe('JOURNEY PAGE', () => {
 
 
   context('Search value in Input field', () => {
+
     it('Should display search values only when Station exists', () => {
       cy.get('.search-area').within(() => {
-        cy.intercept('POST', '/api/station-search').as('searchResults')
+        cy.intercept('POST', '/api/station/search').as('searchResults')
         cy.get(`[data-cy="input-value"]`)
           .first()
           .type('Majuri')
@@ -86,7 +87,7 @@ describe('JOURNEY PAGE', () => {
 
     it('Should NOT display search values when Station doesn not exist', () => {
       cy.get('.search-area').within(() => {
-        cy.intercept('POST', '/api/station-search').as('searchResults')
+        cy.intercept('POST', '/api/station/search').as('searchResults')
         cy.get(`[data-cy="input-value"]`)
           .first()
           .type('Majurikuta')
@@ -177,6 +178,7 @@ describe('JOURNEY PAGE', () => {
   })
 
   context('No Journey Found', () => {
+
     beforeEach(() => {
       cy.fetchJourney('Majurinkulma', 'Desiro');
       cy.wait(500); // wait for any necessary page transitions or API requests to complete

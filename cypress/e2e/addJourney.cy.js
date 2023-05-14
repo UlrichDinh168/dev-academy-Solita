@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Add JOURNEY PAGE', () => {
+describe('ADD JOURNEY PAGE', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/add-journey')
     cy.wait(1000)
@@ -33,7 +33,7 @@ describe('Add JOURNEY PAGE', () => {
   context('Search value in Input field', () => {
     it('Should display search values only when Station exists', () => {
       cy.get('.search-area').within(() => {
-        cy.intercept('POST', '/api/station-search').as('searchResults')
+        cy.intercept('POST', '/api/station/search').as('searchResults')
         cy.get(`[data-cy="input-value"]`)
           .first()
           .type('Majuri')
@@ -45,7 +45,7 @@ describe('Add JOURNEY PAGE', () => {
 
     it('Should NOT display search values when Station doesn not exist', () => {
       cy.get('.search-area').within(() => {
-        cy.intercept('POST', '/api/station-search').as('searchResults')
+        cy.intercept('POST', '/api/station/search').as('searchResults')
         cy.get(`[data-cy="input-value"]`)
           .first()
           .type('Majurikuta')
@@ -58,7 +58,7 @@ describe('Add JOURNEY PAGE', () => {
 
   Cypress.Commands.add('fillSearchbars', (departure, destination) => {
     cy.get('.search-area').within(() => {
-      cy.intercept('POST', '/api/station-search').as('searchResults')
+      cy.intercept('POST', '/api/station/search').as('searchResults')
       cy.get(`[data-cy="input-value"]`)
         .first()
         .type(departure)
@@ -70,7 +70,7 @@ describe('Add JOURNEY PAGE', () => {
     })
 
     cy.get('.search-area').within(() => {
-      cy.intercept('POST', '/api/station-search').as('searchResults')
+      cy.intercept('POST', '/api/station/search').as('searchResults')
       cy.get(`[data-cy="input-value"]`)
         .last()
         .type(destination)
@@ -79,9 +79,9 @@ describe('Add JOURNEY PAGE', () => {
         .find('li')
         .first()
         .click()
-
     })
   })
+
 
   context('Should filter by Name when start typing', () => {
     it('Should return 2 markers on Map', () => {
@@ -101,14 +101,13 @@ describe('Add JOURNEY PAGE', () => {
       cy.fillSearchbars('Kamppi', 'Kamppi')
       cy.get('[data-cy="notification"]').should('contain', 'Same location')
     })
-
-
   })
+
+
   context('Add Journey', () => {
 
-
     it('should display Success message when journey created', () => {
-      cy.intercept('POST', '/api/add-journey', {
+      cy.intercept('POST', '/api/journey/add', {
         statusCode: 200,
         body: {
           success: true,
@@ -123,8 +122,5 @@ describe('Add JOURNEY PAGE', () => {
 
       cy.get('[data-cy="notification"]').should('contain', 'Journey created successfully')
     })
-
-
-
   })
 })

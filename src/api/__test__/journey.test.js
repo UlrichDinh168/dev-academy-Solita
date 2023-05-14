@@ -6,7 +6,7 @@ import { MongoClient } from 'mongodb';
 const { DATABASE_URL, DB_NAME } = process.env;
 
 
-describe('POST /get-journey', () => {
+describe('POST /journey/search', () => {
 
   it('should return journey structure correctly', async () => {
     const journeyData = {
@@ -16,7 +16,7 @@ describe('POST /get-journey', () => {
     }
 
     const resp = await supertest(server)
-      .post('/api/get-journey')
+      .post('/api/journey/search')
       .send({ data: journeyData })
 
     const data = resp.body.data
@@ -57,11 +57,11 @@ describe('POST /get-journey', () => {
     }
 
     const resp = await supertest(server)
-      .post('/api/get-journey')
+      .post('/api/journey/search')
       .send({ data: journeyData })
 
     expect(resp.status).toBe(404);
-    expect(resp.body.message).to.equal("There was no journey for these stations");
+    expect(resp.body.message).to.equal("There was no journey for these stations.");
     expect(resp.body.data).toStrictEqual([]);
   })
 
@@ -74,7 +74,7 @@ describe('POST /get-journey', () => {
     }
 
     const resp = await supertest(server)
-      .post('/api/get-journey')
+      .post('/api/journey/search')
       .send({ data: journeyData })
 
     expect(resp.status).toBe(200);
@@ -84,7 +84,7 @@ describe('POST /get-journey', () => {
 })
 
 
-describe('POST /add-journey', () => {
+describe('POST /journey/add', () => {
 
   let client;
   let db;
@@ -119,16 +119,16 @@ describe('POST /add-journey', () => {
       "Duration (sec)": 1301
     }
     const resp = await supertest(server)
-      .post('/api/add-journey')
+      .post('/api/journey/add')
       .send({ data: journeyData })
 
     expect(resp.status).toBe(201);
-    expect(resp.body.message).to.equal("Journey created successfully");
+    expect(resp.body.message).to.equal("Journey created successfully.");
 
   })
 })
 
-describe('POST /get-routes', () => {
+describe('POST /journey-calc', () => {
 
   it('should return correct routes for journey', async () => {
     const journeyData = {
@@ -137,12 +137,12 @@ describe('POST /get-routes', () => {
     }
 
     const resp = await supertest(server)
-      .post('/api/get-routes')
+      .post('/api/journey-calc')
       .send({ data: journeyData })
 
 
     expect(resp.status).toBe(200);
-    expect(resp.body.message).to.equal("Journey fetched successfully");
+    expect(resp.body.message).to.equal("Journey fetched successfully.");
 
 
     expect(resp.body).toHaveProperty('data');
