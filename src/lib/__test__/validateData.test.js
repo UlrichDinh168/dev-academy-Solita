@@ -1,9 +1,9 @@
-import { test, describe, expect } from "vitest";
+import { it, describe, expect } from "vitest";
 import { validateData } from "../utils/validateData.js";
 
 
 describe("validate journey row", () => {
-  test("rejects if departure time is not a parseable DateTime", () => {
+  it("Should rejects if departure time is not a parseable DateTime", () => {
     const journeyRow = {
       Departure: "not a valid date",
       Return: "2023-05-09T01:23:45Z",
@@ -15,7 +15,7 @@ describe("validate journey row", () => {
     expect(validateData(journeyRow)).toBe(false);
   });
 
-  test("rejects if arrival happens before departure", () => {
+  it("Should rejects if arrival happens before departure", () => {
     const journeyRow = {
       Departure: "2023-05-09T01:23:45Z",
       Return: "2023-05-08T23:45:01Z",
@@ -27,7 +27,7 @@ describe("validate journey row", () => {
     expect(validateData(journeyRow)).toBe(false);
   });
 
-  test("rejects if departure station id is not a positive integer", () => {
+  it("Should rejects if departure station id is not a positive integer", () => {
     const journeyRow = {
       Departure: "2023-05-09T01:23:45Z",
       Return: "2023-05-09T01:53:45Z",
@@ -39,7 +39,7 @@ describe("validate journey row", () => {
     expect(validateData(journeyRow)).toBe(false);
   });
 
-  test("accepts a valid trip", () => {
+  it("Should accepts a valid trip", () => {
     const journeyRow = {
       Departure: "2023-05-09T01:23:45Z",
       Return: "2023-05-09T01:53:45Z",
@@ -51,7 +51,7 @@ describe("validate journey row", () => {
     expect(validateData(journeyRow)).toBe(true);
   });
 
-  test("rejects a trip that is less than 10 seconds", () => {
+  it("Should rejects a trip that is less than 10 seconds", () => {
     const journeyRow = {
       Departure: "2023-05-09T01:23:45Z",
       Return: "2023-05-09T01:24:01Z",

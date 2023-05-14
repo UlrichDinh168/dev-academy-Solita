@@ -7,7 +7,7 @@
 _**Endpoint**_
 
 ```
-GET /api/get-journey
+GET /api/journey/search
 ```
 
 _**Example request**_
@@ -55,7 +55,7 @@ _**Example response**_
 _**Endpoint**_
 
 ```
-POST /api/add-journey
+POST /api/journey/add
 ```
 
 _**Example request**_
@@ -86,7 +86,7 @@ data: {
 _**Endpoint**_
 
 ```
-/api/get-routes
+POST /api/journey-calc
 ```
 
 _**Example request**_
@@ -126,7 +126,7 @@ data: {
 _**Endpoint**_
 
 ```
-GET /api/get-station
+GET /api/station/get
 ```
 
 **Example response**
@@ -161,7 +161,7 @@ GET /api/get-station
 _**Endpoint**_
 
 ```
-GET /api/station-details
+GET /api/station/details
 ```
 
 _**Example request**_
@@ -186,16 +186,16 @@ _**Example request**_
             "occurrences": 188,
             "capacity": 16,
             "address": "Sotkatie 11",
-            "x": 24.8551642686834,
-            "y": 60.1633863116225
+            "latitude": 24.8551642686834,
+            "longitude": 60.1633863116225
         },
         {
             "name": "Lauttasaari Shopping Center",
             "occurrences": 123,
             "capacity": 26,
             "address": "Lauttasaarentie 26",
-            "x": 24.8828103623042,
-            "y": 60.1604153459526
+            "latitude": 24.8828103623042,
+            "longitude": 60.1604153459526
         },
        ...
     ],
@@ -205,16 +205,16 @@ _**Example request**_
             "occurrences": 201,
             "capacity": 16,
             "address": "Sotkatie 11",
-            "x": 24.8551642686834,
-            "y": 60.1633863116225
+            "latitude": 24.8551642686834,
+            "longitude": 60.1633863116225
         },
         {
             "name": "Puistokaari",
             "occurrences": 121,
             "capacity": 16,
             "address": "Isokaari 30",
-            "x": 24.8620200832623,
-            "y": 60.1578749328793
+            "latitude": 24.8620200832623,
+            "longitude": 60.1578749328793
         },
        ...
     ]
@@ -227,7 +227,7 @@ _**Example request**_
 _**Endpoint**_
 
 ```
-/api/station-search
+POST /api/station/search
 ```
 
 _**Example request**_
@@ -255,8 +255,8 @@ data: [
     "Stad": " ",
     "Operaattor": " ",
     "Kapasiteet": 14,
-    "x": 24.9459599998806,
-    "y": 60.16310319166,
+    "latitude": 24.9459599998806,
+    "longitude": 60.16310319166,
     "__v": 0
   },
   {
@@ -272,8 +272,8 @@ data: [
     "Stad": "Uusimaa",
     "Operaattor": "CityBike Finland",
     "Kapasiteet": 10,
-    "x": 24.941766,
-    "y": 60.194175,
+    "latitude": 24.941766,
+    "longitude": 60.194175,
     "__v": 0
   },
 ]
@@ -284,7 +284,7 @@ data: [
 _**Endpoint**_
 
 ```
-/api/station-search-ext
+POST /api/address-search
 ```
 
 _**Example request**_
@@ -328,7 +328,7 @@ data: [
 _**Endpoint**_
 
 ```
-/api/add-station
+POST /api/station/add
 ```
 
 _**Example request**_
@@ -344,8 +344,8 @@ _**Example request**_
   "Stad": "Uusimaa",
   "Operaattor": "CityBike Finland",
   "Kapasiteet": 41,
-  "x": 24.932058,
-  "y": 60.169119
+  "latitude": 24.932058,
+  "longitude": 60.169119
 }
 ```
 
@@ -362,7 +362,7 @@ data: {
 _**Endpoint**_
 
 ```
-/api/address-lookup
+POST /api/address-lookup
 ```
 
 _**Example request**_
@@ -397,7 +397,7 @@ data: {
 _**Endpoint**_
 
 ```
-/api/statistic-basic
+POST /api/statistics/basic
 ```
 
 _**Example request**_
@@ -426,7 +426,7 @@ data: {
 _**Endpoint**_
 
 ```
-/api/statistic-station
+POST /api/statistics/station
 ```
 
 _**Example request**_
@@ -470,7 +470,7 @@ data: {
 _**Endpoint**_
 
 ```
-/api/statistic-route
+POST /api/statistics/route
 ```
 
 _**Example request**_

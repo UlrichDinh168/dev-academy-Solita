@@ -91,8 +91,6 @@ out
 .nuxt
 dist
 server/
-# csv folder
-csv
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
@@ -134,3 +132,4 @@ csv
 
 .DS_Store
 Procfile
+csv/*

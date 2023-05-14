@@ -92,7 +92,7 @@
 
 #### Recommended
 
-- [x] Create UI for adding stations.
+- [x] UI for adding stations.
 
 ![](./images/add-station.png)
 
@@ -122,3 +122,5 @@
 
 - [x] Endpoints to store new journeys data or new bicycle stations
 - [x] Running backend in Cloud - Heroku
+- [x] Implement E2E tests.
+- [x] Create UI for adding journeys or bicycle stations.

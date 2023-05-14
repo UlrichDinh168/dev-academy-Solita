@@ -27,7 +27,7 @@ This is a [pre-assignment](https://github.com/solita/dev-academy-2023-exercise) 
 
 ### Third-party API
 
-- [Digitransit.fi](https://digitransit.fi/)
+- [Digitransit.fi](https://digitransit.fi/en/developers/)
 
 ## Documentation
 
