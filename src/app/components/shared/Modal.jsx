@@ -36,7 +36,6 @@ const ModalComp = ({ open, data, handleClose }) => {
     setViewIndex((prevIndex) => (prevIndex === 0 ? views.length - 1 : prevIndex - 1));
   };
 
-  console.log(data, 'data');
   const handleNextClick = () => {
     setViewIndex((prevIndex) => (prevIndex + 1) % views.length);
   };

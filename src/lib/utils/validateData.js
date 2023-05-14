@@ -1,10 +1,10 @@
 const validateData = (journeyRow) => {
-  const departureTime = Date.parse(journeyRow["Departure"]);
-  const arrivalTime = Date.parse(journeyRow["Return"]);
-  const departureStationId = parseInt(journeyRow["Departure station id"]);
-  const arrivalStationId = parseInt(journeyRow["Return station id"]);
-  const coveredDistance = parseInt(journeyRow["Covered distance (m)"]);
-  const duration = parseInt(journeyRow["Duration (sec)"]);
+  const departureTime = Date.parse(journeyRow['Departure']);
+  const arrivalTime = Date.parse(journeyRow['Return']);
+  const departureStationId = parseInt(journeyRow['Departure station id']);
+  const arrivalStationId = parseInt(journeyRow['Return station id']);
+  const coveredDistance = parseInt(journeyRow['Covered distance (m)']);
+  const duration = parseInt(journeyRow['Duration (sec)']);
 
   return (
     !isNaN(departureTime) &&
@@ -18,4 +18,4 @@ const validateData = (journeyRow) => {
 };
 
 // module.exports = { validateData }
-export { validateData }
+export { validateData };

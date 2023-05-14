@@ -1,41 +1,40 @@
-// const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 
 const journeySchema = mongoose.Schema({
   Departure: {
     type: String,
-    default: undefined
+    default: undefined,
   },
   Return: {
     type: String,
-    default: undefined
+    default: undefined,
   },
-  "Departure station id": {
+  'Departure station id': {
     type: String,
-    default: undefined
+    default: undefined,
   },
-  "Departure station name": {
+  'Departure station name': {
     type: String,
-    default: undefined
+    default: undefined,
   },
-  "Return station id": {
+  'Return station id': {
     type: String,
-    default: undefined
+    default: undefined,
   },
-  "Return station name": {
+  'Return station name': {
     type: String,
-    default: undefined
+    default: undefined,
   },
-  "Covered distance (m)": {
+  'Covered distance (m)': {
     type: Number,
-    default: undefined
+    default: undefined,
   },
-  "Duration (sec)": {
+  'Duration (sec)': {
     type: Number,
-    default: undefined
-  }
-})
+    default: undefined,
+  },
+});
 
-const journey = mongoose.model("journey", journeySchema);
-// module.exports = journey
-export default journey
+const journey = mongoose.model('journey', journeySchema);
+
+export default journey;

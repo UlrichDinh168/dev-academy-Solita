@@ -1,8 +1,8 @@
 /**
  * Count the occurrences of objects in the array by using key as identifier.
- * @param {array} arr 
- * @param {string} type 
- * @returns 
+ * @param {array} arr
+ * @param {string} type
+ * @returns
  */
 const countOccurrences = (arr, type) => {
   return arr.reduce((acc, curr) => {
@@ -15,36 +15,43 @@ const countOccurrences = (arr, type) => {
 // Convert the counts object to an array of [key, value] pairs
 const findTopFiveStations = (arrays) => {
   // Sort the counts array in descending order by value and take the top 5
-  return Object.entries(arrays).sort((a, b) => b[1] - a[1]).slice(0, 5);
-}
+  return Object.entries(arrays)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+};
 
 const fetchStation = async (name, value, model) => {
+  let searchResults;
   if (name === 'Name') {
     const upperCase = value?.replace(/^\w/, (c) => c.toUpperCase());
-    const regexp = new RegExp(`^${upperCase}`)
-    const searchResults = await model.find({ [name]: regexp }).maxTimeMS(30000);
-    return searchResults
+    const regexp = new RegExp(`^${upperCase}`);
+    searchResults = await model.find({ [name]: regexp }).maxTimeMS(5000);
+    return searchResults;
   }
 
-  const searchResults = await model.find({ [name]: value }).maxTimeMS(30000);
-  return searchResults
-}
+  searchResults = await model.find({ [name]: value }).maxTimeMS(5000);
+
+  return searchResults;
+};
 
 const findMaxValue = async (model, criteria) => {
   try {
-    const resp = await model.findOne().sort({ [criteria]: -1 }).maxTimeMS(30000).exec()
-    const max = Number(resp['ID'])
+    const resp = await model
+      .findOne()
+      .sort({ [criteria]: -1 })
+      .maxTimeMS(10000)
+      .exec();
+    const max = Number(resp['ID']);
     return max;
-
   } catch (error) {
     console.log(error, 'err in api utils');
   }
-}
+};
 
 /**
  * Generate GraphQL query string
- * @param {array} departure 
- * @param {array} destination 
+ * @param {array} departure
+ * @param {array} destination
  */
 const createQuery = (departure, destination) =>
   `
@@ -63,7 +70,6 @@ const createQuery = (departure, destination) =>
       }
     }
   }
-  `
+  `;
 
-export { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
-// module.exports = { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery }
+export { findMaxValue, findTopFiveStations, countOccurrences, fetchStation, createQuery };

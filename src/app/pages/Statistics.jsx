@@ -62,12 +62,12 @@ const Statistics = () => {
   const routeLabels =
     topRoutes?.length > 0
       ? topRoutes?.map(
-          (route) =>
-            ` ${route._id.route.departure.substring(0, 10)}\n-${route._id.route.return.substring(
-              0,
-              10
-            )}`
-        )
+        (route) =>
+          ` ${route._id.route.departure.substring(0, 10)}\n-${route._id.route.return.substring(
+            0,
+            10
+          )}`
+      )
       : [];
 
   const stationData = {
@@ -99,8 +99,6 @@ const Statistics = () => {
     try {
       setLoadingState(true);
       const resp = await instance.post(url, { data: dateTime });
-      console.log(resp, 'resp');
-
       setStateFn(resp?.data?.data);
     } catch (error) {
       console.log(error, 'error');
@@ -134,7 +132,6 @@ const Statistics = () => {
   const onChange = async (event) => {
     // month + 1: dayjs months start with 0
     const dateTime = `${dayjs(event).year()}-${padNum(dayjs(event).month() + 1, 2)}`;
-    console.log(dateTime, 'dateTime');
     groupFetching(dateTime);
   };
 

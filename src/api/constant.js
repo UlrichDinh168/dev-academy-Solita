@@ -1,9 +1,7 @@
-// const axios = require('axios')
 import axios from 'axios';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
 
 const digitransitAPI = axios.create({
   baseURL: 'https://api.digitransit.fi',
@@ -13,6 +11,4 @@ const digitransitAPI = axios.create({
   },
 });
 
-
-// module.exports = { digitransitAPI }
-export { digitransitAPI }
+export { digitransitAPI };

@@ -10,5 +10,4 @@ const journeyRoutes = express.Router();
 journeyRoutes.post('/search', paginatedFetch(journey));
 journeyRoutes.post('/add', addJourney(journey));
 
-
-export default journeyRoutes
+export default journeyRoutes;

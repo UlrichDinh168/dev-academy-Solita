@@ -8,7 +8,6 @@ import addStation from '../controllers/station/addStation.js';
 import journey from '../../lib/models/journey.model.js';
 import station from '../../lib/models/station.model.js';
 
-
 const stationRoutes = express.Router();
 
 // Station
@@ -17,5 +16,4 @@ stationRoutes.post('/search', stationSearch);
 stationRoutes.post('/details', fetchStationDetails(journey));
 stationRoutes.post('/add', addStation(station));
 
-
-export default stationRoutes
+export default stationRoutes;

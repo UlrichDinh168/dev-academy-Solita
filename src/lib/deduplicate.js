@@ -1,44 +1,41 @@
-// const fs = require('fs');
-// const readline = require('readline');
-// const path = require('path');
-// const { color } = require('console-log-colors');
-
 import fs from 'fs';
 import readline from 'readline';
 import path from 'path';
 import { color } from 'console-log-colors';
 
-
 /**
- * Reads one or more CSV files and removes duplicate lines from them. 
+ * Reads one or more CSV files and removes duplicate lines from them.
  * The resulting CSV files are saved with the same name with the suffix "-deduplicated" added before the file extension.
  *
  * @param {Array<string>} filePaths - An array of file paths to the CSV files to deduplicate.
  * @returns {Promise<Array<string>>} - A Promise that resolves to an array of file paths of the resulting deduplicated CSV files.
  */
 
-
 const directoryPath = path.join(__dirname, './csv/');
-const files = fs.readdirSync(directoryPath).filter(file => file.includes('2021') && !file.includes('deduplicated'));
+const files = fs
+  .readdirSync(directoryPath)
+  .filter((file) => file.includes('2021') && !file.includes('deduplicated'));
 
 const deduplicateCSVFiles = async (filePaths) => {
-
   const outputFileNames = [];
 
   for (const filePath of filePaths) {
-    const lineSet = new Set();  // Create a new Set to store unique lines
+    const lineSet = new Set(); // Create a new Set to store unique lines
 
-    const absolutePath = path.join(directoryPath, filePath)
+    const absolutePath = path.join(directoryPath, filePath);
 
     const inputFile = fs.createReadStream(absolutePath);
     // creates a readline interface to read the contents of a file line by line.
     const rl = readline.createInterface({
       input: inputFile,
-      crlfDelay: Infinity
+      crlfDelay: Infinity,
     });
 
     // Generate the output file path by adding '-deduplicated' to the file name
-    const outputFilePath = `${directoryPath}/${filePath.substring(0, filePath.length - 4)}-deduplicated.csv`;
+    const outputFilePath = `${directoryPath}/${filePath.substring(
+      0,
+      filePath.length - 4
+    )}-deduplicated.csv`;
 
     outputFileNames.push(`${filePath.substring(0, filePath.length - 4)}-deduplicated.csv`);
 
@@ -63,16 +60,14 @@ const deduplicateCSVFiles = async (filePaths) => {
   }
 
   return outputFileNames;
-}
+};
 
 deduplicateCSVFiles(files)
-  .then(outputFileNames => {
+  .then((outputFileNames) => {
     console.log(`\nDeduplicated files:\n ${color.cyan(outputFileNames.join('\n '))}`);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error);
   });
 
-
-// module.exports = deduplicateCSVFiles
-export default deduplicateCSVFiles
+export default deduplicateCSVFiles;
