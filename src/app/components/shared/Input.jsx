@@ -1,9 +1,9 @@
 /** @format */
 
-import React from "react";
-import TextField from "@mui/material/TextField";
-import ClearIcon from "@mui/icons-material/Clear";
-import { IconButton } from "@mui/material";
+import React from 'react';
+import TextField from '@mui/material/TextField';
+import ClearIcon from '@mui/icons-material/Clear';
+import { IconButton } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 
 const Input = ({
@@ -19,10 +19,10 @@ const Input = ({
   disabled,
   value,
   onBlur,
-  handleClearClick
+  handleClearClick,
 }) => {
   return (
-    <div className='input__wrapper' >
+    <div className='input__wrapper'>
       <TextField
         type={type || 'text'}
         label={label}
@@ -36,22 +36,26 @@ const Input = ({
         inputRef={inputRef}
         id={id}
         sx={{ marginBottom: 2, marginRight: 2, width: '100%', border: 'gray' }}
-        autoComplete="off"
+        autoComplete='off'
         onFocus={onFocus}
         onBlur={onBlur}
-        InputProps={id === '0' ? {
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle visibility"
-                onClick={handleClearClick}
-                edge="end"
-              >
-                {value ? <ClearIcon /> : null}
-              </IconButton>
-            </InputAdornment>
-          )
-        } : null}
+        InputProps={
+          id === '0'
+            ? {
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton
+                      aria-label='toggle visibility'
+                      onClick={handleClearClick}
+                      edge='end'
+                    >
+                      {value ? <ClearIcon /> : null}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }
+            : null
+        }
       />
     </div>
   );

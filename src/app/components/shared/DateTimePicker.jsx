@@ -6,10 +6,8 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export default function DateTimePickerValue({ value, onChange, label, disabled }) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}
-    >
-      <DemoContainer components={['DateTimePicker', 'DateTimePicker']}
-      >
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
         <DateTimePicker
           label={label}
           data-cy='dateTime-picker'

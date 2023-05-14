@@ -1,11 +1,20 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Map from '../shared/Map';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 const BasicView = ({ data }) => {
-  const { numStationsAtDest, numStationsAtStart, averageDistanceAtDest, averageDistanceAtStart, currentX, currentY, Osoite, Name } = data
-  const title = 'Basic info'
+  const {
+    numStationsAtDest,
+    numStationsAtStart,
+    averageDistanceAtDest,
+    averageDistanceAtStart,
+    currentLatitude,
+    currentLongitude,
+    Osoite,
+    Name,
+  } = data;
+  const title = 'Basic info';
 
   return (
     <Box>
@@ -14,7 +23,6 @@ const BasicView = ({ data }) => {
       <TableContainer sx={{ textAlign: 'center', margin: '1rem 0', marginBottom: '3rem' }}>
         <Table responsive='true'>
           <TableBody>
-
             <TableRow>
               <TableCell>Total number of journeys starting from the station</TableCell>
               <TableCell>{numStationsAtStart}</TableCell>
@@ -34,16 +42,15 @@ const BasicView = ({ data }) => {
               <TableCell>The average distance of a journey ending at the station</TableCell>
               <TableCell>{parseFloat(averageDistanceAtDest / 1000).toFixed(2)} km</TableCell>
             </TableRow>
-
           </TableBody>
         </Table>
       </TableContainer>
 
       <div style={{ height: '60vh' }}>
-        <Map  {...{ Osoite, Name, currentX, currentY }} />
+        <Map {...{ Osoite, Name, currentLatitude, currentLongitude }} />
       </div>
-    </Box >
-  )
+    </Box>
+  );
 };
 
-export default BasicView
+export default BasicView;

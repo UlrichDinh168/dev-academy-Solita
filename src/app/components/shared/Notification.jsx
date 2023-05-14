@@ -1,15 +1,14 @@
 import React, { useState, forwardRef, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 export default function CustomizedSnackbars({ alert }) {
-  const { isOpen, severity, message } = alert
+  const { isOpen, severity, message } = alert;
   const [open, setOpen] = useState(false);
 
   const handleClose = (event, reason) => {
@@ -20,8 +19,8 @@ export default function CustomizedSnackbars({ alert }) {
   };
 
   useEffect(() => {
-    setOpen(isOpen)
-  }, [alert])
+    setOpen(isOpen);
+  }, [alert, isOpen]);
 
   return (
     <Stack spacing={2} sx={{ width: '100%', position: 'absolute' }} data-cy='notification'>

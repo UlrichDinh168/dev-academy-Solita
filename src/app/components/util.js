@@ -1,6 +1,6 @@
 /**
  * USED IN: Table.jsx
- * 
+ *
  * Function sorts the array of objects in asc or desc order based on a specified key.
  * @param {Object} a - The first object to compare.
  * @param {Object} b - The second object to compare.
@@ -15,7 +15,7 @@ export const descendingComparator = (a, b, orderBy) => {
     return 1;
   }
   return 0;
-}
+};
 export const ascendingComparator = (a, b, orderBy) => {
   if (a[orderBy] < b[orderBy]) {
     return -1;
@@ -24,10 +24,10 @@ export const ascendingComparator = (a, b, orderBy) => {
     return 1;
   }
   return 0;
-}
+};
 /**
  * USED IN: Table.jsx
- * 
+ *
  * Returns a comparator function that sorts an array of objects based on the specified order and key.
  * @param {string} order - The sort order ('asc' or 'desc').
  * @param {string} orderBy - The key to use for sorting.
@@ -37,21 +37,19 @@ export const getComparator = (order, orderBy) => {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => ascendingComparator(a, b, orderBy);
-}
-
+};
 
 /**
  * USED IN: Table.jsx
- * 
+ *
  * Returns a sorted version of the array, sorted using the specified comparator function.
  * @param {Array} array - The array to sort.
  * @param {function} comparator - A function used to compare the elements in the array.
  * @returns {Array} - sorted version array by order.
  */
 export const stableSort = (array, comparator) => {
-  return array?.slice().sort(comparator)
-}
-
+  return array?.slice().sort(comparator);
+};
 
 /**
  * USED IN: Journey.jsx
@@ -75,11 +73,11 @@ export const findLargestAndSmallest = (arr, property) => {
   }
 
   return { largest, smallest };
-}
+};
 
 /**
  * USED IN: Journey.jsx
- * 
+ *
  * Transforms an array of journey objects by converting the object properties: m -> km, sec->m
  * @param {Array} journeys - The array of journey objects to transform.
  * @returns {Array} - An array of transformed journey objects.
@@ -96,7 +94,7 @@ export const transformResultsArray = (journeys) => {
     results.push(result);
   }
   return results;
-}
+};
 
 /**
  * Pads a number with leading zeros up to a specified number of digits.
@@ -106,9 +104,8 @@ export const transformResultsArray = (journeys) => {
  */
 export const padNum = (num, digit) => {
   let str = num?.toString().padStart(digit, '0');
-  return (str)
-}
-
+  return str;
+};
 
 /**
  * Converts a duration in seconds to a string in the format "days, hours, minutes".
@@ -135,4 +132,4 @@ export const convertMinutesToHours = (seconds) => {
   }
 
   return result;
-}
+};

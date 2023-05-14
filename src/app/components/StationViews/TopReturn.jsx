@@ -3,10 +3,9 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import Map from '../shared/Map';
 import Box from '@mui/material/Box';
 
-
 const TopDeparture = ({ data }) => {
-  const { Name, Osoite, currentX, currentY, returnTop5Start } = data
-  const title = 'Top 5 most popular return stations for journeys ending at the station'
+  const { Name, Osoite, currentLatitude, currentLongitude, returnTop5Start } = data;
+  const title = 'Top 5 most popular return stations for journeys ending at the station';
 
   return (
     <Box>
@@ -22,23 +21,21 @@ const TopDeparture = ({ data }) => {
           </TableHead>
 
           <TableBody>
-            {returnTop5Start?.map((item, i) =>
+            {returnTop5Start?.map((item, i) => (
               <TableRow key={i}>
                 <TableCell>{item?.name}</TableCell>
                 <TableCell>{item?.occurrences}</TableCell>
               </TableRow>
-            )
-            }
+            ))}
           </TableBody>
-
         </Table>
       </TableContainer>
 
       <div style={{ height: '60vh' }}>
-        <Map data={returnTop5Start} {...{ Name, Osoite, currentX, currentY }} />
+        <Map data={returnTop5Start} {...{ Name, Osoite, currentLatitude, currentLongitude }} />
       </div>
     </Box>
-  )
-}
+  );
+};
 
-export default TopDeparture
+export default TopDeparture;

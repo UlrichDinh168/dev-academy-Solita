@@ -1,0 +1,14 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.eslintcache
+coverage
+.lintstagedrc.json
+.prettierrc.json
+.stylelintrc.json
+cypress.config.js
+vite.config.js
+cypress
+__test__

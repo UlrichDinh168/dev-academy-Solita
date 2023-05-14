@@ -28,8 +28,8 @@
     &__right {
       flex: 1;
       width: 70vh;
+      height: 500px;
       display: flex;
-      // align-items: center;
       justify-content: center;
     }
   }
@@ -49,9 +49,12 @@
     margin-bottom: 1rem;
   }
   .slider {
-    // display: flex;
+    padding-left: 2rem;
     &-container {
-      margin: 1rem;
+      margin: 1rem !important;
+    }
+    .journey-last {
+      white-space: nowrap;
     }
   }
 }
@@ -99,7 +102,7 @@
 }
 
 .ntts {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 5rem;
   opacity: 0.05;
   font-style: italic;
@@ -119,6 +122,7 @@
       position: relative;
       height: 700px;
       overflow: auto;
+      padding: 0 0.5rem;
       h2 {
         display: none !important;
       }
@@ -136,10 +140,15 @@
       }
       &__right {
         overflow: scroll;
+        height: 500px;
+        padding: 1rem 0;
         &::-webkit-scrollbar {
           display: none;
         }
       }
+    }
+    .load-more {
+      width: 100%;
     }
   }
 
@@ -148,6 +157,6 @@
   }
   .load-more {
     display: flex;
-    width: 100%;
+    width: 100% !important;
   }
 }

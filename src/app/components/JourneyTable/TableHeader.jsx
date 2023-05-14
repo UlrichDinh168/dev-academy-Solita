@@ -1,3 +1,4 @@
+import React from 'react';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
 import { visuallyHidden } from '@mui/utils';
@@ -6,15 +7,12 @@ import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
 
 export default function TableHeader(props) {
-  const { order, orderBy, onRequestSort, headCells } =
-    props;
+  const { order, orderBy, onRequestSort, headCells } = props;
   const createSortHandler = (newOrderBy) => (event) => {
     onRequestSort(event, newOrderBy);
   };
   return (
-    <TableHead
-      data-cy={`table-header`}
-    >
+    <TableHead data-cy={`table-header`}>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
@@ -30,7 +28,7 @@ export default function TableHeader(props) {
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
+                <Box component='span' sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}

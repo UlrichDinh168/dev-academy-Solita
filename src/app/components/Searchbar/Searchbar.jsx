@@ -1,27 +1,26 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
-import { instance } from '../../constant'
-import Input from "../shared/Input";
-import SearchResults from "../SearchResult/SearchResult";
+import React, { useState, useRef, useEffect } from 'react';
+import { instance } from '../../constant';
+import Input from '../shared/Input';
+import SearchResults from '../SearchResult/SearchResult';
 
 const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, genre, label }) => {
+  const originRef = useRef(null);
+  const destRef = useRef(null);
+  const inputRef = isOrigin ? originRef : destRef;
 
-  const originRef = useRef(null)
-  const destRef = useRef(null)
-  const inputRef = isOrigin ? originRef : destRef
-
-  const inputId = isOrigin ? "origin-input" : "destination-input";
+  const inputId = isOrigin ? 'origin-input' : 'destination-input';
 
   const [isFocus, setFocus] = useState(false);
-  const [searchResults, setSearchResults] = useState([])
+  const [searchResults, setSearchResults] = useState([]);
   const [input, setInput] = useState('');
-
 
   useEffect(() => {
     if (formSubmit && formSubmit['Name'] && formSubmit['Name'] !== '') {
-      setInput(formSubmit['Name'])
+      setInput(formSubmit['Name']);
     }
-  }, [formSubmit && formSubmit['Name']])
-
+    // eslint-disable-next-line
+  }, [formSubmit && formSubmit['Name']]);
+  // }, [setInput,formSubmit, formSubmit['name']]);
 
   const handleChange = async (e) => {
     const { value } = e.target;
@@ -30,47 +29,46 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, genre, label }
 
     if (value?.length >= 2) {
       if (genre === 'base') {
-        const resp = await instance.post('/api/station-search', {
-          data: value
-        })
-        setSearchResults(resp.data.data)
+        const resp = await instance.post('/api/station/search', {
+          data: value,
+        });
+        setSearchResults(resp.data.data);
       } else {
-        const resp = await instance.post('/api/station-search-ext', {
-          data: value
-        })
+        const resp = await instance.post('/api/address-search', {
+          data: value,
+        });
 
-        setSearchResults(resp.data.data)
+        setSearchResults(resp.data.data);
       }
     } else {
-      setSearchResults([])
+      setSearchResults([]);
     }
   };
 
   const selectResult = (result, name) => {
     setFocus(false);
 
-    setInput(result?.Name)
-    onSetFormValues(result, name)
-    inputRef.current.value = result?.Name
+    setInput(result?.Name);
+    onSetFormValues(result, name);
+    inputRef.current.value = result?.Name;
   };
 
   const handleFocus = () => {
-    setFocus(true)
-  }
+    setFocus(true);
+  };
 
   const handleBlur = (e) => {
-    const { name } = e.target
-    if (formSubmit[name] === undefined && genre === 'base') setInput('')
-    if (formSubmit['Name'] === '') setInput('')
+    const { name } = e.target;
+    if (formSubmit[name] === undefined && genre === 'base') setInput('');
+    if (formSubmit['Name'] === '') setInput('');
     setFocus(false);
   };
 
   const handleReset = () => {
-    setInput('')
-    inputRef.current.focus()
-    setSearchResults([])
-  }
-
+    setInput('');
+    inputRef.current.focus();
+    setSearchResults([]);
+  };
 
   return (
     <div className='searchBar__container'>
@@ -84,14 +82,14 @@ const Searchbar = ({ isOrigin, onSetFormValues, formSubmit, type, genre, label }
         label={label}
         value={input}
         inputRef={inputRef}
-        name={isOrigin ? "Departure station name" : "Return station name"}
+        name={isOrigin ? 'Departure station name' : 'Return station name'}
         focus={isFocus}
         handleClearClick={handleReset}
       />
       {searchResults?.length > 0 && isFocus ? (
         <SearchResults
           inputId={inputId}
-          inputName={isOrigin ? "Departure station name" : "Return station name"}
+          inputName={isOrigin ? 'Departure station name' : 'Return station name'}
           searchValue={input}
           searchResults={searchResults}
           genre={genre}
