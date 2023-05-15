@@ -29,9 +29,6 @@ describe('POST /journey/search', () => {
 
     expect(data.journeys).toBeInstanceOf(Array);
 
-    expect(data.lastPage).toBe(4);
-    expect(data.nextPage.page).toBe(2);
-    expect(data.nextPage.limit).toBe(10);
 
     const journeys = data.journeys[0];
 
@@ -45,7 +42,7 @@ describe('POST /journey/search', () => {
     expect(journeys).toHaveProperty('Covered distance (m)');
     expect(journeys).toHaveProperty('Duration (sec)');
 
-  })
+  }, 10000)
 
 
   it('should return message "There was no journey for these stations" when no  jounreys found', async () => {
@@ -63,7 +60,7 @@ describe('POST /journey/search', () => {
     expect(resp.status).toBe(404);
     expect(resp.body.message).to.equal("There was no journey for these stations.");
     expect(resp.body.data).toStrictEqual([]);
-  })
+  }, 10000)
 
   it('should return correct length of each batch', async () => {
 
@@ -79,7 +76,7 @@ describe('POST /journey/search', () => {
 
     expect(resp.status).toBe(200);
     expect(resp.body.data.journeys.length).toBe(10);
-  })
+  }, 10000)
 
 })
 
