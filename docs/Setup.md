@@ -68,7 +68,9 @@ git clone https://github.com/UlrichDinh168/dev-academy-Solita.git
    - `npm run build` to build the whole project and store in `dist` folder.
    - `npm start` to run the server in production and serve build contents.
 
-##
+### Local build
+
+- Run `npm run build` will build both **client** and **server** folders to the `dist` folder.
 
 ### App browsing guild
 

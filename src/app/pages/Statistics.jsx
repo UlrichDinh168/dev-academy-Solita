@@ -62,12 +62,12 @@ const Statistics = () => {
   const routeLabels =
     topRoutes?.length > 0
       ? topRoutes?.map(
-        (route) =>
-          ` ${route._id.route.departure.substring(0, 10)}\n-${route._id.route.return.substring(
-            0,
-            10
-          )}`
-      )
+          (route) =>
+            ` ${route._id.route.departure.substring(0, 10)}\n-${route._id.route.return.substring(
+              0,
+              10
+            )}`
+        )
       : [];
 
   const stationData = {

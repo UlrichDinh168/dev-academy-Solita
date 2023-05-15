@@ -29,6 +29,9 @@ This is a [pre-assignment](https://github.com/solita/dev-academy-2023-exercise) 
 
 - [Digitransit.fi](https://digitransit.fi/en/developers/)
 
+## Usage
+Please refer to the [⚙️ Local Setup](./docs/Setup.md) document for instructions on how to setup locally.
+
 ## Documentation
 
 [🧮 Architecture](./docs/Architecture.md)\
