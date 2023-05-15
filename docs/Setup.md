@@ -22,14 +22,13 @@ git clone https://github.com/UlrichDinh168/dev-academy-Solita.git
 
 ### Download the requirements
 
-1. Create `csv` folder in `./src/lib/csv`
-2. Download these datasets of the journey and move the downloaded csv files into `csv`.
+1. Download these datasets of the journey and move the downloaded csv files into `./src/lib/csv` folder.
 
    - <https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv>
    - <https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv>
    - <https://dev.hsl.fi/citybikes/od-trips-2021/2021-07.csv>
 
-3. Also, download the dataset that has information about Helsinki Region Transport’s (HSL) city bicycle stations and add them to `csv`.
+2. Also, download the dataset that has information about Helsinki Region Transport’s (HSL) city bicycle stations and add them to `csv` folder.
 
    - Dataset: <https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv>
 
@@ -40,6 +39,7 @@ git clone https://github.com/UlrichDinh168/dev-academy-Solita.git
    - [Instruction](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/).
 
    - MongoDB string is in this format: `"mongodb+srv://<username>:<password>@clustername.mongodb.net/test?retryWrites=true&w=majority&useNewUrlParser=true&useUnifiedTopology=true"`
+   - The default database name is **test**
 
 2. Create [Digitransit](https://portal-api.digitransit.fi/) account and acquire API_KEY.
 
@@ -93,4 +93,4 @@ git clone https://github.com/UlrichDinh168/dev-academy-Solita.git
 
    - Click on the "Statistics" button in `Navbar` to navigate to the new Statistics page.
    - The top 10 stations and routes will be displayed monthly.
-   - It is suggested to add several routes and stations for the chart to beautifully display.
+   - It is suggested to add several routes and stations to the desired month for the chart to beautifully display.

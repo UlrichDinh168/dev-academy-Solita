@@ -5,7 +5,7 @@ import server from '../../server.js'
 
 describe('POST /statistics/basic', () => {
 
-  it('should return "Journey created successfully" when journey created successfully', async () => {
+  it('should return Basic Statistics data in correct format', async () => {
     const mockDate = '2021-05'
 
     const resp = await supertest(server)
@@ -23,12 +23,12 @@ describe('POST /statistics/basic', () => {
     expect(data[0]).toHaveProperty('averageDistance');
     expect(data[0]).toHaveProperty('count');
 
-  })
+  }, 10000)
 })
 
 describe('POST /statistics/route', () => {
 
-  it('should return Route Statistic in correct format', async () => {
+  it('should return Route Statistics in correct format', async () => {
     const mockDate = '2021-05'
 
     const resp = await supertest(server)
@@ -53,7 +53,7 @@ describe('POST /statistics/route', () => {
 
 describe('POST /statistics/station', () => {
 
-  it('should return Route Statistic in a correct format', async () => {
+  it('should return Station Statistics in a correct format', async () => {
     const mockDate = '2021-05'
 
     const resp = await supertest(server)

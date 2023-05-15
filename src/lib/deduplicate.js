@@ -2,6 +2,7 @@ import fs from 'fs';
 import readline from 'readline';
 import path from 'path';
 import { color } from 'console-log-colors';
+import { fileURLToPath } from 'url';
 
 /**
  * Reads one or more CSV files and removes duplicate lines from them.
@@ -10,6 +11,9 @@ import { color } from 'console-log-colors';
  * @param {Array<string>} filePaths - An array of file paths to the CSV files to deduplicate.
  * @returns {Promise<Array<string>>} - A Promise that resolves to an array of file paths of the resulting deduplicated CSV files.
  */
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const directoryPath = path.join(__dirname, './csv/');
 const files = fs

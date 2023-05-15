@@ -130,7 +130,7 @@ describe('POST /journey/add', () => {
 
 describe('POST /journey-calc', () => {
 
-  it('should return correct routes for journey', async () => {
+  it('should return the amount of time and distance', async () => {
     const journeyData = {
       departure: [60.170, 24.213],
       destination: [60.170, 24.254]

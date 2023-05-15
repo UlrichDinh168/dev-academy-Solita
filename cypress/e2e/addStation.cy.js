@@ -90,7 +90,7 @@ describe('ADD STATION PAGE', () => {
       cy.fillSearchbars('Kamppi');
       cy.get('[data-cy="search-button"]').click();
 
-      cy.get('[data-cy="notification"]').should('contain', 'Station is already taken')
+      cy.get('[data-cy="notification"]').should('contain', 'Station is already taken.')
     })
   })
 })

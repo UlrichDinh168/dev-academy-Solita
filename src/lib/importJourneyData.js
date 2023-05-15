@@ -8,6 +8,7 @@ import journey from './models/journey.model.js';
 import { color } from 'console-log-colors';
 import dotenv from 'dotenv';
 import { validateData } from './utils/validateData.js';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -20,6 +21,11 @@ const server = app.listen(8000, () => {
 });
 
 // ======================== =============================
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 const mongoString = process.env.DATABASE_URL;
 const directoryPath = path.join(__dirname, './csv');
 

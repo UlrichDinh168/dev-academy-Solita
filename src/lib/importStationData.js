@@ -6,6 +6,7 @@ import path from 'path';
 import { color } from 'console-log-colors';
 import station from './models/station.model.js';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -27,10 +28,13 @@ database.on('error', (error) => {
   console.log(error);
 });
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const directoryPath = path.join(__dirname, './csv');
 const files = fs
   .readdirSync(directoryPath)
-  .filter((file) => file.includes('deduplicated') && !file.includes('2021'));
+  .filter((file) => file.includes('csv') && !file.includes('2021'));
 
 /**
  * Extendable version for importing station csv files to Mongo.

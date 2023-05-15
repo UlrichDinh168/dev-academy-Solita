@@ -9,6 +9,11 @@
 - Testing deduplication function is correctly remove dupped lines in journey csv files.
 - Testing the endpoints of the API return data in correct structure and status code.
 
+### Setup
+
+- Move the files in `mocks` folder to the `csv` folder for the dupplication removal test.
+- These mock csv files contain the dupped lines.
+
 ### Running the tests
 
 - Open a terminal and run `npm run test` in the root directory.

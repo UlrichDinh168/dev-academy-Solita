@@ -147,8 +147,8 @@ describe('POST /station/add', () => {
       Stad: "Uusimaa",
       Operaattor: "CityBike Finland",
       Kapasiteet: 41,
-      x: 24.932058,
-      y: 60.169119
+      latitude: 24.932058,
+      longitude: 60.169119
     }
     const resp = await supertest(server)
       .post('/api/station/add')

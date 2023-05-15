@@ -14,9 +14,9 @@ const directoryPath = path.join(__dirname, '../csv');
 
 const files = fs.readdirSync(directoryPath)
   .filter(file => file.includes('mock')
-    && !file.includes('station')
     && !file.includes('deduplicated')
-    && !file.includes('actual'));
+    && !file.includes('actual')
+    && file.includes('csv'));
 
 const expectedOutputFileNames = ['mock-file-1-deduplicated.csv', 'mock-file-2-deduplicated.csv'];
 
