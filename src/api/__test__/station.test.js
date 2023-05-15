@@ -112,7 +112,7 @@ describe('POST /station/details', () => {
     expect(data.returnTop5End).toBeInstanceOf(Array);
   })
 
-}, 30000)
+}, 10000)
 
 
 describe('POST /station/add', () => {
@@ -180,7 +180,7 @@ describe('POST /station/add', () => {
     expect(resp.status).toBe(201);
     expect(resp.body.message).to.equal("Station created successfully.");
 
-  })
+  }, 10000)
 
 })
 

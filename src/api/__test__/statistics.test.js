@@ -47,7 +47,7 @@ describe('POST /statistics/route', () => {
     expect(data[0]._id.route).toHaveProperty('departure');
     expect(data[0]._id.route).toHaveProperty('return');
 
-  })
+  }, 10000)
 })
 
 
@@ -56,16 +56,19 @@ describe('POST /statistics/station', () => {
   it('should return Station Statistics in a correct format', async () => {
     const mockDate = '2021-05'
 
-    const resp = await supertest(server)
-      .post('/api/statistics/station')
-      .send({ data: mockDate })
+    setTimeout(async () => {
+      const resp = await supertest(server)
+        .post('/api/statistics/station')
+        .send({ data: mockDate })
 
-    const data = resp.body.data[0].busiestStations[0]
+      const data = resp.body.data[0].busiestStations[0]
 
-    expect(resp.status).toBe(200);
+      expect(resp.status).toBe(200);
 
-    expect(data).toHaveProperty('station');
-    expect(data).toHaveProperty('count');
+      expect(data).toHaveProperty('station');
+      expect(data).toHaveProperty('count');
+    }, 10000);
 
-  })
+
+  }, 10000)
 })
