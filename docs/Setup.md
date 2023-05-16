@@ -65,7 +65,6 @@ git clone https://github.com/UlrichDinh168/dev-academy-Solita.git
 
    - Open terminal and run `npm run server:dev` to start the development server on `locahost:3001`.
    - Open another terminal and run `npm run client:dev` to start the development client `localhost:3000`.
-   - `npm run build` to build the whole project and store in `dist` folder.
    - `npm start` to run the server in production and serve build contents.
 
 ### Local build
